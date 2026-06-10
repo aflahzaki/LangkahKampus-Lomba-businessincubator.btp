@@ -33,27 +33,27 @@ def generate_stage5():
     # Cover Page
     add_cover_page(
         doc,
-        title="Phase C: Information System Architecture",
-        stage_name="Stage 5 - IS Architecture (Data & Application)"
+        title="Phase C: Arsitektur Sistem Informasi",
+        stage_name="Stage 5 - Arsitektur SI (Data & Aplikasi)"
     )
 
     # Table of Contents
     toc_sections = [
-        ("Phase C-1: Data Architecture", [
-            "Baseline Data Architecture",
-            "Target Data Architecture",
+        ("Phase C-1: Arsitektur Data", [
+            "Arsitektur Data Baseline",
+            "Arsitektur Data Target",
             "Gap Analysis - Data",
-            "Data Requirements",
-            "Data Principles (Updated)",
+            "Kebutuhan Data",
+            "Prinsip Data (Diperbarui)",
         ]),
-        ("Phase C-2: Application Architecture", [
-            "Baseline Application Architecture",
-            "Target Application Architecture",
-            "Gap Analysis - Application",
-            "Application Requirements",
-            "Application Principles (Updated)",
+        ("Phase C-2: Arsitektur Aplikasi", [
+            "Arsitektur Aplikasi Baseline",
+            "Arsitektur Aplikasi Target",
+            "Gap Analysis - Aplikasi",
+            "Kebutuhan Aplikasi",
+            "Prinsip Aplikasi (Diperbarui)",
         ]),
-        ("Statement of Architecture Work (Updated)", []),
+        ("Pernyataan Pekerjaan Arsitektur (Diperbarui)", []),
         ("Daftar Pustaka", []),
     ]
     add_table_of_contents(doc, toc_sections)
@@ -61,7 +61,7 @@ def generate_stage5():
     # ==========================================================================
     # PHASE C-1: DATA ARCHITECTURE
     # ==========================================================================
-    add_heading(doc, "1. Phase C-1: Data Architecture", level=1)
+    add_heading(doc, "1. Phase C-1: Arsitektur Data", level=1)
 
     add_paragraph(doc,
         "Phase C-1 mendefinisikan arsitektur data yang mendukung kebutuhan bisnis "
@@ -74,7 +74,7 @@ def generate_stage5():
     # --------------------------------------------------------------------------
     # 1.1 BASELINE DATA ARCHITECTURE
     # --------------------------------------------------------------------------
-    add_heading(doc, "1.1 Baseline Data Architecture", level=2)
+    add_heading(doc, "1.1 Arsitektur Data Baseline", level=2)
 
     add_paragraph(doc,
         "Arsitektur data baseline menggambarkan kondisi pengelolaan data SNBP "
@@ -136,7 +136,7 @@ def generate_stage5():
     # --------------------------------------------------------------------------
     # 1.2 TARGET DATA ARCHITECTURE
     # --------------------------------------------------------------------------
-    add_heading(doc, "1.2 Target Data Architecture", level=2)
+    add_heading(doc, "1.2 Arsitektur Data Target", level=2)
 
     add_paragraph(doc,
         "Arsitektur data target menggambarkan pengelolaan data pada platform "
@@ -247,7 +247,7 @@ def generate_stage5():
     # --------------------------------------------------------------------------
     # 1.3 GAP ANALYSIS - DATA
     # --------------------------------------------------------------------------
-    add_heading(doc, "1.3 Gap Analysis - Data Architecture", level=2)
+    add_heading(doc, "1.3 Gap Analysis - Arsitektur Data", level=2)
 
     add_heading(doc, "1.3.1 Gap Analysis Matrix - Data", level=3)
 
@@ -301,26 +301,26 @@ def generate_stage5():
     )
 
     # Data Requirements
-    add_heading(doc, "1.4 Data Requirements", level=2)
+    add_heading(doc, "1.4 Kebutuhan Data", level=2)
 
     add_table(doc,
-        headers=["ID", "Requirement", "Rationale", "Priority"],
+        headers=["ID", "Kebutuhan", "Rasional", "Prioritas"],
         rows=[
-            ["DR-001", "Data must be encrypted at-rest (AES-256) and in-transit (TLS 1.3)", "UU PDP compliance, protecting student PII", "P1"],
-            ["DR-002", "Data retention policy: active data 3 years, archived 7 years, then purged", "Regulatory compliance and storage optimization", "P1"],
-            ["DR-003", "All data mutations must produce audit trail with actor, timestamp, and change detail", "Compliance, debugging, accountability", "P1"],
-            ["DR-004", "ML training data must be anonymized/pseudonymized before use", "Privacy protection for model training", "P1"],
-            ["DR-005", "Database must support point-in-time recovery with RPO < 1 hour", "Business continuity, data protection", "P1"],
-            ["DR-006", "Feature store must serve features with < 50ms latency for real-time inference", "ML prediction SLA (< 2s total)", "P1"],
-            ["DR-007", "Data quality score must be > 95% for all critical entities (students, scores)", "ML model accuracy depends on data quality", "P2"],
-            ["DR-008", "Users must be able to export and delete their personal data (right to erasure)", "UU PDP Article 8 - right to be forgotten", "P1"],
+            ["DR-001", "Data harus dienkripsi saat tersimpan (AES-256) dan saat ditransmisikan (TLS 1.3)", "Kepatuhan UU PDP, melindungi data pribadi siswa", "P1"],
+            ["DR-002", "Kebijakan retensi data: data aktif 3 tahun, diarsipkan 7 tahun, lalu dihapus", "Kepatuhan regulasi dan optimasi penyimpanan", "P1"],
+            ["DR-003", "Semua perubahan data harus menghasilkan jejak audit dengan pelaku, waktu, dan detail perubahan", "Kepatuhan, debugging, akuntabilitas", "P1"],
+            ["DR-004", "Data pelatihan ML harus dianonimkan/dipseudonymkan sebelum digunakan", "Perlindungan privasi untuk pelatihan model", "P1"],
+            ["DR-005", "Database harus mendukung pemulihan titik waktu dengan RPO < 1 jam", "Kelangsungan bisnis, perlindungan data", "P1"],
+            ["DR-006", "Feature store harus menyajikan fitur dengan latensi < 50ms untuk inferensi real-time", "SLA prediksi ML (< 2 detik total)", "P1"],
+            ["DR-007", "Skor kualitas data harus > 95% untuk semua entitas kritis (siswa, nilai)", "Akurasi model ML bergantung pada kualitas data", "P2"],
+            ["DR-008", "Pengguna harus dapat mengekspor dan menghapus data pribadinya (hak untuk dilupakan)", "UU PDP Pasal 8 - hak untuk dilupakan", "P1"],
         ],
-        title="Data Requirements",
+        title="Kebutuhan Data",
         table_number=8
     )
 
     # Data Principles Updated
-    add_heading(doc, "1.5 Data Principles (Updated)", level=2)
+    add_heading(doc, "1.5 Prinsip Data (Diperbarui)", level=2)
 
     data_principles = [
         {
@@ -347,7 +347,7 @@ def generate_stage5():
     # ==========================================================================
     # PHASE C-2: APPLICATION ARCHITECTURE
     # ==========================================================================
-    add_heading(doc, "2. Phase C-2: Application Architecture", level=1)
+    add_heading(doc, "2. Phase C-2: Arsitektur Aplikasi", level=1)
 
     add_paragraph(doc,
         "Phase C-2 mendefinisikan arsitektur aplikasi yang menerjemahkan kebutuhan "
@@ -360,7 +360,7 @@ def generate_stage5():
     # --------------------------------------------------------------------------
     # 2.1 BASELINE APPLICATION ARCHITECTURE
     # --------------------------------------------------------------------------
-    add_heading(doc, "2.1 Baseline Application Architecture", level=2)
+    add_heading(doc, "2.1 Arsitektur Aplikasi Baseline", level=2)
 
     add_paragraph(doc,
         "Pada kondisi baseline, tidak terdapat platform digital khusus untuk "
@@ -451,7 +451,7 @@ def generate_stage5():
     # --------------------------------------------------------------------------
     # 2.2 TARGET APPLICATION ARCHITECTURE
     # --------------------------------------------------------------------------
-    add_heading(doc, "2.2 Target Application Architecture", level=2)
+    add_heading(doc, "2.2 Arsitektur Aplikasi Target", level=2)
 
     add_paragraph(doc,
         "Arsitektur aplikasi target LangkahKampus mengadopsi microservices architecture "
@@ -463,7 +463,7 @@ def generate_stage5():
     add_heading(doc, "2.2.1 Application Portfolio Catalog (Target)", level=3)
 
     add_table(doc,
-        headers=["Application", "Type", "Technology", "Description", "Scaling Strategy"],
+        headers=["Aplikasi", "Tipe", "Teknologi", "Deskripsi", "Strategi Scaling"],
         rows=[
             ["LangkahKampus Web App", "Frontend SPA/SSR", "Next.js 14, React, TailwindCSS", "User-facing web application (siswa, guru BK, admin)", "CDN + horizontal scaling"],
             ["API Gateway", "Infrastructure", "Kong / Nginx", "Routing, authentication, rate limiting, load balancing", "Horizontal auto-scaling"],
@@ -571,7 +571,7 @@ def generate_stage5():
     # --------------------------------------------------------------------------
     # 2.3 GAP ANALYSIS - APPLICATION
     # --------------------------------------------------------------------------
-    add_heading(doc, "2.3 Gap Analysis - Application Architecture", level=2)
+    add_heading(doc, "2.3 Gap Analysis - Arsitektur Aplikasi", level=2)
 
     add_heading(doc, "2.3.1 Gap Analysis Matrix - Application", level=3)
 
@@ -629,26 +629,26 @@ def generate_stage5():
     )
 
     # Application Requirements
-    add_heading(doc, "2.4 Application Requirements", level=2)
+    add_heading(doc, "2.4 Kebutuhan Aplikasi", level=2)
 
     add_table(doc,
-        headers=["ID", "Requirement", "Rationale", "Priority"],
+        headers=["ID", "Kebutuhan", "Rasional", "Prioritas"],
         rows=[
-            ["AR-001", "All services must expose health check endpoints (/health, /ready)", "Kubernetes liveness/readiness probes for automated recovery", "P1"],
-            ["AR-002", "All APIs must follow OpenAPI 3.0 specification with auto-generated docs", "Developer experience, contract-first design, testing", "P1"],
-            ["AR-003", "Services must be stateless (no local state, use Redis/DB for state)", "Horizontal scaling, container orchestration compatibility", "P1"],
-            ["AR-004", "All services must implement structured logging (JSON format)", "Centralized logging, automated parsing, debugging efficiency", "P1"],
-            ["AR-005", "Inter-service auth must use mTLS or service mesh identity", "Zero trust security between microservices", "P2"],
-            ["AR-006", "Frontend must achieve Lighthouse performance score > 90", "User experience, SEO, mobile performance", "P2"],
-            ["AR-007", "All services must implement circuit breaker pattern for external calls", "Fault isolation, graceful degradation", "P1"],
-            ["AR-008", "ML model deployment must support canary releases (10% traffic split)", "Safe model deployment, A/B testing capability", "P2"],
+            ["AR-001", "Semua layanan harus menyediakan endpoint health check (/health, /ready)", "Kubernetes liveness/readiness probes untuk pemulihan otomatis", "P1"],
+            ["AR-002", "Semua API harus mengikuti spesifikasi OpenAPI 3.0 dengan dokumentasi otomatis", "Pengalaman developer, desain berbasis kontrak, pengujian", "P1"],
+            ["AR-003", "Layanan harus stateless (tanpa state lokal, gunakan Redis/DB untuk state)", "Skalabilitas horizontal, kompatibilitas orkestrasi kontainer", "P1"],
+            ["AR-004", "Semua layanan harus mengimplementasi structured logging (format JSON)", "Logging terpusat, parsing otomatis, efisiensi debugging", "P1"],
+            ["AR-005", "Autentikasi antar-layanan harus menggunakan mTLS atau identitas service mesh", "Keamanan zero trust antar microservices", "P2"],
+            ["AR-006", "Frontend harus mencapai skor performa Lighthouse > 90", "Pengalaman pengguna, SEO, performa mobile", "P2"],
+            ["AR-007", "Semua layanan harus mengimplementasi pola circuit breaker untuk panggilan eksternal", "Isolasi kegagalan, degradasi yang terkendali", "P1"],
+            ["AR-008", "Deployment model ML harus mendukung canary releases (pembagian traffic 10%)", "Deployment model yang aman, kemampuan A/B testing", "P2"],
         ],
-        title="Application Requirements",
+        title="Kebutuhan Aplikasi",
         table_number=20
     )
 
     # Application Principles Updated
-    add_heading(doc, "2.5 Application Principles (Updated)", level=2)
+    add_heading(doc, "2.5 Prinsip Aplikasi (Diperbarui)", level=2)
 
     app_principles = [
         {
@@ -675,17 +675,17 @@ def generate_stage5():
     # ==========================================================================
     # STATEMENT OF ARCHITECTURE WORK (UPDATED)
     # ==========================================================================
-    add_heading(doc, "3. Statement of Architecture Work (Updated)", level=1)
+    add_heading(doc, "3. Pernyataan Pekerjaan Arsitektur (Diperbarui)", level=1)
 
     add_paragraph(doc,
         "Statement of Architecture Work diperbarui setelah penyelesaian Phase C "
         "untuk mencerminkan keputusan arsitektur IS yang telah dibuat."
     )
 
-    add_heading(doc, "3.1 Key Decisions from IS Architecture", level=2)
+    add_heading(doc, "3.1 Keputusan Utama dari Arsitektur SI", level=2)
 
     add_table(doc,
-        headers=["Decision", "Choice", "Rationale"],
+        headers=["Keputusan", "Pilihan", "Rasional"],
         rows=[
             ["Primary Database", "PostgreSQL 15 with PostGIS extension", "Open source, strong JSON support, geospatial capability, proven scalability"],
             ["Cache Layer", "Redis 7", "In-memory speed for feature store, session, and pub/sub capability"],
@@ -696,11 +696,11 @@ def generate_stage5():
             ["Event Streaming", "Redis Streams (initial) -> Kafka (scale)", "Redis Streams for simplicity at start, migrate to Kafka when throughput demands"],
             ["API Gateway", "Kong", "Open source, plugin ecosystem, Kubernetes-native, performance"],
         ],
-        title="Key Technology Decisions from IS Architecture",
+        title="Keputusan Teknologi Utama dari Arsitektur SI",
         table_number=21
     )
 
-    add_heading(doc, "3.2 Remaining Work", level=2)
+    add_heading(doc, "3.2 Pekerjaan yang Tersisa", level=2)
     add_paragraph(doc,
         "Setelah Phase C (IS Architecture), pekerjaan yang tersisa dalam siklus ADM:"
     )
@@ -734,7 +734,7 @@ def generate_stage5():
 
     # Save document
     save_document(doc, "Stage5_IS_Architecture.docx")
-    print("Stage 5 document generated successfully!")
+    print("Stage 5: Dokumen berhasil di-generate!")
     print(f"Total paragraphs: {len(doc.paragraphs)}")
     print(f"Total tables: {len(doc.tables)}")
 

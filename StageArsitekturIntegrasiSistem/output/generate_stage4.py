@@ -37,24 +37,24 @@ def generate_stage4():
     # Cover Page
     add_cover_page(
         doc,
-        title="Phase B: Business Architecture",
-        stage_name="Stage 4 - Business Architecture"
+        title="Phase B: Arsitektur Bisnis",
+        stage_name="Stage 4 - Arsitektur Bisnis (Business Architecture)"
     )
 
     # Table of Contents
     toc_sections = [
-        ("Architecture Definition Document - Business", [
-            "Baseline Business Architecture (As-Is)",
-            "Target Business Architecture (To-Be)",
+        ("Dokumen Definisi Arsitektur - Bisnis", [
+            "Arsitektur Bisnis Baseline (As-Is)",
+            "Arsitektur Bisnis Target (To-Be)",
             "Gap Analysis",
         ]),
-        ("Architecture Requirements Specification", [
-            "Updated Functional Requirements",
-            "Updated Non-Functional Requirements",
+        ("Spesifikasi Kebutuhan Arsitektur", [
+            "Kebutuhan Fungsional (Diperbarui)",
+            "Kebutuhan Non-Fungsional (Diperbarui)",
         ]),
-        ("Architecture Principles (Updated)", []),
-        ("Business Principles, Goals, and Drivers (Updated)", []),
-        ("Statement of Architecture Work (Updated)", []),
+        ("Prinsip Arsitektur (Diperbarui)", []),
+        ("Prinsip, Tujuan, dan Pendorong Bisnis (Diperbarui)", []),
+        ("Pernyataan Pekerjaan Arsitektur (Diperbarui)", []),
         ("Daftar Pustaka", []),
     ]
     add_table_of_contents(doc, toc_sections)
@@ -62,7 +62,7 @@ def generate_stage4():
     # ==========================================================================
     # SECTION 1: ARCHITECTURE DEFINITION DOCUMENT
     # ==========================================================================
-    add_heading(doc, "1. Architecture Definition Document - Business", level=1)
+    add_heading(doc, "1. Dokumen Definisi Arsitektur - Bisnis", level=1)
 
     add_paragraph(doc,
         "Architecture Definition Document pada fase Business Architecture mendokumentasikan "
@@ -75,7 +75,7 @@ def generate_stage4():
     # --------------------------------------------------------------------------
     # 1.1 BASELINE BUSINESS ARCHITECTURE (AS-IS)
     # --------------------------------------------------------------------------
-    add_heading(doc, "1.1 Baseline Business Architecture (As-Is)", level=2)
+    add_heading(doc, "1.1 Arsitektur Bisnis Baseline (As-Is)", level=2)
 
     add_paragraph(doc,
         "Arsitektur bisnis baseline menggambarkan kondisi proses SNBP saat ini sebelum "
@@ -230,7 +230,7 @@ def generate_stage4():
     # --------------------------------------------------------------------------
     # 1.2 TARGET BUSINESS ARCHITECTURE (TO-BE)
     # --------------------------------------------------------------------------
-    add_heading(doc, "1.2 Target Business Architecture (To-Be)", level=2)
+    add_heading(doc, "1.2 Arsitektur Bisnis Target (To-Be)", level=2)
 
     add_paragraph(doc,
         "Arsitektur bisnis target menggambarkan kondisi setelah platform LangkahKampus "
@@ -441,7 +441,7 @@ def generate_stage4():
     add_heading(doc, "1.3.2 Gap and Solution Table", level=3)
 
     add_table(doc,
-        headers=["Gap ID", "Gap Description", "Proposed Solution", "Dependencies", "Priority"],
+        headers=["ID Gap", "Deskripsi Gap", "Solusi yang Diusulkan", "Dependensi", "Prioritas"],
         rows=[
             ["GAP-B01", "Tidak ada kemampuan prediksi berbasis data", "Implementasi ML pipeline dengan XGBoost+LightGBM ensemble, training dengan historical SNBP data", "Data collection, ML infrastructure, compute resources", "P1"],
             ["GAP-B02", "Tidak ada rekomendasi yang explainable", "Integrasi DiCE counterfactual framework untuk generate recommendations yang transparan", "ML model (GAP-B01), DiCE library, explanation UI", "P1"],
@@ -480,17 +480,17 @@ def generate_stage4():
     # ==========================================================================
     # SECTION 2: ARCHITECTURE REQUIREMENTS SPECIFICATION (UPDATED)
     # ==========================================================================
-    add_heading(doc, "2. Architecture Requirements Specification (Updated)", level=1)
+    add_heading(doc, "2. Spesifikasi Kebutuhan Arsitektur (Diperbarui)", level=1)
 
     add_paragraph(doc,
         "Berdasarkan analisis business architecture, berikut adalah requirements yang "
         "diperbarui untuk mengakomodasi kebutuhan arsitektur bisnis target."
     )
 
-    add_heading(doc, "2.1 Updated Functional Requirements", level=2)
+    add_heading(doc, "2.1 Kebutuhan Fungsional (Diperbarui)", level=2)
 
     add_table(doc,
-        headers=["ID", "Requirement", "Source (Gap)", "Priority"],
+        headers=["ID", "Kebutuhan", "Sumber (Gap)", "Prioritas"],
         rows=[
             ["FR-B01", "Platform harus menyediakan prediksi probabilitas penerimaan SNBP dengan akurasi minimal 85%", "GAP-B01", "P1"],
             ["FR-B02", "Sistem rekomendasi harus memberikan penjelasan counterfactual (DiCE) untuk setiap rekomendasi", "GAP-B02", "P1"],
@@ -505,10 +505,10 @@ def generate_stage4():
         table_number=12
     )
 
-    add_heading(doc, "2.2 Updated Non-Functional Requirements", level=2)
+    add_heading(doc, "2.2 Kebutuhan Non-Fungsional (Diperbarui)", level=2)
 
     add_table(doc,
-        headers=["ID", "Requirement", "Metric", "Priority"],
+        headers=["ID", "Kebutuhan", "Metrik", "Prioritas"],
         rows=[
             ["NFR-B01", "Platform harus menangani 500.000 concurrent users saat peak SNBP (Jan-Feb)", "500K concurrent sessions", "P1"],
             ["NFR-B02", "Prediction response time < 2 detik (p95) termasuk explanation generation", "< 2s p95 latency", "P1"],
@@ -524,7 +524,7 @@ def generate_stage4():
     # ==========================================================================
     # SECTION 3: ARCHITECTURE PRINCIPLES (UPDATED)
     # ==========================================================================
-    add_heading(doc, "3. Architecture Principles (Updated)", level=1)
+    add_heading(doc, "3. Prinsip Arsitektur (Diperbarui)", level=1)
 
     add_paragraph(doc,
         "Berdasarkan analisis business architecture, prinsip arsitektur diperbarui "
@@ -562,14 +562,14 @@ def generate_stage4():
     # ==========================================================================
     # SECTION 4: BUSINESS PRINCIPLES, GOALS, DRIVERS (UPDATED)
     # ==========================================================================
-    add_heading(doc, "4. Business Principles, Goals, and Drivers (Updated)", level=1)
+    add_heading(doc, "4. Prinsip, Tujuan, dan Pendorong Bisnis (Diperbarui)", level=1)
 
     add_paragraph(doc,
         "Berdasarkan hasil analisis business architecture, business principles, goals, "
         "dan drivers diperbarui dengan penambahan:"
     )
 
-    add_heading(doc, "4.1 Updated Goals", level=2)
+    add_heading(doc, "4.1 Tujuan yang Diperbarui", level=2)
     add_numbered_list(doc, [
         "(Baru) Mencapai prediction accuracy >85% pada akhir Fase 1 melalui iterative ML model improvement",
         "(Baru) Mengurangi bentrokan pilihan intra-sekolah sebesar 80% pada sekolah yang menggunakan Anti-Bentrok",
@@ -578,7 +578,7 @@ def generate_stage4():
         "(Update) Bermitra dengan 500 sekolah pada tahun pertama melalui pilot program gratis",
     ])
 
-    add_heading(doc, "4.2 Updated Drivers", level=2)
+    add_heading(doc, "4.2 Pendorong yang Diperbarui", level=2)
     add_bullet_list(doc, [
         "(Baru) Network Effect - Semakin banyak sekolah menggunakan Anti-Bentrok, semakin akurat data agregat untuk prediksi",
         "(Baru) Data Moat - Akumulasi data prediksi dan outcomes menciptakan competitive advantage yang sulit direplikasi",
@@ -589,14 +589,14 @@ def generate_stage4():
     # ==========================================================================
     # SECTION 5: STATEMENT OF ARCHITECTURE WORK (UPDATED)
     # ==========================================================================
-    add_heading(doc, "5. Statement of Architecture Work (Updated)", level=1)
+    add_heading(doc, "5. Pernyataan Pekerjaan Arsitektur (Diperbarui)", level=1)
 
     add_paragraph(doc,
         "Statement of Architecture Work diperbarui untuk mencerminkan scope dan "
         "deliverables dari fase Business Architecture."
     )
 
-    add_heading(doc, "5.1 Scope Update", level=2)
+    add_heading(doc, "5.1 Pembaruan Lingkup", level=2)
     add_paragraph(doc,
         "Fase Business Architecture telah berhasil mendefinisikan 10 business capabilities "
         "yang perlu dibangun, mengidentifikasi 10 gap utama antara kondisi baseline dan "
@@ -605,9 +605,9 @@ def generate_stage4():
         "akan menerjemahkan kebutuhan bisnis menjadi arsitektur data dan aplikasi."
     )
 
-    add_heading(doc, "5.2 Key Decisions from Business Architecture", level=2)
+    add_heading(doc, "5.2 Keputusan Utama dari Business Architecture", level=2)
     add_table(doc,
-        headers=["Decision ID", "Decision", "Rationale", "Impact"],
+        headers=["ID Keputusan", "Keputusan", "Rasional", "Dampak"],
         rows=[
             ["DEC-B01", "Dual revenue model (B2C freemium + B2B SaaS)", "Diversifikasi revenue dan network effects", "Payment architecture, multi-tenant design"],
             ["DEC-B02", "ML prediction sebagai core service (bukan add-on)", "Differentiator utama platform", "ML infrastructure investment, data pipeline priority"],
@@ -615,11 +615,11 @@ def generate_stage4():
             ["DEC-B04", "XAI (DiCE) untuk transparency dan trust", "Membangun kepercayaan pengguna", "DiCE integration, explanation UI design"],
             ["DEC-B05", "3-phase rollout (Foundation, Enhancement, Scale)", "Manage risk dan validate assumptions", "Phased development, iterative validation"],
         ],
-        title="Key Architecture Decisions - Business Phase",
+        title="Keputusan Arsitektur Utama - Fase Bisnis",
         table_number=14
     )
 
-    add_heading(doc, "5.3 Next Steps", level=2)
+    add_heading(doc, "5.3 Langkah Selanjutnya", level=2)
     add_paragraph(doc,
         "Hasil dari fase Business Architecture akan menjadi input untuk:"
     )
@@ -649,7 +649,7 @@ def generate_stage4():
 
     # Save document
     save_document(doc, "Stage4_Business_Architecture.docx")
-    print("Stage 4 document generated successfully!")
+    print("Stage 4: Dokumen berhasil di-generate!")
     print(f"Total paragraphs: {len(doc.paragraphs)}")
     print(f"Total tables: {len(doc.tables)}")
 

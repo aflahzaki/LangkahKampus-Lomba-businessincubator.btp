@@ -35,8 +35,8 @@ def generate_stage2():
     # Cover Page
     add_cover_page(
         doc,
-        title="Methodology and Project Planning",
-        stage_name="Stage 2 - Methodology and Project Planning"
+        title="Metodologi dan Perencanaan Proyek",
+        stage_name="Stage 2 - Metodologi dan Perencanaan Proyek"
     )
 
     # Table of Contents
@@ -49,7 +49,7 @@ def generate_stage2():
         ("Metodologi Proyek", [
             "Pendekatan Metodologi",
             "Adaptasi untuk Konteks Startup EduTech",
-            "Framework Integrasi: TOGAF + Agile",
+            "Kerangka Integrasi: TOGAF + Agile",
         ]),
         ("Rencana Proyek Detail", [
             "Ruang Lingkup Proyek",
@@ -112,15 +112,15 @@ def generate_stage2():
         "Fase ini menetapkan konteks organisasi, mendefinisikan prinsip-prinsip "
         "arsitektur, dan menyiapkan tools serta metodologi yang akan digunakan. Pada "
         "konteks LangkahKampus, fase ini mencakup penetapan prinsip-prinsip seperti "
-        "privacy-by-design, scalability-first, dan data-driven decision making sebagai "
-        "landasan seluruh pengembangan arsitektur.",
+        "privacy-by-design, scalability-first, dan pengambilan keputusan berbasis data "
+        "sebagai landasan seluruh pengembangan arsitektur.",
         indent=0.5
     )
 
     add_paragraph(doc, "Phase A: Architecture Vision", bold=True)
     add_paragraph(doc,
         "Fase ini mendefinisikan visi tingkat tinggi dari arsitektur target, "
-        "mengidentifikasi stakeholder, dan memperoleh persetujuan (approval) untuk "
+        "mengidentifikasi stakeholder, dan memperoleh persetujuan untuk "
         "melanjutkan proses pengembangan. Untuk LangkahKampus, Architecture Vision "
         "menggambarkan bagaimana platform EduTech akan beroperasi secara holistik, "
         "melayani siswa dan sekolah dengan sistem prediksi berbasis AI yang terintegrasi.",
@@ -133,7 +133,7 @@ def generate_stage2():
         "fungsi organisasi, dan bagaimana bisnis beroperasi untuk memenuhi tujuan "
         "strategis. Pada LangkahKampus, ini mencakup pemetaan proses bisnis untuk "
         "layanan B2C (prediksi individual) dan B2B (dashboard sekolah), serta "
-        "value chain dari data collection hingga delivery of insights.",
+        "rantai nilai dari pengumpulan data hingga penyampaian insight.",
         indent=0.5
     )
 
@@ -160,8 +160,8 @@ def generate_stage2():
     add_paragraph(doc, "Phase E: Opportunities and Solutions", bold=True)
     add_paragraph(doc,
         "Fase ini mengidentifikasi peluang implementasi dan menentukan solusi-solusi "
-        "yang akan diimplementasikan. Termasuk evaluasi build vs buy decisions, "
-        "prioritization of work packages, dan transition architecture planning.",
+        "yang akan diimplementasikan. Termasuk evaluasi keputusan membangun atau membeli, "
+        "prioritisasi paket pekerjaan, dan perencanaan arsitektur transisi.",
         indent=0.5
     )
 
@@ -169,7 +169,7 @@ def generate_stage2():
     add_paragraph(doc,
         "Fase ini mengembangkan rencana migrasi detail dari arsitektur saat ini (baseline) "
         "menuju arsitektur target. Untuk LangkahKampus sebagai startup, fokusnya lebih "
-        "pada phased implementation plan daripada migrasi dari sistem legacy.",
+        "pada rencana implementasi bertahap daripada migrasi dari sistem lama.",
         indent=0.5
     )
 
@@ -177,8 +177,8 @@ def generate_stage2():
     add_paragraph(doc,
         "Fase ini menyediakan pengawasan arsitektural selama implementasi untuk "
         "memastikan bahwa implementasi sesuai dengan arsitektur yang telah dirancang. "
-        "Pada LangkahKampus, ini diintegrasikan dengan CI/CD pipeline dan code review "
-        "process untuk memastikan conformance.",
+        "Pada LangkahKampus, ini diintegrasikan dengan CI/CD pipeline dan proses "
+        "code review untuk memastikan kepatuhan.",
         indent=0.5
     )
 
@@ -210,13 +210,13 @@ def generate_stage2():
 
     adm_headers = ["Fase ADM", "Deliverable Utama", "Stage Tugas Besar"]
     adm_rows = [
-        ("Preliminary", "Architecture Principles, Stakeholder Map", "Stage 3"),
-        ("Phase A: Architecture Vision", "Architecture Vision Document, Value Chain", "Stage 3"),
-        ("Requirements Management", "Requirements Catalog, Prioritized Requirements", "Stage 3"),
-        ("Phase B: Business Architecture", "Business Process Model, Organization Map", "Stage 4"),
-        ("Phase C: IS Architecture (Data)", "Data Entity Model, Data Flow Diagram", "Stage 5"),
-        ("Phase C: IS Architecture (App)", "Application Portfolio, Integration Map", "Stage 5"),
-        ("Phase D: Technology Architecture", "Technology Standards, Infrastructure Diagram", "Stage 6"),
+        ("Preliminary", "Prinsip Arsitektur, Peta Stakeholder", "Stage 3"),
+        ("Phase A: Architecture Vision", "Dokumen Visi Arsitektur, Rantai Nilai", "Stage 3"),
+        ("Requirements Management", "Katalog Kebutuhan, Kebutuhan Terprioritisasi", "Stage 3"),
+        ("Phase B: Business Architecture", "Model Proses Bisnis, Peta Organisasi", "Stage 4"),
+        ("Phase C: IS Architecture (Data)", "Model Entitas Data, Diagram Aliran Data", "Stage 5"),
+        ("Phase C: IS Architecture (App)", "Portofolio Aplikasi, Peta Integrasi", "Stage 5"),
+        ("Phase D: Technology Architecture", "Standar Teknologi, Diagram Infrastruktur", "Stage 6"),
     ]
     add_table(doc, adm_headers, adm_rows,
               title="Pemetaan Fase ADM ke Stage Tugas Besar", table_number=1)
@@ -243,20 +243,20 @@ def generate_stage2():
     )
     add_paragraph(doc,
         "Pendekatan metodologi yang dipilih adalah Lean Enterprise Architecture yang "
-        "mengadopsi prinsip minimum viable architecture. Berbeda dengan penerapan TOGAF "
-        "tradisional yang cenderung heavyweight dan membutuhkan waktu berbulan-bulan, "
+        "mengadopsi prinsip arsitektur minimum yang layak. Berbeda dengan penerapan TOGAF "
+        "tradisional yang cenderung berat dan membutuhkan waktu berbulan-bulan, "
         "pendekatan lean ini fokus pada deliverables yang memberikan nilai nyata dan "
-        "actionable insights bagi organisasi studi kasus."
+        "wawasan yang dapat ditindaklanjuti bagi organisasi studi kasus."
     )
     add_paragraph(doc,
         "Metodologi ini terdiri dari empat tahapan utama yang masing-masing "
         "menghasilkan artefak arsitektur yang spesifik dan terukur:"
     )
     add_numbered_list(doc, [
-        "Discovery Phase: Pemahaman konteks bisnis, identifikasi stakeholder, dan pengumpulan requirements",
-        "Design Phase: Perancangan arsitektur pada keempat domain (bisnis, data, aplikasi, teknologi)",
-        "Validation Phase: Validasi arsitektur terhadap requirements dan constraint yang telah didefinisikan",
-        "Documentation Phase: Dokumentasi formal seluruh artefak arsitektur dalam format akademik",
+        "Fase Penemuan (Discovery): Pemahaman konteks bisnis, identifikasi stakeholder, dan pengumpulan kebutuhan",
+        "Fase Perancangan (Design): Perancangan arsitektur pada keempat domain (bisnis, data, aplikasi, teknologi)",
+        "Fase Validasi (Validation): Validasi arsitektur terhadap kebutuhan dan batasan yang telah didefinisikan",
+        "Fase Dokumentasi (Documentation): Dokumentasi formal seluruh artefak arsitektur dalam format akademik",
     ])
 
     # 2.2 Adaptasi untuk Konteks Startup EduTech
@@ -267,9 +267,9 @@ def generate_stage2():
         "target utama framework TOGAF. Berikut adalah adaptasi-adaptasi yang dilakukan:"
     )
 
-    add_paragraph(doc, "Adaptasi 1: Simplified Governance", bold=True)
+    add_paragraph(doc, "Adaptasi 1: Governance yang Disederhanakan", bold=True)
     add_paragraph(doc,
-        "Startup tidak memiliki architecture board formal atau governance structure yang "
+        "Startup tidak memiliki architecture board formal atau struktur governance yang "
         "kompleks. Oleh karena itu, governance dalam proyek ini disederhanakan menjadi "
         "peer review antar anggota tim dan validasi oleh dosen pengampu sebagai "
         "architecture governance board.",
@@ -278,56 +278,56 @@ def generate_stage2():
 
     add_paragraph(doc, "Adaptasi 2: Greenfield vs Brownfield", bold=True)
     add_paragraph(doc,
-        "Berbeda dengan enterprise besar yang umumnya memiliki legacy systems (brownfield), "
+        "Berbeda dengan enterprise besar yang umumnya memiliki sistem lama (brownfield), "
         "LangkahKampus sebagai startup memulai dari greenfield. Ini berarti fase Migration "
-        "Planning (Phase F) lebih berfokus pada phased implementation strategy daripada "
+        "Planning (Phase F) lebih berfokus pada strategi implementasi bertahap daripada "
         "migrasi dari sistem lama. Namun, integrasi dengan sistem eksternal (SNPMB/LTMPT) "
         "tetap menjadi pertimbangan brownfield yang relevan.",
         indent=0.5
     )
 
-    add_paragraph(doc, "Adaptasi 3: Iterative dan Time-boxed", bold=True)
+    add_paragraph(doc, "Adaptasi 3: Iteratif dan Terikat Waktu", bold=True)
     add_paragraph(doc,
-        "Setiap stage dalam tugas besar ini di-time-box sesuai jadwal perkuliahan. "
+        "Setiap stage dalam tugas besar ini dibatasi waktu sesuai jadwal perkuliahan. "
         "Meskipun ADM bersifat iteratif, dalam konteks akademik ini setiap iterasi "
-        "diselesaikan dalam satu stage submission. Feedback dari dosen pada setiap stage "
-        "menjadi input untuk refinement di stage berikutnya.",
+        "diselesaikan dalam satu stage submission. Umpan balik dari dosen pada setiap stage "
+        "menjadi input untuk penyempurnaan di stage berikutnya.",
         indent=0.5
     )
 
-    add_paragraph(doc, "Adaptasi 4: Focus on Core Domain", bold=True)
+    add_paragraph(doc, "Adaptasi 4: Fokus pada Domain Inti", bold=True)
     add_paragraph(doc,
-        "Mengingat skala startup dan keterbatasan waktu, scope arsitektur difokuskan "
-        "pada core domain LangkahKampus yaitu ML prediction service, student-facing "
-        "application, dan school dashboard. Supporting domains seperti HR, finance, "
-        "dan procurement tidak termasuk dalam scope arsitektur ini.",
+        "Mengingat skala startup dan keterbatasan waktu, lingkup arsitektur difokuskan "
+        "pada domain inti LangkahKampus yaitu layanan prediksi ML, "
+        "aplikasi yang berhadapan langsung dengan siswa, dan dashboard sekolah. Domain pendukung seperti HR, keuangan, "
+        "dan pengadaan tidak termasuk dalam lingkup arsitektur ini.",
         indent=0.5
     )
 
     # 2.3 Framework Integrasi
-    add_heading(doc, "2.3 Framework Integrasi: TOGAF + Agile", level=2)
+    add_heading(doc, "2.3 Kerangka Integrasi: TOGAF + Agile", level=2)
     add_paragraph(doc,
         "Integrasi antara TOGAF dan pendekatan Agile dilakukan melalui konsep "
         "\"Architecture Runway\" dimana arsitektur dikembangkan secukupnya (just enough) "
         "untuk mendukung pengembangan fitur dalam sprint-sprint mendatang, tanpa terlalu "
-        "jauh ke depan (over-architecting) yang berisiko menjadi obsolete."
+        "jauh ke depan (over-architecting) yang berisiko menjadi usang."
     )
 
     add_paragraph(doc,
         "Model integrasi yang digunakan adalah sebagai berikut:"
     )
     add_bullet_list(doc, [
-        "Intentional Architecture (TOGAF): Mendefinisikan guardrails dan standards yang harus diikuti",
-        "Emergent Architecture (Agile): Memungkinkan detail arsitektur berkembang organis melalui implementasi",
+        "Arsitektur Intentional (TOGAF): Mendefinisikan panduan dan standar yang harus diikuti",
+        "Arsitektur Emergent (Agile): Memungkinkan detail arsitektur berkembang organis melalui implementasi",
         "Architecture Decision Records (ADR): Mendokumentasikan keputusan arsitektur kunci beserta rasionalnya",
-        "Fitness Functions: Metrik terukur yang memvalidasi apakah implementasi conform dengan arsitektur",
+        "Fungsi Kesesuaian (Fitness Functions): Metrik terukur yang memvalidasi apakah implementasi sesuai dengan arsitektur",
     ])
 
     add_paragraph(doc,
         "Dengan pendekatan hybrid ini, proyek mendapatkan manfaat dari kedua sisi: "
-        "structure dan rigor dari TOGAF untuk memastikan arsitektur yang koheren dan "
-        "well-documented, serta flexibility dan responsiveness dari Agile untuk "
-        "mengakomodasi perubahan dan learning yang terjadi selama proses pengembangan."
+        "struktur dan ketelitian dari TOGAF untuk memastikan arsitektur yang koheren dan "
+        "terdokumentasi dengan baik, serta fleksibilitas dan responsivitas dari Agile untuk "
+        "mengakomodasi perubahan dan pembelajaran yang terjadi selama proses pengembangan."
     )
 
     # ==========================================================================
@@ -343,49 +343,49 @@ def generate_stage2():
         "core business platform. Berikut adalah definisi ruang lingkup untuk setiap domain:"
     )
 
-    add_paragraph(doc, "Business Architecture (In Scope):", bold=True)
+    add_paragraph(doc, "Business Architecture (Dalam Lingkup):", bold=True)
     add_bullet_list(doc, [
         "Proses bisnis inti: prediksi penerimaan, rekomendasi pilihan, anti-bentrok",
         "Model operasional B2C (siswa individual) dan B2B (sekolah/Guru BK)",
-        "Value chain dari data acquisition hingga insight delivery",
-        "Organizational capabilities dan role mapping",
-        "Business service catalog dan service level agreements",
+        "Rantai nilai dari akuisisi data hingga penyampaian insight",
+        "Kapabilitas organisasi dan pemetaan peran",
+        "Katalog layanan bisnis dan perjanjian tingkat layanan",
     ])
 
-    add_paragraph(doc, "Data Architecture (In Scope):", bold=True)
+    add_paragraph(doc, "Data Architecture (Dalam Lingkup):", bold=True)
     add_bullet_list(doc, [
-        "Logical data model untuk entitas utama (siswa, sekolah, prodi, prediksi)",
-        "Data flow diagram untuk pipeline ML dan real-time processing",
-        "Data governance framework dan data quality standards",
-        "Master data management untuk data referensi (PTN, prodi, kuota)",
-        "Data lifecycle management dan retention policies",
+        "Model data logis untuk entitas utama (siswa, sekolah, prodi, prediksi)",
+        "Diagram aliran data untuk pipeline ML dan pemrosesan real-time",
+        "Kerangka kerja tata kelola data dan standar kualitas data",
+        "Manajemen data master untuk data referensi (PTN, prodi, kuota)",
+        "Manajemen siklus hidup data dan kebijakan retensi",
     ])
 
-    add_paragraph(doc, "Application Architecture (In Scope):", bold=True)
+    add_paragraph(doc, "Application Architecture (Dalam Lingkup):", bold=True)
     add_bullet_list(doc, [
-        "Microservices architecture untuk backend (FastAPI)",
-        "Frontend application architecture (Next.js SPA/SSR)",
-        "ML model serving architecture dan MLOps pipeline",
-        "Integration patterns antar services (sync/async)",
-        "API design dan versioning strategy",
+        "Arsitektur microservices untuk backend (FastAPI)",
+        "Arsitektur aplikasi frontend (Next.js SPA/SSR)",
+        "Arsitektur penyajian model ML dan pipeline MLOps",
+        "Pola integrasi antar layanan (sinkron/asinkron)",
+        "Desain API dan strategi versioning",
     ])
 
-    add_paragraph(doc, "Technology Architecture (In Scope):", bold=True)
+    add_paragraph(doc, "Technology Architecture (Dalam Lingkup):", bold=True)
     add_bullet_list(doc, [
-        "Cloud infrastructure architecture (compute, storage, network)",
-        "Container orchestration dan deployment strategy",
-        "Database infrastructure (PostgreSQL, Redis, caching)",
-        "Security architecture (authentication, authorization, encryption)",
+        "Arsitektur infrastruktur cloud (komputasi, penyimpanan, jaringan)",
+        "Orkestrasi kontainer dan strategi deployment",
+        "Infrastruktur database (PostgreSQL, Redis, caching)",
+        "Arsitektur keamanan (autentikasi, otorisasi, enkripsi)",
         "Monitoring, logging, dan observability stack",
     ])
 
-    add_paragraph(doc, "Out of Scope:", bold=True)
+    add_paragraph(doc, "Di Luar Lingkup:", bold=True)
     add_bullet_list(doc, [
-        "Supporting business functions (HR, finance, legal, procurement)",
-        "Physical office/facility architecture",
-        "Detailed UX/UI design (hanya high-level application landscape)",
-        "Detailed source code atau implementasi teknis per fitur",
-        "Third-party vendor evaluation dan procurement process",
+        "Fungsi bisnis pendukung (HR, keuangan, legal, pengadaan)",
+        "Arsitektur kantor/fasilitas fisik",
+        "Desain UX/UI detail (hanya lanskap aplikasi tingkat tinggi)",
+        "Kode sumber detail atau implementasi teknis per fitur",
+        "Evaluasi vendor pihak ketiga dan proses pengadaan",
     ])
 
     # 3.2 Sumber Daya
@@ -398,27 +398,27 @@ def generate_stage2():
 
     resource_headers = ["Anggota", "Domain Arsitektur", "Deliverables Utama"]
     resource_rows = [
-        ("Aflah Rafilah Zaki", "Business Architecture\n+ Project Lead",
-         "Business Process Model, Value Chain,\nStakeholder Management, Project Coordination"),
-        ("Azka Fathir Syarif", "Technology Architecture\n+ ML Architecture",
-         "Infrastructure Diagram, Technology Standards,\nML Pipeline Architecture, Security Architecture"),
+        ("Aflah Rafilah Zaki", "Business Architecture\n+ Ketua Proyek",
+         "Model Proses Bisnis, Rantai Nilai,\nManajemen Stakeholder, Koordinasi Proyek"),
+        ("Azka Fathir Syarif", "Technology Architecture\n+ Arsitektur ML",
+         "Diagram Infrastruktur, Standar Teknologi,\nArsitektur Pipeline ML, Arsitektur Keamanan"),
         ("Daffa Rizky Herdiawan", "Application Architecture",
-         "Application Landscape, Integration Map,\nAPI Design, Frontend/Backend Architecture"),
-        ("Muhammad Arifin Ilham", "Data Architecture\n+ Requirements",
-         "Data Model, Data Flow Diagram,\nRequirements Catalog, Data Governance"),
+         "Lanskap Aplikasi, Peta Integrasi,\nDesain API, Arsitektur Frontend/Backend"),
+        ("Muhammad Arifin Ilham", "Data Architecture\n+ Kebutuhan",
+         "Model Data, Diagram Aliran Data,\nKatalog Kebutuhan, Tata Kelola Data"),
     ]
     add_table(doc, resource_headers, resource_rows,
               title="Alokasi Sumber Daya Proyek", table_number=2)
 
     add_paragraph(doc,
-        "Selain sumber daya manusia, proyek ini didukung oleh tools dan teknologi berikut:"
+        "Selain sumber daya manusia, proyek ini didukung oleh perangkat dan teknologi berikut:"
     )
     add_bullet_list(doc, [
         "ArchiMate / Draw.io: Pemodelan arsitektur dan diagram",
         "Microsoft Office / Google Docs: Dokumentasi dan presentasi",
-        "Git/GitHub: Version control untuk artefak arsitektur",
+        "Git/GitHub: Kontrol versi untuk artefak arsitektur",
         "TOGAF Standard 10th Edition: Referensi framework utama",
-        "Python + python-docx: Automated document generation",
+        "Python + python-docx: Pembuatan dokumen otomatis",
     ])
 
     # 3.3 Jadwal dan Timeline
@@ -434,23 +434,23 @@ def generate_stage2():
         ("Stage 1", "Minggu 1-2", "Proposal, identifikasi organisasi,\nanalisis awal",
          "Proposal Tugas Besar"),
         ("Stage 2", "Minggu 3-4", "Penyusunan metodologi,\nperencanaan proyek",
-         "Methodology & Project Plan"),
+         "Metodologi & Rencana Proyek"),
         ("Stage 3", "Minggu 5-6", "Preliminary, Requirements,\nArchitecture Vision",
-         "Preliminary & Vision Document"),
-        ("Stage 4", "Minggu 7-8", "Analisis proses bisnis,\norganizational mapping",
-         "Business Architecture Document"),
-        ("Stage 5", "Minggu 9-10", "Data & Application\nArchitecture design",
-         "IS Architecture Document"),
-        ("Stage 6", "Minggu 11-12", "Infrastructure & technology\nplatform design",
-         "Technology Architecture Document"),
+         "Dokumen Preliminary & Vision"),
+        ("Stage 4", "Minggu 7-8", "Analisis proses bisnis,\npemetaan organisasi",
+         "Dokumen Business Architecture"),
+        ("Stage 5", "Minggu 9-10", "Perancangan arsitektur\nData & Aplikasi",
+         "Dokumen IS Architecture"),
+        ("Stage 6", "Minggu 11-12", "Perancangan infrastruktur\n& platform teknologi",
+         "Dokumen Technology Architecture"),
     ]
     add_table(doc, timeline_headers, timeline_rows,
               title="Timeline Proyek Tugas Besar", table_number=3)
 
     add_paragraph(doc,
         "Setiap stage memiliki internal milestones yang memastikan progress yang terukur "
-        "dan memungkinkan early detection terhadap potential delays. Tim menggunakan "
-        "weekly sync meeting setiap hari Senin untuk review progress dan resolusi blockers."
+        "dan memungkinkan deteksi dini terhadap potensi keterlambatan. Tim menggunakan "
+        "pertemuan sinkronisasi mingguan setiap hari Senin untuk review progress dan penyelesaian hambatan."
     )
 
     # 3.4 Milestones
@@ -460,30 +460,30 @@ def generate_stage2():
         "criteria) yang terukur untuk setiap milestone:"
     )
 
-    milestone_headers = ["No.", "Milestone", "Target", "Success Criteria"]
+    milestone_headers = ["No.", "Milestone", "Target", "Kriteria Keberhasilan"]
     milestone_rows = [
-        ("M1", "Proposal Approved", "Akhir Minggu 2",
+        ("M1", "Proposal Disetujui", "Akhir Minggu 2",
          "Proposal diterima, organisasi disetujui dosen"),
-        ("M2", "Methodology Defined", "Akhir Minggu 4",
-         "Metodologi dan project plan tervalidasi"),
-        ("M3", "Architecture Vision Complete", "Akhir Minggu 6",
-         "Vision document, principles, dan requirements catalog selesai"),
-        ("M4", "Business Architecture Complete", "Akhir Minggu 8",
-         "Process model dan org map tervalidasi stakeholder"),
-        ("M5", "IS Architecture Complete", "Akhir Minggu 10",
-         "Data model dan application landscape terintegrasi"),
-        ("M6", "Technology Architecture Complete", "Akhir Minggu 12",
-         "Infrastructure diagram dan technology roadmap final"),
-        ("M7", "Final Submission", "Minggu 13",
+        ("M2", "Metodologi Ditetapkan", "Akhir Minggu 4",
+         "Metodologi dan rencana proyek tervalidasi"),
+        ("M3", "Visi Arsitektur Selesai", "Akhir Minggu 6",
+         "Dokumen visi, prinsip, dan katalog kebutuhan selesai"),
+        ("M4", "Business Architecture Selesai", "Akhir Minggu 8",
+         "Model proses dan peta organisasi tervalidasi stakeholder"),
+        ("M5", "IS Architecture Selesai", "Akhir Minggu 10",
+         "Model data dan lanskap aplikasi terintegrasi"),
+        ("M6", "Technology Architecture Selesai", "Akhir Minggu 12",
+         "Diagram infrastruktur dan roadmap teknologi final"),
+        ("M7", "Pengumpulan Final", "Minggu 13",
          "Seluruh dokumen terkonsolidasi dan dipresentasikan"),
     ]
     add_table(doc, milestone_headers, milestone_rows,
               title="Milestones Proyek", table_number=4)
 
     add_paragraph(doc,
-        "Monitoring milestone dilakukan melalui checklist review pada setiap weekly sync "
-        "meeting. Jika sebuah milestone berisiko terlambat, tim akan melakukan re-planning "
-        "dan alokasi ulang sumber daya untuk memastikan deadline utama tetap terpenuhi."
+        "Monitoring milestone dilakukan melalui checklist review pada setiap pertemuan "
+        "sinkronisasi mingguan. Jika sebuah milestone berisiko terlambat, tim akan melakukan perencanaan ulang "
+        "dan alokasi ulang sumber daya untuk memastikan tenggat waktu utama tetap terpenuhi."
     )
 
     # ==========================================================================
@@ -501,15 +501,15 @@ def generate_stage2():
     )
     add_paragraph(doc,
         "Setiap risiko dinilai berdasarkan dua dimensi: probabilitas terjadinya "
-        "(likelihood) dan dampak terhadap keberhasilan proyek (impact). Kedua dimensi "
+        "(kemungkinan) dan dampak terhadap keberhasilan proyek. Kedua dimensi "
         "menggunakan skala 1-5 dimana 1 adalah sangat rendah dan 5 adalah sangat tinggi. "
-        "Risk score dihitung sebagai perkalian probability dan impact."
+        "Skor risiko dihitung sebagai perkalian probabilitas dan dampak."
     )
 
     # 4.2 Matriks Risiko
     add_heading(doc, "4.2 Matriks Risiko", level=2)
 
-    risk_headers = ["ID", "Risiko", "Prob.", "Impact", "Score", "Level"]
+    risk_headers = ["ID", "Risiko", "Prob.", "Dampak", "Skor", "Level"]
     risk_rows = [
         ("R01", "Keterbatasan waktu per stage (2 minggu)", "4", "4", "16", "Tinggi"),
         ("R02", "Kurangnya akses ke data riil SNBP", "3", "4", "12", "Tinggi"),
@@ -534,71 +534,71 @@ def generate_stage2():
     # 4.3 Strategi Mitigasi Detail
     add_heading(doc, "4.3 Strategi Mitigasi Detail", level=2)
 
-    add_paragraph(doc, "R01 - Keterbatasan Waktu per Stage (Risk Level: Tinggi)", bold=True)
+    add_paragraph(doc, "R01 - Keterbatasan Waktu per Stage (Level Risiko: Tinggi)", bold=True)
     add_paragraph(doc,
-        "Strategi Mitigasi: Implementasi time management yang ketat dengan internal "
-        "deadline 3 hari sebelum submission deadline resmi. Pembagian kerja yang jelas "
-        "sejak awal setiap stage dengan weekly checkpoint. Penggunaan template dokumen "
-        "terstandar (automated document generation) untuk mengurangi waktu formatting. "
-        "Buffer time dialokasikan untuk review dan revisi.",
+        "Strategi Mitigasi: Implementasi manajemen waktu yang ketat dengan tenggat internal "
+        "3 hari sebelum tenggat resmi pengumpulan. Pembagian kerja yang jelas "
+        "sejak awal setiap stage dengan checkpoint mingguan. Penggunaan template dokumen "
+        "terstandar (pembuatan dokumen otomatis) untuk mengurangi waktu pemformatan. "
+        "Waktu cadangan dialokasikan untuk review dan revisi.",
         indent=0.5
     )
     add_paragraph(doc,
-        "Contingency Plan: Jika waktu tidak mencukupi, tim akan melakukan prioritization "
+        "Rencana Kontingensi: Jika waktu tidak mencukupi, tim akan melakukan prioritisasi "
         "berdasarkan rubrik penilaian dan fokus pada deliverables dengan bobot tertinggi. "
-        "Content yang bersifat nice-to-have akan ditandai untuk dikembangkan di iterasi "
+        "Konten yang bersifat pelengkap akan ditandai untuk dikembangkan di iterasi "
         "berikutnya.",
         indent=0.5
     )
 
-    add_paragraph(doc, "R02 - Kurangnya Akses ke Data Riil SNBP (Risk Level: Tinggi)", bold=True)
+    add_paragraph(doc, "R02 - Kurangnya Akses ke Data Riil SNBP (Level Risiko: Tinggi)", bold=True)
     add_paragraph(doc,
         "Strategi Mitigasi: Penggunaan data publik yang tersedia dari sumber resmi "
-        "(laman SNPMB, data statistik Kemendikbudristek) sebagai basis. Supplementasi "
+        "(laman SNPMB, data statistik Kemendikbudristek) sebagai basis. Pelengkapan "
         "dengan data simulasi yang representatif untuk model arsitektur. Fokus pada "
-        "architectural patterns yang data-agnostic sehingga arsitektur tetap valid "
+        "pola arsitektural yang tidak bergantung pada data spesifik sehingga arsitektur tetap valid "
         "terlepas dari sumber data spesifik.",
         indent=0.5
     )
     add_paragraph(doc,
-        "Contingency Plan: Jika data publik tidak tersedia, tim akan menggunakan "
-        "synthetic data yang dibuat berdasarkan parameter statistik yang reasonable "
-        "dan clearly documented assumptions.",
+        "Rencana Kontingensi: Jika data publik tidak tersedia, tim akan menggunakan "
+        "data sintetis yang dibuat berdasarkan parameter statistik yang masuk akal "
+        "dan asumsi yang didokumentasikan dengan jelas.",
         indent=0.5
     )
 
-    add_paragraph(doc, "R03 - Kompleksitas Arsitektur ML (Risk Level: Sedang)", bold=True)
+    add_paragraph(doc, "R03 - Kompleksitas Arsitektur ML (Level Risiko: Sedang)", bold=True)
     add_paragraph(doc,
-        "Strategi Mitigasi: Referensi ke established ML architecture patterns "
+        "Strategi Mitigasi: Referensi ke pola arsitektur ML yang telah mapan "
         "(Google MLOps Maturity Model, Microsoft ML Architecture). Konsultasi dengan "
-        "literature akademis tentang ML system architecture. Dekomposisi sistem ML "
-        "menjadi komponen-komponen yang lebih manageable (training, serving, monitoring).",
+        "literatur akademis tentang arsitektur sistem ML. Dekomposisi sistem ML "
+        "menjadi komponen-komponen yang lebih mudah dikelola (training, serving, monitoring).",
         indent=0.5
     )
 
-    add_paragraph(doc, "R04 - Inkonsistensi Antar Stage (Risk Level: Sedang)", bold=True)
+    add_paragraph(doc, "R04 - Inkonsistensi Antar Stage (Level Risiko: Sedang)", bold=True)
     add_paragraph(doc,
-        "Strategi Mitigasi: Penggunaan shared architecture repository (Git) dimana "
-        "semua artefak arsitektur tersimpan secara terpusat. Cross-review antar anggota "
-        "tim sebelum submission. Traceability matrix yang menghubungkan requirements "
+        "Strategi Mitigasi: Penggunaan repositori arsitektur bersama (Git) dimana "
+        "semua artefak arsitektur tersimpan secara terpusat. Review silang antar anggota "
+        "tim sebelum pengumpulan. Matriks ketelusuran yang menghubungkan kebutuhan "
         "dengan setiap artefak arsitektur di semua stage.",
         indent=0.5
     )
 
-    add_paragraph(doc, "R08 - Anggota Tim Berhalangan (Risk Level: Sedang)", bold=True)
+    add_paragraph(doc, "R08 - Anggota Tim Berhalangan (Level Risiko: Sedang)", bold=True)
     add_paragraph(doc,
-        "Strategi Mitigasi: Buddy system dimana setiap anggota memiliki satu backup "
+        "Strategi Mitigasi: Sistem pendamping dimana setiap anggota memiliki satu cadangan "
         "yang familiar dengan domain pekerjaannya. Dokumentasi progress yang konsisten "
-        "di shared workspace sehingga anggota lain dapat melanjutkan pekerjaan jika "
-        "diperlukan. Minimum 2 hari buffer sebelum deadline untuk mengakomodasi absence.",
+        "di ruang kerja bersama sehingga anggota lain dapat melanjutkan pekerjaan jika "
+        "diperlukan. Minimal 2 hari waktu cadangan sebelum tenggat untuk mengakomodasi ketidakhadiran.",
         indent=0.5
     )
 
-    add_paragraph(doc, "R09 - Scope Creep (Risk Level: Sedang)", bold=True)
+    add_paragraph(doc, "R09 - Perluasan Lingkup (Scope Creep) (Level Risiko: Sedang)", bold=True)
     add_paragraph(doc,
-        "Strategi Mitigasi: Definisi scope yang jelas dan tertulis di awal setiap "
-        "stage (documented dalam section 3.1). Change request harus disetujui oleh "
-        "minimal 2 anggota tim sebelum ditambahkan ke scope. Focus pada \"minimum "
+        "Strategi Mitigasi: Definisi lingkup yang jelas dan tertulis di awal setiap "
+        "stage (didokumentasikan dalam bagian 3.1). Permintaan perubahan harus disetujui oleh "
+        "minimal 2 anggota tim sebelum ditambahkan ke lingkup. Fokus pada \"minimum "
         "viable architecture\" yang memenuhi rubrik penilaian tanpa over-engineering.",
         indent=0.5
     )
@@ -624,7 +624,7 @@ def generate_stage2():
 
     # Save document
     save_document(doc, "Stage2_Methodology_and_Project_Planning.docx")
-    print("Stage 2: Methodology and Project Planning - Berhasil di-generate!")
+    print("Stage 2: Metodologi dan Perencanaan Proyek - Berhasil di-generate!")
 
 
 if __name__ == "__main__":

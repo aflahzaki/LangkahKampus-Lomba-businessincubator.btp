@@ -34,26 +34,26 @@ def generate_stage3():
     # Cover Page
     add_cover_page(
         doc,
-        title="Preliminary Phase, Requirement Management & Architecture Vision",
-        stage_name="Stage 3 - Preliminary Phase, Requirement Management, Phase A: Architecture Vision"
+        title="Fase Preliminary, Manajemen Kebutuhan & Visi Arsitektur",
+        stage_name="Stage 3 - Preliminary Phase, Manajemen Kebutuhan, Phase A: Architecture Vision"
     )
 
     # Table of Contents
     toc_sections = [
         ("Preliminary Phase", [
-            "Organizational Model for Enterprise Architecture",
+            "Model Organisasi untuk Enterprise Architecture",
             "Architecture Repository",
         ]),
-        ("Requirements Management", [
-            "Functional Requirements",
-            "Non-Functional Requirements",
+        ("Manajemen Kebutuhan (Requirements Management)", [
+            "Kebutuhan Fungsional",
+            "Kebutuhan Non-Fungsional",
         ]),
         ("Phase A: Architecture Vision", [
-            "Architecture Vision",
-            "Communication Plan",
-            "Architecture Principles",
-            "Business Principles, Goals, and Drivers",
-            "Statement of Architecture Work",
+            "Visi Arsitektur",
+            "Rencana Komunikasi",
+            "Prinsip Arsitektur",
+            "Prinsip Bisnis, Tujuan, dan Pendorong",
+            "Pernyataan Pekerjaan Arsitektur",
         ]),
         ("Daftar Pustaka", []),
     ]
@@ -74,7 +74,7 @@ def generate_stage3():
     )
 
     # 1.1 Organizational Model for EA
-    add_heading(doc, "1.1 Organizational Model for Enterprise Architecture", level=2)
+    add_heading(doc, "1.1 Model Organisasi untuk Enterprise Architecture", level=2)
 
     add_paragraph(doc,
         "Model organisasi untuk Enterprise Architecture pada LangkahKampus dirancang "
@@ -85,7 +85,7 @@ def generate_stage3():
     )
 
     # Impacted Organization Units
-    add_heading(doc, "1.1.1 Impacted Organization Units", level=3)
+    add_heading(doc, "1.1.1 Unit Organisasi yang Terdampak", level=3)
 
     add_paragraph(doc,
         "Diagram unit organisasi yang terdampak dalam inisiatif Enterprise Architecture "
@@ -126,7 +126,7 @@ def generate_stage3():
     ])
 
     # Description of Impacts Table
-    add_heading(doc, "1.1.2 Description of Impacts", level=3)
+    add_heading(doc, "1.1.2 Deskripsi Dampak", level=3)
 
     add_paragraph(doc,
         "Tabel berikut menjelaskan dampak yang diterima oleh setiap unit organisasi "
@@ -153,7 +153,7 @@ def generate_stage3():
     )
 
     # List of Roles
-    add_heading(doc, "1.1.3 List of Roles", level=3)
+    add_heading(doc, "1.1.3 Daftar Peran", level=3)
 
     add_paragraph(doc,
         "Berikut adalah daftar peran yang terlibat dalam pengembangan dan pengelolaan "
@@ -161,7 +161,7 @@ def generate_stage3():
     )
 
     add_table(doc,
-        headers=["Role/Group", "Responsibilities"],
+        headers=["Peran/Kelompok", "Tanggung Jawab"],
         rows=[
             ["Chief Executive Officer (CEO)", "Memberikan arahan strategis, menyetujui visi arsitektur, memastikan keselarasan dengan tujuan bisnis"],
             ["Chief Technology Officer (CTO)", "Memimpin inisiatif EA, mengambil keputusan teknis strategis, mengelola tim teknologi"],
@@ -212,7 +212,7 @@ def generate_stage3():
     )
 
     # Governance Structure
-    add_heading(doc, "1.1.5 Governance Structure", level=3)
+    add_heading(doc, "1.1.5 Struktur Governance", level=3)
 
     add_paragraph(doc,
         "Struktur governance Enterprise Architecture LangkahKampus dirancang untuk "
@@ -283,7 +283,7 @@ def generate_stage3():
     # ==========================================================================
     # PART II: REQUIREMENTS MANAGEMENT
     # ==========================================================================
-    add_heading(doc, "2. Requirements Management", level=1)
+    add_heading(doc, "2. Manajemen Kebutuhan (Requirements Management)", level=1)
 
     add_paragraph(doc,
         "Requirements Management dalam konteks TOGAF ADM merupakan proses yang "
@@ -294,7 +294,7 @@ def generate_stage3():
     )
 
     # 2.1 Functional Requirements
-    add_heading(doc, "2.1 Functional Requirements", level=2)
+    add_heading(doc, "2.1 Kebutuhan Fungsional", level=2)
 
     add_paragraph(doc,
         "Kebutuhan fungsional mendefinisikan apa yang harus dilakukan oleh sistem "
@@ -323,7 +323,7 @@ def generate_stage3():
     )
 
     # 2.2 Non-Functional Requirements
-    add_heading(doc, "2.2 Non-Functional Requirements", level=2)
+    add_heading(doc, "2.2 Kebutuhan Non-Fungsional", level=2)
 
     add_paragraph(doc,
         "Kebutuhan non-fungsional mendefinisikan kualitas dan batasan yang harus "
@@ -362,12 +362,12 @@ def generate_stage3():
     )
 
     # 3.1 Architecture Vision
-    add_heading(doc, "3.1 Architecture Vision", level=2)
+    add_heading(doc, "3.1 Visi Arsitektur", level=2)
 
     # Problem Descriptions
-    add_heading(doc, "3.1.1 Problem Descriptions", level=3)
+    add_heading(doc, "3.1.1 Deskripsi Permasalahan", level=3)
 
-    add_paragraph(doc, "A. Background (Latar Belakang Masalah):", bold=True)
+    add_paragraph(doc, "A. Latar Belakang Masalah:", bold=True)
     add_paragraph(doc,
         "Seleksi Nasional Berdasarkan Prestasi (SNBP) merupakan jalur penerimaan "
         "mahasiswa baru yang menggunakan nilai rapor sebagai dasar seleksi. Setiap "
@@ -386,7 +386,7 @@ def generate_stage3():
         "sering kali mengakibatkan bentrokan pilihan dalam satu sekolah."
     )
 
-    add_paragraph(doc, "B. Change Drivers (Pendorong Perubahan):", bold=True)
+    add_paragraph(doc, "B. Pendorong Perubahan (Change Drivers):", bold=True)
     add_bullet_list(doc, [
         "Digitalisasi Pendidikan - Kebijakan Kemendikbudristek yang mendorong transformasi digital di sektor pendidikan",
         "Peningkatan Jumlah Peserta SNBP - Pertumbuhan 12% per tahun dalam jumlah pendaftar SNBP memerlukan solusi scalable",
@@ -396,7 +396,7 @@ def generate_stage3():
         "Kompetisi Pasar - Munculnya berbagai platform edukasi memerlukan diferensiasi melalui teknologi advanced",
     ])
 
-    add_paragraph(doc, "C. Opportunities (Peluang):", bold=True)
+    add_paragraph(doc, "C. Peluang (Opportunities):", bold=True)
     add_bullet_list(doc, [
         "Total Addressable Market (TAM) lebih dari 3 juta siswa SMA per tahun yang berpotensi menggunakan SNBP",
         "Belum ada platform yang secara khusus menyelesaikan masalah Choice-2 Trap dengan pendekatan ML",
@@ -406,9 +406,9 @@ def generate_stage3():
     ])
 
     # Architecture Objectives
-    add_heading(doc, "3.1.2 Architecture Objectives", level=3)
+    add_heading(doc, "3.1.2 Tujuan Arsitektur", level=3)
 
-    add_paragraph(doc, "A. Business Objectives:", bold=True)
+    add_paragraph(doc, "A. Tujuan Bisnis:", bold=True)
     add_numbered_list(doc, [
         "Menyediakan platform prediksi SNBP yang akurat (>85%) dan terpercaya untuk siswa SMA/MA/SMK di seluruh Indonesia",
         "Menghilangkan asimetri informasi dalam pemilihan program studi melalui rekomendasi berbasis data",
@@ -417,7 +417,7 @@ def generate_stage3():
         "Menghasilkan revenue Rp 2 miliar pada tahun kedua melalui model freemium dan B2B SaaS",
     ])
 
-    add_paragraph(doc, "B. Architecture Requirements:", bold=True)
+    add_paragraph(doc, "B. Kebutuhan Arsitektur:", bold=True)
     add_numbered_list(doc, [
         "Arsitektur microservices yang memisahkan concerns antara frontend, ML service, dan data layer",
         "Skalabilitas horizontal untuk menghadapi traffic spike saat peak season SNBP",
@@ -427,7 +427,7 @@ def generate_stage3():
         "Integration architecture yang memungkinkan koneksi dengan sistem sekolah yang beragam",
     ])
 
-    add_paragraph(doc, "C. Solution Concept Diagram:", bold=True)
+    add_paragraph(doc, "C. Diagram Konsep Solusi:", bold=True)
     add_paragraph(doc,
         "Solution Concept Diagram LangkahKampus menggambarkan arsitektur tingkat "
         "tinggi yang terdiri dari beberapa layer utama: (1) Presentation Layer - "
@@ -441,7 +441,7 @@ def generate_stage3():
     )
 
     # Stakeholders Table
-    add_heading(doc, "3.1.3 Stakeholders", level=3)
+    add_heading(doc, "3.1.3 Stakeholder", level=3)
 
     add_paragraph(doc,
         "Identifikasi stakeholder merupakan langkah krusial untuk memastikan bahwa "
@@ -450,7 +450,7 @@ def generate_stage3():
     )
 
     add_table(doc,
-        headers=["Role/Group", "Nama", "Responsibilities", "Key Concerns", "Class", "Deliverables"],
+        headers=["Peran/Kelompok", "Nama", "Tanggung Jawab", "Perhatian Utama", "Kelas", "Deliverables"],
         rows=[
             ["CEO/Founder", "Aflah Rafilah Zaki", "Strategi bisnis, visi produk, fundraising", "ROI, market penetration, competitive advantage", "Key Player", "Business strategy document, investor reports"],
             ["CTO", "Azka Fathir Syarif", "Keputusan teknis, arsitektur sistem, tim engineering", "Scalability, technical debt, team productivity", "Key Player", "Architecture documents, technical roadmap"],
@@ -463,12 +463,12 @@ def generate_stage3():
             ["Investor", "Angel investor / VC", "Pendanaan dan mentoring", "Growth metrics, unit economics, scalability", "Interested", "Financial reports, growth dashboards"],
             ["School Admin", "Admin TI sekolah mitra", "Mengelola integrasi teknis di sisi sekolah", "Kemudahan setup, API documentation, support", "Participant", "API docs, integration guides"],
         ],
-        title="Stakeholders Table",
+        title="Tabel Stakeholder",
         table_number=7
     )
 
     # Stakeholder Contact Table
-    add_heading(doc, "3.1.4 Stakeholders Contact Table", level=3)
+    add_heading(doc, "3.1.4 Tabel Kontak Stakeholder", level=3)
 
     add_table(doc,
         headers=["Stakeholder", "Nama Kontak", "Peran", "Metode Komunikasi", "Frekuensi"],
@@ -481,12 +481,12 @@ def generate_stage3():
             ["Perwakilan Guru BK", "3 Guru BK pilot school", "School User Rep", "Workshop, video call", "Dua mingguan"],
             ["Investor", "TBD", "Financial Stakeholder", "Board meeting, report", "Triwulanan"],
         ],
-        title="Stakeholders Contact Table",
+        title="Tabel Kontak Stakeholder",
         table_number=8
     )
 
     # Constraints on Architecture Work
-    add_heading(doc, "3.1.5 Constraints on Architecture Work", level=3)
+    add_heading(doc, "3.1.5 Batasan Pekerjaan Arsitektur", level=3)
 
     add_paragraph(doc,
         "Berikut adalah batasan-batasan yang mempengaruhi pekerjaan arsitektur "
@@ -494,7 +494,7 @@ def generate_stage3():
     )
 
     add_table(doc,
-        headers=["No", "Constraint", "Deskripsi", "Dampak"],
+        headers=["No", "Batasan", "Deskripsi", "Dampak"],
         rows=[
             ["1", "Budget Terbatas", "Sebagai startup early-stage, budget pengembangan terbatas pada seed funding", "Harus memilih solusi cost-effective, prioritas fitur berbasis MVP"],
             ["2", "Timeline SNBP", "Sistem harus siap sebelum periode pendaftaran SNBP (Januari-Februari)", "Development cycle harus mengikuti calendar akademik"],
@@ -504,14 +504,14 @@ def generate_stage3():
             ["6", "Konektivitas Pengguna", "Banyak siswa di daerah memiliki koneksi internet terbatas", "Platform harus lightweight dan progressive web app ready"],
             ["7", "Integrasi Beragam", "Sistem informasi sekolah sangat bervariasi (dari manual hingga digital)", "Arsitektur integrasi harus fleksibel dan multi-mode"],
         ],
-        title="Constraints on Architecture Work",
+        title="Batasan Pekerjaan Arsitektur",
         table_number=9
     )
 
     # 3.2 Communication Plan
-    add_heading(doc, "3.2 Communication Plan", level=2)
+    add_heading(doc, "3.2 Rencana Komunikasi", level=2)
 
-    add_heading(doc, "3.2.1 Stakeholders Communications Requirements", level=3)
+    add_heading(doc, "3.2.1 Kebutuhan Komunikasi Stakeholder", level=3)
 
     add_paragraph(doc,
         "Rencana komunikasi bertujuan untuk memastikan bahwa semua stakeholder "
@@ -528,10 +528,10 @@ def generate_stage3():
     ])
 
     # Communication Matrix
-    add_heading(doc, "3.2.2 Communication Matrix", level=3)
+    add_heading(doc, "3.2.2 Matriks Komunikasi", level=3)
 
     add_table(doc,
-        headers=["Stakeholder", "Informasi yang Dikomunikasikan", "Media", "Frekuensi", "PIC"],
+        headers=["Stakeholder", "Informasi yang Dikomunikasikan", "Media", "Frekuensi", "Penanggung Jawab"],
         rows=[
             ["Architecture Board", "Architecture decisions, progress report, risk updates", "Meeting tatap muka / video call", "Mingguan", "Enterprise Architect"],
             ["Development Team", "Sprint backlog, technical decisions, architecture guidelines", "Daily standup, Slack, Confluence", "Harian", "CTO"],
@@ -541,20 +541,20 @@ def generate_stage3():
             ["Sekolah Mitra", "Integration updates, API changes, onboarding guide", "Email, documentation portal", "Per release", "Business Development"],
             ["Regulator", "Compliance status, data protection measures", "Formal report", "Tahunan / on-demand", "Security Officer"],
         ],
-        title="Communication Matrix",
+        title="Matriks Komunikasi",
         table_number=10
     )
 
     # Delivery Vehicles
-    add_heading(doc, "3.2.3 Delivery Vehicles", level=3)
+    add_heading(doc, "3.2.3 Sarana Penyampaian (Delivery Vehicles)", level=3)
 
     add_paragraph(doc,
-        "Delivery vehicles menentukan saluran dan format yang digunakan untuk "
+        "Sarana penyampaian menentukan saluran dan format yang digunakan untuk "
         "menyampaikan informasi arsitektur kepada berbagai stakeholder:"
     )
 
     add_table(doc,
-        headers=["Vehicle", "Deskripsi", "Target Audience", "Format"],
+        headers=["Sarana", "Deskripsi", "Target Audiens", "Format"],
         rows=[
             ["Architecture Wiki", "Dokumentasi arsitektur terpusat menggunakan Confluence/Notion", "Internal team", "Web-based, diagrams, text"],
             ["Sprint Review", "Demo progress dan review arsitektur setiap 2 minggu", "Development team, PM", "Presentasi, live demo"],
@@ -565,12 +565,12 @@ def generate_stage3():
             ["Training Workshop", "Sesi pelatihan penggunaan dashboard untuk Guru BK", "Guru BK", "Video call, hands-on"],
             ["Status Dashboard", "Real-time monitoring system health dan KPI", "CTO, DevOps", "Grafana dashboard"],
         ],
-        title="Delivery Vehicles",
+        title="Sarana Penyampaian",
         table_number=11
     )
 
     # 3.3 Architecture Principles
-    add_heading(doc, "3.3 Architecture Principles", level=2)
+    add_heading(doc, "3.3 Prinsip Arsitektur", level=2)
 
     add_paragraph(doc,
         "Architecture Principles merupakan aturan dan pedoman umum yang menginformasikan "
@@ -579,7 +579,7 @@ def generate_stage3():
     )
 
     # Business Principles
-    add_heading(doc, "3.3.1 Business Principles", level=3)
+    add_heading(doc, "3.3.1 Prinsip Bisnis", level=3)
 
     principles_business = [
         {
@@ -616,7 +616,7 @@ def generate_stage3():
         doc.add_paragraph()  # spacing
 
     # Data Principles
-    add_heading(doc, "3.3.2 Data Principles", level=3)
+    add_heading(doc, "3.3.2 Prinsip Data", level=3)
 
     principles_data = [
         {
@@ -653,7 +653,7 @@ def generate_stage3():
         doc.add_paragraph()
 
     # Application Principles
-    add_heading(doc, "3.3.3 Application Principles", level=3)
+    add_heading(doc, "3.3.3 Prinsip Aplikasi", level=3)
 
     principles_app = [
         {
@@ -690,7 +690,7 @@ def generate_stage3():
         doc.add_paragraph()
 
     # Technology Principles
-    add_heading(doc, "3.3.4 Technology Principles", level=3)
+    add_heading(doc, "3.3.4 Prinsip Teknologi", level=3)
 
     principles_tech = [
         {
@@ -727,9 +727,9 @@ def generate_stage3():
         doc.add_paragraph()
 
     # 3.4 Business Principles, Goals, Drivers
-    add_heading(doc, "3.4 Business Principles, Goals, and Drivers", level=2)
+    add_heading(doc, "3.4 Prinsip Bisnis, Tujuan, dan Pendorong", level=2)
 
-    add_heading(doc, "3.4.1 Mission (Misi)", level=3)
+    add_heading(doc, "3.4.1 Misi", level=3)
     add_paragraph(doc,
         "Misi LangkahKampus adalah mendemokratisasi akses terhadap informasi dan "
         "alat bantu pengambilan keputusan pendidikan tinggi bagi seluruh siswa SMA/MA/SMK "
@@ -739,7 +739,7 @@ def generate_stage3():
         "data, bukan asumsi."
     )
 
-    add_heading(doc, "3.4.2 Goals (Tujuan)", level=3)
+    add_heading(doc, "3.4.2 Tujuan (Goals)", level=3)
     add_numbered_list(doc, [
         "Menjadi platform prediksi SNBP nomor satu di Indonesia dengan akurasi prediksi tertinggi (>85%)",
         "Menjangkau 500.000 siswa aktif dalam 3 tahun pertama operasional",
@@ -749,7 +749,7 @@ def generate_stage3():
         "Berkontribusi pada pemerataan akses pendidikan tinggi di Indonesia, terutama untuk siswa di daerah 3T",
     ])
 
-    add_heading(doc, "3.4.3 Drivers (Pendorong)", level=3)
+    add_heading(doc, "3.4.3 Pendorong (Drivers)", level=3)
     add_paragraph(doc,
         "Berikut adalah faktor-faktor yang mendorong pengembangan arsitektur enterprise "
         "LangkahKampus:"
@@ -765,9 +765,9 @@ def generate_stage3():
     ])
 
     # 3.5 Statement of Architecture Work
-    add_heading(doc, "3.5 Statement of Architecture Work", level=2)
+    add_heading(doc, "3.5 Pernyataan Pekerjaan Arsitektur", level=2)
 
-    add_heading(doc, "3.5.1 Project Background", level=3)
+    add_heading(doc, "3.5.1 Latar Belakang Proyek", level=3)
     add_paragraph(doc,
         "Proyek Enterprise Architecture LangkahKampus diinisiasi untuk memberikan "
         "landasan arsitektur yang kokoh bagi pengembangan platform EduTech yang "
@@ -783,7 +783,7 @@ def generate_stage3():
         "memastikan alignment antara strategi bisnis dan implementasi teknologi."
     )
 
-    add_heading(doc, "3.5.2 Project Summary", level=3)
+    add_heading(doc, "3.5.2 Ringkasan Proyek", level=3)
     add_paragraph(doc,
         "Proyek EA LangkahKampus mencakup perancangan arsitektur di empat domain "
         "TOGAF (Business, Data, Application, Technology) untuk mendukung transformasi "
@@ -797,7 +797,7 @@ def generate_stage3():
         "Technology Architecture: Pemilihan technology stack, infrastructure design, dan deployment architecture",
     ])
 
-    add_heading(doc, "3.5.3 Solution Concept Diagram", level=3)
+    add_heading(doc, "3.5.3 Diagram Konsep Solusi", level=3)
     add_paragraph(doc,
         "Solution Concept Diagram menggambarkan high-level view dari solusi arsitektur "
         "LangkahKampus yang terdiri dari komponen-komponen utama berikut:"
@@ -835,7 +835,7 @@ def generate_stage3():
         "stack (Prometheus, Grafana, Jaeger)."
     )
 
-    add_heading(doc, "3.5.4 Stakeholders Map", level=3)
+    add_heading(doc, "3.5.4 Peta Stakeholder", level=3)
     add_paragraph(doc,
         "Stakeholders map memposisikan setiap stakeholder berdasarkan dua dimensi: "
         "tingkat pengaruh (influence) dan tingkat kepentingan (interest) terhadap "
@@ -850,7 +850,7 @@ def generate_stage3():
             ["Low Influence, High Interest", "Keep Informed", "Siswa, Guru BK, Orang Tua", "Newsletter, release notes, feedback channels terbuka"],
             ["Low Influence, Low Interest", "Monitor", "Komunitas Developer, Media", "Monitoring sentimen, engagement minimal"],
         ],
-        title="Stakeholders Map - Power/Interest Grid",
+        title="Peta Stakeholder - Matriks Pengaruh/Kepentingan",
         table_number=12
     )
 
@@ -876,7 +876,7 @@ def generate_stage3():
 
     # Save document
     save_document(doc, "Stage3_Preliminary_Requirement_Architecture_Vision.docx")
-    print("Stage 3 document generated successfully!")
+    print("Stage 3: Dokumen berhasil di-generate!")
     print(f"Total paragraphs: {len(doc.paragraphs)}")
     print(f"Total tables: {len(doc.tables)}")
 

@@ -36,22 +36,22 @@ def generate_stage6():
     # Cover Page
     add_cover_page(
         doc,
-        title="Phase D: Technology Architecture",
-        stage_name="Stage 6 - Technology Architecture"
+        title="Phase D: Arsitektur Teknologi",
+        stage_name="Stage 6 - Arsitektur Teknologi (Technology Architecture)"
     )
 
     # Table of Contents
     toc_sections = [
-        ("Architecture Definition Document - Technology", [
-            "Baseline Technology Architecture",
-            "Target Technology Architecture",
-            "Gap Analysis - Technology",
-            "Gap and Solution Table",
-            "Transition Timeline",
+        ("Dokumen Definisi Arsitektur - Teknologi", [
+            "Arsitektur Teknologi Baseline",
+            "Arsitektur Teknologi Target",
+            "Gap Analysis - Teknologi",
+            "Tabel Gap dan Solusi",
+            "Timeline Transisi",
         ]),
-        ("Technology Requirements", []),
-        ("Architecture Principles (Updated)", []),
-        ("Statement of Architecture Work (Final)", []),
+        ("Kebutuhan Teknologi", []),
+        ("Prinsip Arsitektur (Diperbarui)", []),
+        ("Pernyataan Pekerjaan Arsitektur (Final)", []),
         ("Daftar Pustaka", []),
     ]
     add_table_of_contents(doc, toc_sections)
@@ -59,7 +59,7 @@ def generate_stage6():
     # ==========================================================================
     # SECTION 1: ARCHITECTURE DEFINITION DOCUMENT - TECHNOLOGY
     # ==========================================================================
-    add_heading(doc, "1. Architecture Definition Document - Technology", level=1)
+    add_heading(doc, "1. Dokumen Definisi Arsitektur - Teknologi", level=1)
 
     add_paragraph(doc,
         "Architecture Definition Document pada fase Technology Architecture "
@@ -72,7 +72,7 @@ def generate_stage6():
     # --------------------------------------------------------------------------
     # 1.1 BASELINE TECHNOLOGY ARCHITECTURE
     # --------------------------------------------------------------------------
-    add_heading(doc, "1.1 Baseline Technology Architecture", level=2)
+    add_heading(doc, "1.1 Arsitektur Teknologi Baseline", level=2)
 
     add_paragraph(doc,
         "Pada kondisi baseline, infrastruktur teknologi untuk proses SNBP "
@@ -142,7 +142,7 @@ def generate_stage6():
     # --------------------------------------------------------------------------
     # 1.2 TARGET TECHNOLOGY ARCHITECTURE
     # --------------------------------------------------------------------------
-    add_heading(doc, "1.2 Target Technology Architecture", level=2)
+    add_heading(doc, "1.2 Arsitektur Teknologi Target", level=2)
 
     add_paragraph(doc,
         "Arsitektur teknologi target LangkahKampus mengadopsi cloud-native approach "
@@ -155,7 +155,7 @@ def generate_stage6():
     add_heading(doc, "1.2.1 Technology Standard Catalog (Target)", level=3)
 
     add_table(doc,
-        headers=["Kategori", "Technology Standard", "Version/Spec", "Rationale", "Adoption Phase"],
+        headers=["Kategori", "Standar Teknologi", "Versi/Spek", "Rasional", "Fase Adopsi"],
         rows=[
             ["Cloud Platform", "Google Cloud Platform (GCP)", "Current", "Harga kompetitif untuk startup, ML tools (Vertex AI), regional presence Jakarta", "Fase 1"],
             ["Container Runtime", "Docker", "24.x", "Industry standard containerization, portability, reproducibility", "Fase 1"],
@@ -265,7 +265,7 @@ def generate_stage6():
     # --------------------------------------------------------------------------
     # 1.3 GAP ANALYSIS - TECHNOLOGY
     # --------------------------------------------------------------------------
-    add_heading(doc, "1.3 Gap Analysis - Technology Architecture", level=2)
+    add_heading(doc, "1.3 Gap Analysis - Arsitektur Teknologi", level=2)
 
     add_heading(doc, "1.3.1 Gap Analysis Matrix - Technology", level=3)
 
@@ -336,7 +336,7 @@ def generate_stage6():
     # ==========================================================================
     # SECTION 2: TECHNOLOGY REQUIREMENTS
     # ==========================================================================
-    add_heading(doc, "2. Technology Requirements", level=1)
+    add_heading(doc, "2. Kebutuhan Teknologi", level=1)
 
     add_paragraph(doc,
         "Technology requirements mendefinisikan standar dan kriteria yang harus "
@@ -344,7 +344,7 @@ def generate_stage6():
     )
 
     add_table(doc,
-        headers=["ID", "Kategori", "Requirement", "Target Metric", "Priority"],
+        headers=["ID", "Kategori", "Kebutuhan", "Metrik Target", "Prioritas"],
         rows=[
             ["TR-001", "Performance", "API response time (p95) harus < 200ms untuk non-ML endpoints", "< 200ms p95", "P1"],
             ["TR-002", "Performance", "ML prediction latency (p95) harus < 2 detik termasuk feature retrieval", "< 2000ms p95", "P1"],
@@ -363,14 +363,14 @@ def generate_stage6():
             ["TR-015", "DR", "Recovery Time Objective (RTO) < 4 jam", "< 4 hours RTO", "P1"],
             ["TR-016", "DR", "Recovery Point Objective (RPO) < 1 jam", "< 1 hour RPO", "P1"],
         ],
-        title="Technology Requirements",
+        title="Kebutuhan Teknologi",
         table_number=8
     )
 
     # ==========================================================================
     # SECTION 3: ARCHITECTURE PRINCIPLES (UPDATED)
     # ==========================================================================
-    add_heading(doc, "3. Architecture Principles (Updated)", level=1)
+    add_heading(doc, "3. Prinsip Arsitektur (Diperbarui)", level=1)
 
     add_paragraph(doc,
         "Prinsip arsitektur diperbarui dengan prinsip-prinsip spesifik untuk "
@@ -426,7 +426,7 @@ def generate_stage6():
     # ==========================================================================
     # SECTION 4: STATEMENT OF ARCHITECTURE WORK (FINAL)
     # ==========================================================================
-    add_heading(doc, "4. Statement of Architecture Work (Final)", level=1)
+    add_heading(doc, "4. Pernyataan Pekerjaan Arsitektur (Final)", level=1)
 
     add_paragraph(doc,
         "Statement of Architecture Work ini merupakan versi final yang mencakup "
@@ -434,7 +434,7 @@ def generate_stage6():
         "tentang arsitektur enterprise LangkahKampus yang telah dirancang."
     )
 
-    add_heading(doc, "4.1 Executive Summary", level=2)
+    add_heading(doc, "4.1 Ringkasan Eksekutif", level=2)
 
     add_paragraph(doc,
         "Proyek Enterprise Architecture LangkahKampus telah berhasil merancang "
@@ -450,10 +450,10 @@ def generate_stage6():
         "Technology Architecture: Memilih GCP sebagai cloud platform dengan GKE, comprehensive observability, dan cost-optimized scaling strategy",
     ])
 
-    add_heading(doc, "4.2 Architecture Decisions Summary", level=2)
+    add_heading(doc, "4.2 Ringkasan Keputusan Arsitektur", level=2)
 
     add_table(doc,
-        headers=["Domain", "Key Decision", "Technology/Approach"],
+        headers=["Domain", "Keputusan Utama", "Teknologi/Pendekatan"],
         rows=[
             ["Business", "Dual revenue model", "B2C Freemium (Rp15K-25K) + B2B SaaS (Rp5-15M/tahun)"],
             ["Business", "ML as core differentiator", "XGBoost + LightGBM ensemble prediction"],
@@ -469,27 +469,27 @@ def generate_stage6():
             ["Technology", "GitOps with ArgoCD", "Declarative deployments, audit trail, rollback"],
             ["Technology", "Cloudflare for edge/CDN", "DDoS protection, global caching, SSL"],
         ],
-        title="Architecture Decisions Summary (All Phases)",
+        title="Ringkasan Keputusan Arsitektur (Semua Fase)",
         table_number=9
     )
 
-    add_heading(doc, "4.3 Implementation Roadmap Summary", level=2)
+    add_heading(doc, "4.3 Ringkasan Roadmap Implementasi", level=2)
 
     add_table(doc,
-        headers=["Fase", "Periode", "Business Goals", "Technical Milestones", "Success Metrics"],
+        headers=["Fase", "Periode", "Tujuan Bisnis", "Milestone Teknis", "Metrik Keberhasilan"],
         rows=[
             ["Fase 1: Foundation", "Bulan 1-4", "MVP launch, 1000 beta users", "Core platform live, ML prediction v1, basic infrastructure", "Platform operational, prediction >75%, <2s latency"],
             ["Fase 2: Enhancement", "Bulan 5-8", "10K users, 50 pilot schools, first revenue", "Anti-Bentrok, DiCE XAI, payment, observability", "Prediction >82%, Anti-Bentrok reduces conflicts 60%"],
             ["Fase 3: Scale", "Bulan 9-12", "100K users, 500 schools, break-even trajectory", "Full scale, performance optimized, DR tested", "500K concurrent capability, 99.9% uptime, prediction >85%"],
         ],
-        title="Implementation Roadmap Summary",
+        title="Ringkasan Roadmap Implementasi",
         table_number=10
     )
 
-    add_heading(doc, "4.4 Risk Summary", level=2)
+    add_heading(doc, "4.4 Ringkasan Risiko", level=2)
 
     add_table(doc,
-        headers=["Risk", "Probability", "Impact", "Mitigation"],
+        headers=["Risiko", "Probabilitas", "Dampak", "Mitigasi"],
         rows=[
             ["Insufficient historical SNBP data for ML training", "Sedang", "Tinggi", "Crowdsourcing + school partnerships + synthetic data augmentation"],
             ["Peak traffic exceeds capacity planning", "Sedang", "Tinggi", "Aggressive auto-scaling + load testing + graceful degradation"],
@@ -498,11 +498,11 @@ def generate_stage6():
             ["Cloud cost overrun during peak", "Sedang", "Sedang", "Budget alerts, reserved instances, auto-scale limits, cost optimization"],
             ["ML model accuracy below target", "Sedang", "Tinggi", "Iterative improvement, A/B testing, ensemble methods, data quality focus"],
         ],
-        title="Top Risks and Mitigations",
+        title="Risiko Utama dan Mitigasi",
         table_number=11
     )
 
-    add_heading(doc, "4.5 Conclusion", level=2)
+    add_heading(doc, "4.5 Kesimpulan", level=2)
 
     add_paragraph(doc,
         "Arsitektur enterprise yang telah dirancang untuk LangkahKampus memberikan "
@@ -553,7 +553,7 @@ def generate_stage6():
 
     # Save document
     save_document(doc, "Stage6_Technology_Architecture.docx")
-    print("Stage 6 document generated successfully!")
+    print("Stage 6: Dokumen berhasil di-generate!")
     print(f"Total paragraphs: {len(doc.paragraphs)}")
     print(f"Total tables: {len(doc.tables)}")
 
