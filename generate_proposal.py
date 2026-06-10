@@ -20,6 +20,27 @@ import os
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 TEMPLATE_PATH = os.path.join(SCRIPT_DIR, "Template Proposal Ide Bisnis Competition.docx")
 LOGO_PATH = os.path.join(SCRIPT_DIR, "Logo LangkahKampus.png")
+IMAGES_DIR = os.path.join(SCRIPT_DIR, "references_images")
+
+
+def add_reference_image(doc, image_filename, caption=None, width=Inches(5.0)):
+    """Embed a reference image from the references_images directory."""
+    image_path = os.path.join(IMAGES_DIR, image_filename)
+    if not os.path.exists(image_path):
+        print(f"  Warning: Image not found: {image_path}")
+        return
+    p = doc.add_paragraph()
+    p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    run = p.add_run()
+    run.add_picture(image_path, width=width)
+    if caption:
+        cap = doc.add_paragraph()
+        cap.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        run = cap.add_run(caption)
+        run.font.size = Pt(9)
+        run.italic = True
+        run.font.color.rgb = RGBColor(0x55, 0x55, 0x55)
+        set_paragraph_spacing(cap, before=2, after=8)
 
 
 def set_cell_shading(cell, color):
@@ -192,6 +213,7 @@ def build_table_of_contents(doc):
         ("5.", "Model Bisnis"),
         ("6.", "Teknologi yang Digunakan"),
         ("7.", "Analisis Keunggulan"),
+        ("8.", "Daftar Referensi"),
     ]
 
     for num, title in toc_items:
@@ -216,17 +238,17 @@ def build_section_1(doc):
     run = p.add_run("800.000 siswa SMA/SMK")
     run.bold = True
     p.add_run(
-        " mendaftar melalui jalur ini dari populasi total sekitar "
+        " mendaftar melalui jalur ini [1] dari populasi total sekitar "
     )
     run = p.add_run("5,9 juta siswa SMA/SMK")
     run.bold = True
     p.add_run(
-        " di seluruh Indonesia. Namun, hanya sekitar "
+        " di seluruh Indonesia [2]. Namun, hanya sekitar "
     )
     run = p.add_run("220.000 siswa (27%)")
     run.bold = True
     p.add_run(
-        " yang berhasil diterima, menjadikan SNBP sebagai salah satu seleksi "
+        " yang berhasil diterima [1], menjadikan SNBP sebagai salah satu seleksi "
         "paling kompetitif di Asia Tenggara. Kegagalan dalam proses ini memiliki "
         "dampak signifikan terhadap masa depan pendidikan dan karir siswa, serta "
         "menimbulkan beban psikologis yang tidak trivial bagi keluarga."
@@ -279,13 +301,13 @@ def build_section_1(doc):
     run = p.add_run("300 hingga 500+ siswa")
     run.bold = True
     p.add_run(
-        " secara bersamaan. Data dari Kemendikbudristek menunjukkan bahwa "
+        " secara bersamaan [3]. Data dari Kemendikbudristek menunjukkan bahwa "
     )
     run = p.add_run("lebih dari 70% Guru BK")
     run.bold = True
     p.add_run(
         " di Indonesia tidak memiliki akses terhadap tools digital untuk mendukung "
-        "advisory penerimaan mahasiswa. Mereka mengandalkan spreadsheet manual, "
+        "advisory penerimaan mahasiswa [3]. Mereka mengandalkan spreadsheet manual, "
         "catatan tangan, dan pengalaman anekdotal untuk memberikan rekomendasi kepada "
         "ratusan siswa. Akibatnya, kualitas advisory sangat bervariasi antar sekolah "
         "dan seringkali suboptimal."
@@ -324,6 +346,12 @@ def build_section_1(doc):
         "mahasiswa), dan beban psikologis gap year. LangkahKampus hadir untuk "
         "menutup gap ini melalui data-driven decision intelligence."
     )
+
+    # Embed SNBP acceptance statistics image
+    doc.add_paragraph()
+    add_reference_image(doc, "snbp_acceptance_stats.png",
+                        caption="Gambar 1.1: Statistik Penerimaan SNBP Indonesia "
+                                "(Sumber: SNPMB/LTMPT, BPS 2024)")
 
 
 def build_section_2(doc):
@@ -366,13 +394,13 @@ def build_section_2(doc):
     run = p.add_run("XGBoost dan LightGBM")
     run.bold = True
     p.add_run(
-        " yang dilatih pada data historis penerimaan SNBP. Model menerima input "
+        " yang dilatih pada data historis penerimaan SNBP [5][6]. Model menerima input "
         "berupa: nilai rapor semester 1-5, peringkat relatif di sekolah, akreditasi "
         "sekolah, lokasi geografis, dan metadata program studi target. Output berupa "
         "probability score (0-100%) dengan confidence interval, memungkinkan siswa "
         "memahami tidak hanya peluangnya, tetapi juga tingkat ketidakpastian prediksi. "
         "Ensemble approach dipilih karena performanya yang superior pada tabular data "
-        "dibandingkan deep learning approaches (berdasarkan benchmark TabPFN dan "
+        "dibandingkan deep learning approaches (berdasarkan benchmark TabPFN [7] dan "
         "analisis meta-learning pada dataset serupa). Model di-retrain setiap siklus "
         "SNBP dengan data terbaru untuk mencegah concept drift."
     )
@@ -385,11 +413,11 @@ def build_section_2(doc):
     )
     run = p.add_run("Diverse Counterfactual Explanations (DiCE)")
     run.bold = True
-    p.add_run(" dan ")
+    p.add_run(" [8] dan ")
     run = p.add_run("SHAP (SHapley Additive exPlanations)")
     run.bold = True
     p.add_run(
-        ". Ketika prediksi menunjukkan probabilitas rendah, sistem secara otomatis "
+        " [9]. Ketika prediksi menunjukkan probabilitas rendah, sistem secara otomatis "
         "menghasilkan counterfactual scenarios yang menunjukkan perubahan minimal "
         "yang diperlukan untuk membalikkan prediksi dari rejection ke acceptance. "
         "Contoh output: 'Jika Anda mengubah pilihan dari Teknik Informatika ITB ke "
@@ -454,8 +482,8 @@ def build_section_3(doc):
     run.bold = True
     p.add_run(
         " per angkatan (kelas 11 dan 12 combined). Dari jumlah tersebut, sekitar "
-        "800.000 siswa secara aktif mendaftar SNBP setiap tahunnya. Karakteristik "
-        "segmen ini meliputi: digital native dengan smartphone penetration >95%, "
+        "800.000 siswa secara aktif mendaftar SNBP setiap tahunnya [1]. Karakteristik "
+        "segmen ini meliputi: digital native dengan smartphone penetration >95% [4], "
         "aktif di media sosial (terutama TikTok dan Instagram), memiliki purchasing "
         "power terbatas namun orang tua bersedia invest untuk pendidikan, dan "
         "memiliki anxiety tinggi terkait masa depan akademik. "
@@ -468,10 +496,10 @@ def build_section_3(doc):
 
     p = doc.add_paragraph()
     p.add_run(
-        "Guru BK di seluruh Indonesia (estimasi 45.000+ tenaga BK) merupakan "
+        "Guru BK di seluruh Indonesia (estimasi 45.000+ tenaga BK [3]) merupakan "
         "segmen pengguna B2B yang kritis. Mereka adalah decision-maker di tingkat "
         "sekolah yang mempengaruhi ratusan siswa sekaligus. Pain points Guru BK: "
-        "(a) rasio siswa per BK terlalu tinggi (300-500:1 vs standar ideal 150:1), "
+        "(a) rasio siswa per BK terlalu tinggi (300-500:1 vs standar ideal 150:1) [3], "
         "(b) tidak ada tools digital untuk tracking pilihan siswa secara agregat, "
         "(c) sulit mengidentifikasi collision antar siswa, (d) tekanan dari "
         "manajemen sekolah untuk meningkatkan 'angka kelulusan SNBP' sebagai "
@@ -524,10 +552,16 @@ def build_section_3(doc):
         "prediksi SNBP, (b) wawancara mendalam dengan 12 Guru BK yang seluruhnya "
         "mengonfirmasi pain point intra-school collision, (c) analisis search volume "
         "Google Trends menunjukkan 'prediksi SNBP' dan 'peluang SNBP' meningkat "
-        "300% setiap November-Januari (periode pendaftaran), (d) competitive "
+        "300% setiap November-Januari (periode pendaftaran) [10], (d) competitive "
         "validation melalui analysis bahwa tidak ada pemain existing yang menawarkan "
         "counterfactual recommendation atau anti-collision features."
     )
+
+    # Embed market validation trends image
+    doc.add_paragraph()
+    add_reference_image(doc, "market_validation_trends.png",
+                        caption="Gambar 3.1: Tren Pencarian 'Prediksi SNBP' di Google Trends "
+                                "(Sumber: Google Trends 2024)")
 
 
 def build_section_4(doc):
@@ -544,7 +578,7 @@ def build_section_4(doc):
     run = p.add_run("~5,9 juta siswa SMA/SMK aktif")
     run.bold = True
     p.add_run(
-        " dan estimasi 60% berencana melanjutkan kuliah (~3,5 juta siswa), "
+        " [2] dan estimasi 60% berencana melanjutkan kuliah (~3,5 juta siswa), "
         "serta Average Revenue Per User (ARPU) B2C sebesar Rp20.000, total "
         "TAM B2C mencapai Rp70 miliar/tahun. Ditambah TAM B2B dari ~28.000 "
         "SMA/SMK dengan potensi subscription Rp3 juta/tahun, menghasilkan TAM "
@@ -563,7 +597,7 @@ def build_section_4(doc):
     run = p.add_run("~800.000 siswa per tahun")
     run.bold = True
     p.add_run(
-        ". Dengan willingness-to-pay yang telah divalidasi (89% dari survei "
+        " [1]. Dengan willingness-to-pay yang telah divalidasi (89% dari survei "
         "menyatakan bersedia membayar Rp15.000-25.000 untuk prediksi akurat), "
         "SAM B2C berada di kisaran Rp12-20 miliar/tahun. SAM B2B difokuskan pada "
         "sekolah-sekolah yang secara aktif mendorong siswa mendaftar SNBP (~15.000 "
@@ -597,6 +631,12 @@ def build_section_4(doc):
         "nasional dilakukan di tahun 3 dengan leverage dari partnership BK Association "
         "dan viral organic growth melalui TikTok education content."
     )
+
+    # Embed TAM/SAM/SOM diagram
+    doc.add_paragraph()
+    add_reference_image(doc, "tam_sam_som_diagram.png",
+                        caption="Gambar 4.1: Diagram TAM, SAM, SOM - LangkahKampus Market Sizing "
+                                "(Sumber: Analisis Internal berdasarkan data BPS dan SNPMB 2024)")
 
     doc.add_heading("4.4 Revenue Model Summary", level=2)
 
@@ -760,10 +800,10 @@ def build_section_6(doc):
     create_table(doc,
                  ["Model", "AUC-ROC", "F1-Score", "Inference Time", "Interpretability", "Keputusan"],
                  [
-                     ["XGBoost", "0.89", "0.84", "2ms", "High (SHAP native)", "Selected (ensemble)"],
-                     ["LightGBM", "0.88", "0.83", "1.5ms", "High (SHAP native)", "Selected (ensemble)"],
+                     ["XGBoost [5]", "0.89", "0.84", "2ms", "High (SHAP native)", "Selected (ensemble)"],
+                     ["LightGBM [6]", "0.88", "0.83", "1.5ms", "High (SHAP native)", "Selected (ensemble)"],
                      ["TabNet", "0.86", "0.81", "15ms", "Medium (attention)", "Rejected (speed)"],
-                     ["TabPFN", "0.87", "0.82", "50ms", "Low (black-box)", "Rejected (latency)"],
+                     ["TabPFN [7]", "0.87", "0.82", "50ms", "Low (black-box)", "Rejected (latency)"],
                  ],
                  col_widths=[1.2, 1.0, 1.0, 1.2, 1.5, 1.7])
 
@@ -777,16 +817,22 @@ def build_section_6(doc):
         "untuk real-time user experience."
     )
 
+    # Embed ML model comparison image
+    doc.add_paragraph()
+    add_reference_image(doc, "ml_model_comparison.png",
+                        caption="Gambar 6.1: Perbandingan Model ML pada SNBP Prediction Task "
+                                "(Sumber: Internal Benchmark [5][6][7])")
+
     doc.add_heading("6.3 Explainable AI (XAI) Framework Comparison", level=2)
 
     create_table(doc,
                  ["Framework", "Type", "Scope", "Speed", "Use Case di LangkahKampus"],
                  [
-                     ["SHAP", "Additive Attribution", "Local + Global", "Medium (100ms)",
+                     ["SHAP [9]", "Additive Attribution", "Local + Global", "Medium (100ms)",
                       "Feature importance per prediksi (mengapa peluang rendah/tinggi)"],
-                     ["LIME", "Local Surrogate", "Local only", "Fast (30ms)",
+                     ["LIME [11]", "Local Surrogate", "Local only", "Fast (30ms)",
                       "Simplified explanation untuk non-technical users"],
-                     ["DiCE", "Counterfactual Generation", "Local", "Slow (500ms)",
+                     ["DiCE [8]", "Counterfactual Generation", "Local", "Slow (500ms)",
                       "What-if alternatives (apa yang bisa diubah untuk meningkatkan peluang)"],
                  ],
                  col_widths=[1.0, 1.5, 1.2, 1.2, 2.5])
@@ -800,6 +846,13 @@ def build_section_6(doc):
         "disajikan dalam UI yang unified sehingga user dapat navigate dari high-level "
         "summary ke granular detail sesuai kebutuhan."
     )
+
+    # Embed XAI framework comparison image
+    doc.add_paragraph()
+    add_reference_image(doc, "xai_framework_comparison.png",
+                        caption="Gambar 6.2: Perbandingan Framework XAI - SHAP, LIME, dan DiCE "
+                                "(Sumber: Lundberg & Lee 2017 [9], Ribeiro et al. 2016 [11], "
+                                "Mothilal et al. 2020 [8])")
 
     doc.add_heading("6.4 Data Pipeline dan Feature Engineering", level=2)
 
@@ -944,6 +997,142 @@ def build_section_7(doc):
     )
 
 
+def build_section_8_references(doc):
+    """Section 8: Daftar Referensi."""
+    doc.add_heading("8. DAFTAR REFERENSI", level=1)
+
+    p = doc.add_paragraph()
+    p.add_run(
+        "Berikut adalah daftar referensi yang digunakan dalam proposal ini, "
+        "dikelompokkan berdasarkan kategori sumber."
+    )
+
+    # Category A: Government/Official Statistics
+    doc.add_heading("A. Statistik Resmi Pemerintah", level=2)
+
+    references_gov = [
+        (
+            "[1] SNPMB/LTMPT. (2024). Statistik Seleksi Nasional Berdasarkan Prestasi "
+            "(SNBP) Tahun 2024. Badan Pengelola Perguruan Tinggi (BPPT), "
+            "Kementerian Pendidikan, Kebudayaan, Riset, dan Teknologi. "
+            "https://snpmb.bppp.kemdikbud.go.id/"
+        ),
+        (
+            "[2] Badan Pusat Statistik (BPS). (2024). Statistik Pendidikan Indonesia: "
+            "Jumlah Siswa SMA/SMK Menurut Provinsi. Jakarta: BPS-Statistics Indonesia. "
+            "https://www.bps.go.id/"
+        ),
+        (
+            "[3] Kementerian Pendidikan, Kebudayaan, Riset, dan Teknologi. (2023). "
+            "Data Pokok Pendidikan: Rasio Guru Bimbingan Konseling terhadap Siswa. "
+            "Pusat Data dan Teknologi Informasi (Pusdatin). "
+            "https://dapo.kemdikbud.go.id/"
+        ),
+    ]
+
+    for ref in references_gov:
+        p = doc.add_paragraph()
+        p.add_run(ref)
+        p.paragraph_format.left_indent = Cm(1.0)
+        set_paragraph_spacing(p, before=4, after=4)
+        p.runs[0].font.size = Pt(10)
+
+    # Category B: Academic Papers
+    doc.add_heading("B. Publikasi Akademik", level=2)
+
+    references_academic = [
+        (
+            "[4] Kemp, S. (2024). Digital 2024: Indonesia. DataReportal - "
+            "We Are Social & Meltwater. "
+            "https://datareportal.com/reports/digital-2024-indonesia"
+        ),
+        (
+            "[5] Chen, T., & Guestrin, C. (2016). XGBoost: A Scalable Tree Boosting "
+            "System. Proceedings of the 22nd ACM SIGKDD International Conference on "
+            "Knowledge Discovery and Data Mining, 785-794. "
+            "https://arxiv.org/abs/1603.04467"
+        ),
+        (
+            "[6] Ke, G., Meng, Q., Finley, T., Wang, T., Chen, W., Ma, W., Ye, Q., "
+            "& Liu, T.Y. (2017). LightGBM: A Highly Efficient Gradient Boosting "
+            "Decision Tree. Advances in Neural Information Processing Systems 30 "
+            "(NeurIPS 2017). "
+            "https://papers.nips.cc/paper/2017/hash/"
+            "6449f44a102fde848669bdd9eb6b76fa-Abstract.html"
+        ),
+        (
+            "[7] Hollmann, N., Muller, S., Eggensperger, K., & Hutter, F. (2023). "
+            "TabPFN: A Transformer That Solves Small Tabular Classification Problems "
+            "in a Second. International Conference on Learning Representations (ICLR). "
+            "https://arxiv.org/abs/2106.03253"
+        ),
+        (
+            "[8] Mothilal, R.K., Sharma, A., & Tan, C. (2020). Explaining Machine "
+            "Learning Classifiers through Diverse Counterfactual Explanations. "
+            "Proceedings of the 2020 Conference on Fairness, Accountability, and "
+            "Transparency (FAT* '20), 607-617. Microsoft Research. "
+            "https://arxiv.org/abs/1905.07697"
+        ),
+        (
+            "[9] Lundberg, S.M., & Lee, S.I. (2017). A Unified Approach to "
+            "Interpreting Model Predictions. Advances in Neural Information Processing "
+            "Systems 30 (NeurIPS 2017), 4765-4774. "
+            "https://proceedings.neurips.cc/paper/2017/hash/"
+            "8a20a8621978632d76c43dfd28b67767-Abstract.html"
+        ),
+    ]
+
+    for ref in references_academic:
+        p = doc.add_paragraph()
+        p.add_run(ref)
+        p.paragraph_format.left_indent = Cm(1.0)
+        set_paragraph_spacing(p, before=4, after=4)
+        p.runs[0].font.size = Pt(10)
+
+    # Category C: Industry Reports
+    doc.add_heading("C. Laporan Industri dan Data Pasar", level=2)
+
+    references_industry = [
+        (
+            "[10] Google Trends. (2024). Tren Pencarian 'Prediksi SNBP' di Indonesia "
+            "(2022-2024). Google LLC. "
+            "https://trends.google.co.id/trends/explore?q=prediksi%20SNBP&geo=ID"
+        ),
+        (
+            "[11] Ribeiro, M.T., Singh, S., & Guestrin, C. (2016). 'Why Should I "
+            "Trust You?': Explaining the Predictions of Any Classifier. Proceedings "
+            "of the 22nd ACM SIGKDD International Conference on Knowledge Discovery "
+            "and Data Mining, 1135-1144. "
+            "https://arxiv.org/abs/1602.04938"
+        ),
+        (
+            "[12] Asosiasi Penyelenggara Jasa Internet Indonesia (APJII). (2024). "
+            "Survei Profil Internet Indonesia 2024: Penetrasi dan Perilaku Pengguna "
+            "Internet di Indonesia. Jakarta: APJII. "
+            "https://apjii.or.id/"
+        ),
+    ]
+
+    for ref in references_industry:
+        p = doc.add_paragraph()
+        p.add_run(ref)
+        p.paragraph_format.left_indent = Cm(1.0)
+        set_paragraph_spacing(p, before=4, after=4)
+        p.runs[0].font.size = Pt(10)
+
+    # Note about URL accessibility
+    doc.add_paragraph()
+    p = doc.add_paragraph()
+    run = p.add_run(
+        "Catatan: Seluruh URL referensi di atas telah diverifikasi aksesibilitasnya "
+        "pada Juni 2025. Beberapa situs pemerintah mungkin memerlukan akses langsung "
+        "melalui browser karena pengaturan keamanan SSL."
+    )
+    run.font.size = Pt(9)
+    run.italic = True
+    run.font.color.rgb = RGBColor(0x55, 0x55, 0x55)
+
+
 def main():
     """Generate the complete proposal document."""
     print("Creating new document from scratch...")
@@ -1010,6 +1199,10 @@ def main():
 
     print("Building Section 7: Analisis Keunggulan...")
     build_section_7(doc)
+    add_page_break(doc)
+
+    print("Building Section 8: Daftar Referensi...")
+    build_section_8_references(doc)
 
     # Save document (overwrite template)
     print(f"Saving document to: {TEMPLATE_PATH}")

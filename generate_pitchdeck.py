@@ -414,6 +414,60 @@ def build_slide_9(slide):
     tf2.paragraphs[-1].alignment = PP_ALIGN.CENTER
 
 
+def build_slide_10(slide):
+    """Slide 10: Referensi."""
+    clear_slide(slide)
+
+    add_title_textbox(slide, "Referensi",
+                      left=Inches(0.7), top=Inches(0.3),
+                      width=Inches(12), height=Inches(0.9),
+                      font_size=Pt(32))
+
+    # Left column - Data Sources
+    tf_left = add_content_textbox(slide, Inches(0.7), Inches(1.3),
+                                  Inches(6.0), Inches(5.8))
+    set_first_paragraph(tf_left, "Sumber Data & Statistik:",
+                        font_size=Pt(16), bold=True, color=ACCENT_COLOR)
+
+    data_refs = [
+        "[1] SNPMB/LTMPT (2024) - Statistik SNBP",
+        "[2] BPS (2024) - Statistik Pendidikan Indonesia",
+        "[3] Kemendikbudristek (2023) - Data Guru BK",
+        "[4] DataReportal/We Are Social (2024) - Digital Indonesia",
+        "[10] Google Trends (2024) - Tren 'Prediksi SNBP'",
+        "[12] APJII (2024) - Penetrasi Internet Indonesia",
+    ]
+
+    for ref in data_refs:
+        add_bullet_point(tf_left, ref, font_size=Pt(14), space_before=Pt(8))
+
+    # Right column - Academic Papers
+    tf_right = add_content_textbox(slide, Inches(6.9), Inches(1.3),
+                                   Inches(6.0), Inches(5.8))
+    set_first_paragraph(tf_right, "Publikasi Akademik:",
+                        font_size=Pt(16), bold=True, color=ACCENT_COLOR)
+
+    academic_refs = [
+        "[5] Chen & Guestrin (2016) - XGBoost, KDD",
+        "[6] Ke et al. (2017) - LightGBM, NeurIPS",
+        "[7] Hollmann et al. (2023) - TabPFN, ICLR",
+        "[8] Mothilal et al. (2020) - DiCE, FAT*",
+        "[9] Lundberg & Lee (2017) - SHAP, NeurIPS",
+        "[11] Ribeiro et al. (2016) - LIME, KDD",
+    ]
+
+    for ref in academic_refs:
+        add_bullet_point(tf_right, ref, font_size=Pt(14), space_before=Pt(8))
+
+    # Add reference image (ML model comparison) at the bottom
+    img_path = os.path.join(SCRIPT_DIR, "references_images", "ml_model_comparison.png")
+    if os.path.exists(img_path):
+        img_width = Inches(4.5)
+        img_left = (SLIDE_WIDTH - img_width) // 2
+        slide.shapes.add_picture(img_path, img_left, Inches(5.5),
+                                 img_width, Inches(1.8))
+
+
 def main():
     """Main function to generate the pitch deck."""
     print("Loading template...")
@@ -433,12 +487,20 @@ def main():
         build_slide_7,
         build_slide_8,
         build_slide_9,
+        build_slide_10,
     ]
+
+    # Add extra slides if needed
+    while len(slides) < len(builders):
+        slide_layout = prs.slide_layouts[5]  # Blank layout
+        new_slide = prs.slides.add_slide(slide_layout)
+        slides = list(prs.slides)
+        print(f"  Added new slide (total: {len(slides)})")
 
     if len(slides) < len(builders):
         raise ValueError(
             f"Template has {len(slides)} slides but {len(builders)} are required. "
-            "Please ensure the PPTX template contains at least 9 slides."
+            "Please ensure the PPTX template contains at least 10 slides."
         )
 
     for i, builder in enumerate(builders):
