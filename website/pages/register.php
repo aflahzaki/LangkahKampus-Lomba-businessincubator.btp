@@ -47,6 +47,7 @@ if (is_logged_in()) {
 
                 <form id="registerForm" method="POST" action="<?php echo $base_path; ?>api/auth.php">
                     <input type="hidden" name="action" value="register">
+                    <input type="hidden" name="csrf_token" value="<?php echo generate_csrf_token(); ?>">
 
                     <!-- Step 1: Account Info -->
                     <div class="register-step active" id="step1">

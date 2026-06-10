@@ -47,7 +47,7 @@ function handleLogin()
 
     // CSRF verification
     $csrf_token = isset($_POST['csrf_token']) ? $_POST['csrf_token'] : '';
-    if (!empty($_SESSION['csrf_token']) && !verify_csrf_token($csrf_token)) {
+    if (!verify_csrf_token($csrf_token)) {
         flash_message('danger', 'Token keamanan tidak valid. Silakan coba lagi.');
         redirect('../pages/login.php');
         return;
@@ -142,7 +142,7 @@ function handleRegister()
 
     // CSRF verification
     $csrf_token = isset($_POST['csrf_token']) ? $_POST['csrf_token'] : '';
-    if (!empty($_SESSION['csrf_token']) && !verify_csrf_token($csrf_token)) {
+    if (!verify_csrf_token($csrf_token)) {
         flash_message('danger', 'Token keamanan tidak valid. Silakan coba lagi.');
         redirect('../pages/register.php');
         return;

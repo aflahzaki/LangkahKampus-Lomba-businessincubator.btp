@@ -50,6 +50,7 @@ if (is_logged_in()) {
 
                 <form id="loginForm" method="POST" action="<?php echo $base_path; ?>api/auth.php">
                     <input type="hidden" name="action" value="login">
+                    <input type="hidden" name="csrf_token" value="<?php echo generate_csrf_token(); ?>">
 
                     <div class="form-group">
                         <label class="form-label" for="email">Email</label>
