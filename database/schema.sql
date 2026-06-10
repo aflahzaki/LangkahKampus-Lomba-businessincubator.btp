@@ -1,0 +1,278 @@
+-- ============================================================
+-- LangkahKampus - Database Schema
+-- Platform Prediksi & Rekomendasi Perguruan Tinggi Berbasis AI
+-- MySQL 5.7+ Compatible
+-- ============================================================
+
+CREATE DATABASE IF NOT EXISTS langkahkampus
+    CHARACTER SET utf8mb4
+    COLLATE utf8mb4_unicode_ci;
+
+USE langkahkampus;
+
+-- ============================================================
+-- Table: users
+-- Stores all platform users (students, guru BK, school admins, platform admins)
+-- ============================================================
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    phone VARCHAR(20) NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    full_name VARCHAR(100) NOT NULL,
+    role ENUM('student', 'guru_bk', 'school_admin', 'platform_admin') NOT NULL DEFAULT 'student',
+    is_premium BOOLEAN NOT NULL DEFAULT FALSE,
+    subscription_expires_at DATETIME NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    last_login TIMESTAMP NULL,
+    is_active BOOLEAN NOT NULL DEFAULT TRUE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ============================================================
+-- Table: schools
+-- Stores high school data (SMA, SMK, MA) across Indonesia
+-- ============================================================
+CREATE TABLE schools (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    npsn VARCHAR(20) NOT NULL UNIQUE,
+    name VARCHAR(200) NOT NULL,
+    address TEXT NULL,
+    province VARCHAR(100) NOT NULL,
+    city VARCHAR(100) NOT NULL,
+    accreditation ENUM('A', 'B', 'C', 'Unaccredited') NOT NULL DEFAULT 'A',
+    school_type ENUM('SMA', 'SMK', 'MA') NOT NULL DEFAULT 'SMA',
+    latitude DECIMAL(10, 8) NULL,
+    longitude DECIMAL(11, 8) NULL,
+    total_students INT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ============================================================
+-- Table: universities
+-- Stores university data (PTN and PTS) across Indonesia
+-- ============================================================
+CREATE TABLE universities (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(200) NOT NULL,
+    code VARCHAR(20) NOT NULL UNIQUE,
+    type ENUM('PTN', 'PTS') NOT NULL DEFAULT 'PTN',
+    province VARCHAR(100) NOT NULL,
+    city VARCHAR(100) NOT NULL,
+    accreditation VARCHAR(10) NULL,
+    website VARCHAR(255) NULL,
+    latitude DECIMAL(10, 8) NULL,
+    longitude DECIMAL(11, 8) NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ============================================================
+-- Table: programs
+-- Stores study programs (prodi) offered by universities
+-- ============================================================
+CREATE TABLE programs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    university_id INT NOT NULL,
+    name VARCHAR(200) NOT NULL,
+    code VARCHAR(20) NULL,
+    faculty VARCHAR(200) NULL,
+    degree ENUM('S1', 'D4', 'D3') NOT NULL DEFAULT 'S1',
+    accreditation VARCHAR(10) NULL,
+    capacity INT NULL,
+    competition_ratio DECIMAL(5, 2) NULL,
+    min_score_avg DECIMAL(5, 2) NULL,
+    blocks_choice2 BOOLEAN NOT NULL DEFAULT FALSE,
+    CONSTRAINT fk_programs_university FOREIGN KEY (university_id)
+        REFERENCES universities(id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ============================================================
+-- Table: student_profiles
+-- Extended student profile with academic preferences and cognitive data
+-- ============================================================
+CREATE TABLE student_profiles (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    school_id INT NOT NULL,
+    nis VARCHAR(30) NULL,
+    grade_level INT NOT NULL DEFAULT 12,
+    major_track ENUM('IPA', 'IPS', 'Bahasa') NOT NULL DEFAULT 'IPA',
+    ranking_in_school INT NULL,
+    total_students INT NULL,
+    preference_vector JSON NULL,
+    cognitive_profile JSON NULL,
+    CONSTRAINT fk_student_user FOREIGN KEY (user_id)
+        REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_student_school FOREIGN KEY (school_id)
+        REFERENCES schools(id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ============================================================
+-- Table: academic_records
+-- Stores semester grades (rapor) for students
+-- ============================================================
+CREATE TABLE academic_records (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    student_id INT NOT NULL,
+    semester INT NOT NULL COMMENT 'Semester 1-5 (kelas 10-12)',
+    subject VARCHAR(100) NOT NULL,
+    score DECIMAL(5, 2) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_academic_student FOREIGN KEY (student_id)
+        REFERENCES student_profiles(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT chk_semester CHECK (semester BETWEEN 1 AND 5),
+    CONSTRAINT chk_score CHECK (score BETWEEN 0.00 AND 100.00)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ============================================================
+-- Table: predictions
+-- Stores AI prediction results for student-program pairs
+-- ============================================================
+CREATE TABLE predictions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    student_id INT NOT NULL,
+    program_id INT NOT NULL,
+    probability_score DECIMAL(5, 4) NOT NULL COMMENT '0.0000 to 1.0000',
+    confidence_lower DECIMAL(5, 4) NOT NULL,
+    confidence_upper DECIMAL(5, 4) NOT NULL,
+    model_version VARCHAR(50) NOT NULL DEFAULT 'v1.0',
+    scenario_type ENUM('base', 'what_if') NOT NULL DEFAULT 'base',
+    feature_importances JSON NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_predictions_student FOREIGN KEY (student_id)
+        REFERENCES student_profiles(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_predictions_program FOREIGN KEY (program_id)
+        REFERENCES programs(id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ============================================================
+-- Table: recommendations
+-- Stores alternative program recommendations based on predictions
+-- ============================================================
+CREATE TABLE recommendations (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    prediction_id INT NOT NULL,
+    recommended_program_id INT NOT NULL,
+    reason TEXT NULL,
+    probability_if_switched DECIMAL(5, 4) NOT NULL,
+    changes_needed JSON NULL,
+    rank_order INT NOT NULL DEFAULT 1,
+    CONSTRAINT fk_recommendations_prediction FOREIGN KEY (prediction_id)
+        REFERENCES predictions(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_recommendations_program FOREIGN KEY (recommended_program_id)
+        REFERENCES programs(id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ============================================================
+-- Table: payments
+-- Stores payment transactions for premium features
+-- ============================================================
+CREATE TABLE payments (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    amount DECIMAL(12, 2) NOT NULL,
+    currency VARCHAR(3) NOT NULL DEFAULT 'IDR',
+    payment_method VARCHAR(50) NOT NULL,
+    status ENUM('pending', 'success', 'failed', 'expired') NOT NULL DEFAULT 'pending',
+    package_type ENUM('basic_prediction', 'deep_recommendation', 'monthly_premium', 'yearly_premium') NOT NULL,
+    transaction_id VARCHAR(100) NOT NULL UNIQUE,
+    paid_at TIMESTAMP NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_payments_user FOREIGN KEY (user_id)
+        REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ============================================================
+-- Table: school_configs
+-- Stores school-level configuration and subscription info
+-- ============================================================
+CREATE TABLE school_configs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    school_id INT NOT NULL,
+    max_students_per_program INT NOT NULL DEFAULT 3,
+    notification_email VARCHAR(255) NULL,
+    subscription_plan ENUM('free', 'basic', 'pro', 'enterprise') NOT NULL DEFAULT 'free',
+    subscription_expires_at DATETIME NULL,
+    CONSTRAINT fk_school_configs_school FOREIGN KEY (school_id)
+        REFERENCES schools(id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ============================================================
+-- Table: notifications
+-- Stores user notifications
+-- ============================================================
+CREATE TABLE notifications (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    type ENUM('prediction_ready', 'payment_success', 'recommendation', 'system', 'warning') NOT NULL DEFAULT 'system',
+    title VARCHAR(200) NOT NULL,
+    message TEXT NULL,
+    is_read BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_notifications_user FOREIGN KEY (user_id)
+        REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ============================================================
+-- Table: audit_logs
+-- Stores system activity logs for compliance and debugging
+-- ============================================================
+CREATE TABLE audit_logs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NULL,
+    action VARCHAR(100) NOT NULL,
+    entity_type VARCHAR(50) NULL,
+    entity_id INT NULL,
+    details JSON NULL,
+    ip_address VARCHAR(45) NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ============================================================
+-- Table: admission_history
+-- Historical admission data for prediction model training
+-- ============================================================
+CREATE TABLE admission_history (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    program_id INT NOT NULL,
+    school_id INT NOT NULL,
+    year INT NOT NULL,
+    applicants INT NOT NULL DEFAULT 0,
+    accepted INT NOT NULL DEFAULT 0,
+    min_score DECIMAL(5, 2) NULL,
+    avg_score DECIMAL(5, 2) NULL,
+    CONSTRAINT fk_admission_program FOREIGN KEY (program_id)
+        REFERENCES programs(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_admission_school FOREIGN KEY (school_id)
+        REFERENCES schools(id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ============================================================
+-- INDEXES
+-- ============================================================
+
+-- Users: fast email lookup for login
+CREATE INDEX idx_users_email ON users(email);
+
+-- Student profiles: lookup by school
+CREATE INDEX idx_student_school ON student_profiles(school_id);
+
+-- Predictions: lookup by student
+CREATE INDEX idx_predictions_student ON predictions(student_id);
+
+-- Academic records: lookup by student and semester
+CREATE INDEX idx_academic_student_semester ON academic_records(student_id, semester);
+
+-- Admission history: lookup by program and year
+CREATE INDEX idx_admission_program_year ON admission_history(program_id, year);
+
+-- Payments: lookup by user
+CREATE INDEX idx_payments_user ON payments(user_id);
+
+-- Notifications: unread notifications per user
+CREATE INDEX idx_notifications_user_unread ON notifications(user_id, is_read);
+
+-- Additional useful indexes
+CREATE INDEX idx_programs_university ON programs(university_id);
+CREATE INDEX idx_predictions_program ON predictions(program_id);
+CREATE INDEX idx_audit_logs_user ON audit_logs(user_id);
+CREATE INDEX idx_audit_logs_created ON audit_logs(created_at);
+CREATE INDEX idx_school_configs_school ON school_configs(school_id);
