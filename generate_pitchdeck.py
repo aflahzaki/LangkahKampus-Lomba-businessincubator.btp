@@ -497,11 +497,9 @@ def main():
         slides = list(prs.slides)
         print(f"  Added new slide (total: {len(slides)})")
 
-    if len(slides) < len(builders):
-        raise ValueError(
-            f"Template has {len(slides)} slides but {len(builders)} are required. "
-            "Please ensure the PPTX template contains at least 10 slides."
-        )
+    assert len(slides) >= len(builders), (
+        f"Expected at least {len(builders)} slides, got {len(slides)}"
+    )
 
     for i, builder in enumerate(builders):
         print(f"Building slide {i + 1}...")

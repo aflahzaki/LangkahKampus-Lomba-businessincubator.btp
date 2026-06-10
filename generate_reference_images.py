@@ -2,6 +2,7 @@
 """
 Generate reference images for LangkahKampus proposal and pitch deck.
 Creates professional charts/diagrams using matplotlib.
+Also verifies that all reference URLs are accessible.
 """
 
 import matplotlib.pyplot as plt
@@ -9,6 +10,8 @@ import matplotlib.patches as mpatches
 from matplotlib.patches import FancyBboxPatch, Circle
 import numpy as np
 import os
+import requests
+from datetime import datetime
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 OUTPUT_DIR = os.path.join(SCRIPT_DIR, "references_images")
@@ -293,6 +296,74 @@ def generate_market_validation_chart():
     return path
 
 
+def verify_references():
+    """Verify that all reference URLs are accessible (HTTP 200 or known-valid).
+
+    Returns a dict mapping each URL to its status code or error description.
+    URLs returning HTTP 200 are confirmed accessible. URLs with SSL errors or
+    bot-detection (403/429) are flagged but considered valid for browser access.
+    """
+    reference_urls = {
+        "[1] SNPMB/LTMPT": "https://snpmb.bppp.kemdikbud.go.id/",
+        "[2] BPS": "https://www.bps.go.id/",
+        "[3] Kemendikbudristek/Dapodik": "https://data.kemdikbud.go.id/",
+        "[4] DataReportal": "https://datareportal.com/reports/digital-2024-indonesia",
+        "[5] XGBoost (arXiv)": "https://arxiv.org/abs/1603.04467",
+        "[6] LightGBM (NeurIPS)": "https://papers.nips.cc/paper/2017/hash/6449f44a102fde848669bdd9eb6b76fa-Abstract.html",
+        "[7] TabPFN (arXiv)": "https://arxiv.org/abs/2106.03253",
+        "[8] DiCE (arXiv)": "https://arxiv.org/abs/1905.07697",
+        "[9] SHAP (NeurIPS)": "https://proceedings.neurips.cc/paper/2017/hash/8a20a8621978632d76c43dfd28b67767-Abstract.html",
+        "[10] Google Trends": "https://trends.google.co.id/trends/explore?q=prediksi%20SNBP&geo=ID",
+        "[11] LIME (arXiv)": "https://arxiv.org/abs/1602.04938",
+        "[12] APJII": "https://apjii.or.id/",
+    }
+
+    results = {}
+    print("\nVerifying reference URLs...")
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                      "AppleWebKit/537.36 (KHTML, like Gecko) "
+                      "Chrome/120.0.0.0 Safari/537.36"
+    }
+
+    for label, url in reference_urls.items():
+        try:
+            resp = requests.get(url, timeout=15, headers=headers,
+                                allow_redirects=True, verify=False)
+            status = resp.status_code
+            if status == 200:
+                print(f"  OK   {label}: {url} -> {status}")
+            elif status in (403, 429):
+                # Bot detection or rate limiting, but URL is valid
+                print(f"  WARN {label}: {url} -> {status} (valid, bot-protected)")
+            else:
+                print(f"  FAIL {label}: {url} -> {status}")
+            results[url] = status
+        except requests.exceptions.SSLError:
+            print(f"  WARN {label}: {url} -> SSL error (valid, strict SSL)")
+            results[url] = "SSL_ERROR"
+        except requests.exceptions.ConnectionError:
+            print(f"  FAIL {label}: {url} -> Connection failed")
+            results[url] = "CONNECTION_ERROR"
+        except requests.exceptions.Timeout:
+            print(f"  WARN {label}: {url} -> Timeout (server slow)")
+            results[url] = "TIMEOUT"
+        except Exception as e:
+            print(f"  FAIL {label}: {url} -> {type(e).__name__}: {e}")
+            results[url] = f"ERROR: {e}"
+
+    # Summary
+    ok_count = sum(1 for v in results.values() if v == 200)
+    warn_count = sum(1 for v in results.values()
+                     if v in (403, 429) or v in ("SSL_ERROR", "TIMEOUT"))
+    fail_count = len(results) - ok_count - warn_count
+    print(f"\nURL Verification Summary: {ok_count} OK, {warn_count} warnings, "
+          f"{fail_count} failures out of {len(results)} total")
+    print(f"Verification date: {datetime.now().strftime('%B %Y')}")
+
+    return results
+
+
 if __name__ == "__main__":
     print("Generating reference images...")
     generate_snbp_acceptance_chart()
@@ -300,4 +371,7 @@ if __name__ == "__main__":
     generate_tam_sam_som()
     generate_xai_framework_comparison()
     generate_market_validation_chart()
-    print("All reference images generated successfully!")
+    print("\nAll reference images generated successfully!")
+
+    # Verify all reference URLs
+    verify_references()

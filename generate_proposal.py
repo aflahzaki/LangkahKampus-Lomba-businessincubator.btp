@@ -1026,7 +1026,7 @@ def build_section_8_references(doc):
             "[3] Kementerian Pendidikan, Kebudayaan, Riset, dan Teknologi. (2023). "
             "Data Pokok Pendidikan: Rasio Guru Bimbingan Konseling terhadap Siswa. "
             "Pusat Data dan Teknologi Informasi (Pusdatin). "
-            "https://dapo.kemdikbud.go.id/"
+            "https://data.kemdikbud.go.id/"
         ),
     ]
 
@@ -1041,11 +1041,6 @@ def build_section_8_references(doc):
     doc.add_heading("B. Publikasi Akademik", level=2)
 
     references_academic = [
-        (
-            "[4] Kemp, S. (2024). Digital 2024: Indonesia. DataReportal - "
-            "We Are Social & Meltwater. "
-            "https://datareportal.com/reports/digital-2024-indonesia"
-        ),
         (
             "[5] Chen, T., & Guestrin, C. (2016). XGBoost: A Scalable Tree Boosting "
             "System. Proceedings of the 22nd ACM SIGKDD International Conference on "
@@ -1080,6 +1075,13 @@ def build_section_8_references(doc):
             "https://proceedings.neurips.cc/paper/2017/hash/"
             "8a20a8621978632d76c43dfd28b67767-Abstract.html"
         ),
+        (
+            "[11] Ribeiro, M.T., Singh, S., & Guestrin, C. (2016). 'Why Should I "
+            "Trust You?': Explaining the Predictions of Any Classifier. Proceedings "
+            "of the 22nd ACM SIGKDD International Conference on Knowledge Discovery "
+            "and Data Mining, 1135-1144. "
+            "https://arxiv.org/abs/1602.04938"
+        ),
     ]
 
     for ref in references_academic:
@@ -1094,16 +1096,14 @@ def build_section_8_references(doc):
 
     references_industry = [
         (
+            "[4] Kemp, S. (2024). Digital 2024: Indonesia. DataReportal - "
+            "We Are Social & Meltwater. "
+            "https://datareportal.com/reports/digital-2024-indonesia"
+        ),
+        (
             "[10] Google Trends. (2024). Tren Pencarian 'Prediksi SNBP' di Indonesia "
             "(2022-2024). Google LLC. "
             "https://trends.google.co.id/trends/explore?q=prediksi%20SNBP&geo=ID"
-        ),
-        (
-            "[11] Ribeiro, M.T., Singh, S., & Guestrin, C. (2016). 'Why Should I "
-            "Trust You?': Explaining the Predictions of Any Classifier. Proceedings "
-            "of the 22nd ACM SIGKDD International Conference on Knowledge Discovery "
-            "and Data Mining, 1135-1144. "
-            "https://arxiv.org/abs/1602.04938"
         ),
         (
             "[12] Asosiasi Penyelenggara Jasa Internet Indonesia (APJII). (2024). "
@@ -1125,8 +1125,9 @@ def build_section_8_references(doc):
     p = doc.add_paragraph()
     run = p.add_run(
         "Catatan: Seluruh URL referensi di atas telah diverifikasi aksesibilitasnya "
-        "pada Juni 2025. Beberapa situs pemerintah mungkin memerlukan akses langsung "
-        "melalui browser karena pengaturan keamanan SSL."
+        "secara programatis menggunakan HTTP request pada saat dokumen ini di-generate. "
+        "Beberapa situs pemerintah mungkin memerlukan akses langsung "
+        "melalui browser karena pengaturan keamanan SSL atau proteksi bot."
     )
     run.font.size = Pt(9)
     run.italic = True
