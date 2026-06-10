@@ -11,9 +11,10 @@ from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
 from pptx.enum.shapes import MSO_SHAPE
 import os
 
-# Constants
-PPTX_FILE = "Pitchdeck Business Idea Competition.pptx"
-LOGO_FILE = "Logo LangkahKampus.png"
+# Paths
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+PPTX_FILE = os.path.join(SCRIPT_DIR, "Pitchdeck Business Idea Competition.pptx")
+LOGO_FILE = os.path.join(SCRIPT_DIR, "Logo LangkahKampus.png")
 TITLE_COLOR = RGBColor(0x2E, 0x40, 0x57)  # Dark blue #2E4057
 BODY_COLOR = RGBColor(0x33, 0x33, 0x33)  # Dark gray for body
 ACCENT_COLOR = RGBColor(0x1A, 0x73, 0xE8)  # Blue accent
@@ -433,6 +434,12 @@ def main():
         build_slide_8,
         build_slide_9,
     ]
+
+    if len(slides) < len(builders):
+        raise ValueError(
+            f"Template has {len(slides)} slides but {len(builders)} are required. "
+            "Please ensure the PPTX template contains at least 9 slides."
+        )
 
     for i, builder in enumerate(builders):
         print(f"Building slide {i + 1}...")

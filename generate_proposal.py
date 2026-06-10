@@ -949,6 +949,15 @@ def main():
     print("Creating new document from scratch...")
     doc = Document()
 
+    # Set page dimensions to match competition template (Letter size, 1-inch margins)
+    section = doc.sections[0]
+    section.page_width = Inches(8.5)
+    section.page_height = Inches(11)
+    section.top_margin = Inches(1)
+    section.bottom_margin = Inches(1)
+    section.left_margin = Inches(1)
+    section.right_margin = Inches(1)
+
     # Set default font
     style = doc.styles["Normal"]
     font = style.font
