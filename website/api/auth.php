@@ -276,6 +276,37 @@ function handleRegister()
             $updateInvite->execute([':guru_id' => $userId, ':id' => $inviteRecord['id']]);
         }
 
+        // Create student_profiles row for siswa registration
+        if ($role === 'student') {
+            $school_name = isset($_POST['school_name']) ? trim($_POST['school_name']) : '';
+            $major_track = isset($_POST['major_track']) ? trim($_POST['major_track']) : 'IPA';
+
+            // Map school name to school_id (demo schools)
+            $school_map = [
+                'SMAN 3 Jakarta' => 1,
+                'SMAN 3 Bandung' => 2,
+                'SMAN 5 Surabaya' => 3,
+                'SMAN 1 Yogyakarta' => 4,
+                'SMA Labschool Jakarta' => 5,
+            ];
+            $school_id = isset($school_map[$school_name]) ? $school_map[$school_name] : 1;
+
+            // Validate major_track
+            $allowed_tracks = ['IPA', 'IPS', 'Bahasa'];
+            if (!in_array($major_track, $allowed_tracks)) {
+                $major_track = 'IPA';
+            }
+
+            $profileStmt = $pdo->prepare(
+                'INSERT INTO student_profiles (user_id, school_id, major_track, grade_level) VALUES (:user_id, :school_id, :major_track, 12)'
+            );
+            $profileStmt->execute([
+                ':user_id' => $userId,
+                ':school_id' => $school_id,
+                ':major_track' => $major_track,
+            ]);
+        }
+
         // Set session variables (auto-login after registration)
         $_SESSION['user_id'] = $userId;
         $_SESSION['user_email'] = $email;

@@ -91,9 +91,14 @@ function handleGenerateCode()
             ':code' => $code,
         ]);
 
-        flash_message('success', 'Kode undangan berhasil dibuat: ' . $code);
+        // Code is safe to display directly (alphanumeric only from controlled charset)
+        flash_message('success', 'Kode undangan berhasil dibuat: ' . htmlspecialchars($code, ENT_QUOTES, 'UTF-8'));
         redirect('../pages/dashboard_student.php');
 
+    } catch (RuntimeException $e) {
+        error_log('Invite code generation error: ' . $e->getMessage());
+        flash_message('danger', 'Gagal membuat kode undangan. Silakan coba lagi.');
+        redirect('../pages/dashboard_student.php');
     } catch (PDOException $e) {
         error_log('Invite code generation error: ' . $e->getMessage());
         flash_message('danger', 'Terjadi kesalahan sistem. Silakan coba lagi.');
@@ -102,15 +107,19 @@ function handleGenerateCode()
 }
 
 /**
- * Generate a unique 6-character code
+ * Generate a unique 6-character code using cryptographically secure randomness
  */
 function generateUniqueCode($pdo)
 {
     $chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-    $max_attempts = 10;
+    $chars_len = strlen($chars);
+    $max_attempts = 20;
 
     for ($i = 0; $i < $max_attempts; $i++) {
-        $code = substr(str_shuffle($chars), 0, 6);
+        $code = '';
+        for ($j = 0; $j < 6; $j++) {
+            $code .= $chars[random_int(0, $chars_len - 1)];
+        }
 
         // Check uniqueness
         $checkStmt = $pdo->prepare('SELECT id FROM invite_codes WHERE code = :code LIMIT 1');
@@ -121,6 +130,6 @@ function generateUniqueCode($pdo)
         }
     }
 
-    // Fallback - extremely unlikely
-    return substr(str_shuffle($chars), 0, 6);
+    // If all attempts collide, throw an exception rather than returning an unchecked code
+    throw new RuntimeException('Unable to generate a unique invite code after ' . $max_attempts . ' attempts.');
 }

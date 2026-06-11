@@ -1,9 +1,17 @@
 <?php
 $page_title = 'Dashboard Guru';
 $page_scripts = ['dashboard.js'];
-include '../includes/header.php';
-require_once $base_path . 'includes/auth_middleware.php';
+
+// Auth middleware must run before any HTML output to avoid "headers already sent" issues
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+require_once __DIR__ . '/../config/app.php';
+require_once __DIR__ . '/../includes/functions.php';
+require_once __DIR__ . '/../includes/auth_middleware.php';
 require_role(['guru']);
+
+include '../includes/header.php';
 
 // Current guru info
 $guru_name = isset($_SESSION['user_name']) ? $_SESSION['user_name'] : 'Bu Ratna';
@@ -85,6 +93,22 @@ $total_students = count($linked_students);
                     <p>Rata-rata Peluang Siswa</p>
                 </div>
             </div>
+        </div>
+
+        <!-- Claim Invite Code -->
+        <div class="card mb-3" data-aos="fade-up" data-aos-delay="50">
+            <h3 class="mb-2"><i class="fas fa-key"></i> Klaim Kode Undangan</h3>
+            <p class="text-muted mb-2">Masukkan kode undangan dari siswa untuk menambahkan mereka ke daftar bimbingan Anda.</p>
+            <form action="<?php echo $base_path; ?>api/guru.php" method="POST" class="d-flex align-center gap-2 flex-wrap">
+                <input type="hidden" name="action" value="claim_code">
+                <input type="hidden" name="csrf_token" value="<?php echo generate_csrf_token(); ?>">
+                <div class="form-group" style="margin-bottom:0;flex:1;min-width:200px;">
+                    <input type="text" name="invite_code" class="form-control" placeholder="Masukkan 6 karakter kode" maxlength="6" pattern="[A-Za-z0-9]{6}" required style="text-transform:uppercase;">
+                </div>
+                <button type="submit" class="btn btn-primary btn-sm btn-ripple">
+                    <i class="fas fa-plus-circle"></i> Klaim Kode
+                </button>
+            </form>
         </div>
 
         <!-- Student List Table -->
