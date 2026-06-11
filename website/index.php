@@ -61,7 +61,7 @@ include 'includes/header.php';
                     <i class="fas fa-shield-alt"></i>
                 </div>
                 <h3>Anti-Bentrok</h3>
-                <p>Sistem monitoring slot real-time untuk Guru BK. Pantau kuota dan hindari penumpukan siswa pada satu program studi.</p>
+                <p>Lihat berapa banyak siswa dari sekolahmu yang memilih program studi yang sama. Informasi statistik untuk strategi SNBP.</p>
             </div>
 
             <div class="feature-card hover-lift" data-aos="fade-up" data-aos-delay="300">
@@ -90,10 +90,10 @@ include 'includes/header.php';
 
             <div class="feature-card hover-lift" data-aos="fade-up" data-aos-delay="600">
                 <div class="feature-icon">
-                    <i class="fas fa-chart-line"></i>
+                    <i class="fas fa-chalkboard-teacher"></i>
                 </div>
-                <h3>Dashboard Sekolah</h3>
-                <p>Panel analitik untuk admin sekolah. Lihat statistik prediksi, success rate, dan kelola akun Guru BK.</p>
+                <h3>Evaluasi Guru</h3>
+                <p>Guru BK terhubung dapat memberikan evaluasi dan saran langsung kepada siswa melalui kode undangan.</p>
             </div>
         </div>
     </div>
@@ -235,10 +235,10 @@ include 'includes/header.php';
             <div class="testimonial-slide">
                 <div class="testimonial-card">
                     <div class="testimonial-text">
-                        "Fitur Anti-Bentrok sangat membantu saya sebagai Guru BK. Sekarang saya bisa memantau pilihan siswa dan menghindari penumpukan di satu prodi."
+                        "Fitur Anti-Bentrok sangat membantu saya memahami berapa banyak teman sekolah yang juga memilih prodi yang sama. Jadi saya bisa menyusun strategi pilihan SNBP dengan lebih baik."
                     </div>
-                    <div class="testimonial-author">Bapak Hendra Wijaya</div>
-                    <div class="testimonial-role">Guru BK SMAN 1 Jakarta</div>
+                    <div class="testimonial-author">Budi Santoso</div>
+                    <div class="testimonial-role">Siswa SMAN 1 Jakarta - Diterima di UI</div>
                 </div>
             </div>
 
@@ -255,10 +255,10 @@ include 'includes/header.php';
             <div class="testimonial-slide">
                 <div class="testimonial-card">
                     <div class="testimonial-text">
-                        "Sebagai admin sekolah, dashboard analytics LangkahKampus membantu kami memahami tren penerimaan siswa dan meningkatkan strategi bimbingan."
+                        "Sebagai guru BK, fitur evaluasi di LangkahKampus memudahkan saya memberikan bimbingan langsung ke siswa. Saya bisa melihat prediksi mereka dan menambahkan komentar."
                     </div>
                     <div class="testimonial-author">Ibu Sari Dewi</div>
-                    <div class="testimonial-role">Admin SMAN 2 Semarang</div>
+                    <div class="testimonial-role">Guru BK SMAN 2 Semarang</div>
                 </div>
             </div>
 

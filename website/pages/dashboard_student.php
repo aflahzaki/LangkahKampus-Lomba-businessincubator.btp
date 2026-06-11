@@ -158,8 +158,54 @@ $is_premium = isset($_SESSION['is_premium']) ? $_SESSION['is_premium'] : false;
             </div>
         </div>
 
+        <!-- Undang Guru Section -->
+        <div class="card mb-3" data-aos="fade-up" data-aos-delay="400">
+            <h4 class="mb-2"><i class="fas fa-user-plus"></i> Undang Guru</h4>
+            <p class="text-muted mb-2">Bagikan kode ini ke guru BK Anda untuk mengundang mereka ke LangkahKampus</p>
+
+            <?php
+            // Demo invite codes for this student
+            $demo_invite_codes = [
+                ['code' => 'ABC123', 'is_active' => false, 'used_by' => 'Bu Ratna Sari'],
+                ['code' => 'DEF456', 'is_active' => true, 'used_by' => null],
+            ];
+            $active_codes = array_filter($demo_invite_codes, function($c) { return $c['is_active']; });
+            $active_count = count($active_codes);
+            ?>
+
+            <div style="background:rgba(26,115,232,0.05);border-radius:var(--radius-sm);padding:1rem;margin-bottom:1rem;">
+                <p style="font-size:0.85rem;margin-bottom:0.5rem;"><strong>Kode Aktif (<?php echo $active_count; ?>/2):</strong></p>
+                <?php foreach ($demo_invite_codes as $invite): ?>
+                <div class="d-flex align-center gap-1 mb-1">
+                    <code style="font-size:1.1rem;font-weight:700;letter-spacing:2px;padding:0.25rem 0.75rem;background:var(--color-bg);border-radius:var(--radius-sm);"><?php echo $invite['code']; ?></code>
+                    <?php if ($invite['is_active']): ?>
+                        <span class="badge badge-success">Aktif</span>
+                        <button onclick="navigator.clipboard.writeText('<?php echo $invite['code']; ?>');this.innerHTML='<i class=\'fas fa-check\'></i> Disalin';" class="btn btn-sm btn-outline" style="border-color:var(--color-accent-blue);color:var(--color-accent-blue);font-size:0.75rem;">
+                            <i class="fas fa-copy"></i> Salin
+                        </button>
+                    <?php else: ?>
+                        <span class="badge badge-warning">Digunakan</span>
+                        <small class="text-muted">oleh <?php echo htmlspecialchars($invite['used_by']); ?></small>
+                    <?php endif; ?>
+                </div>
+                <?php endforeach; ?>
+            </div>
+
+            <?php if ($active_count < 2): ?>
+            <form action="<?php echo $base_path; ?>api/invite.php" method="POST" style="display:inline;">
+                <input type="hidden" name="action" value="generate">
+                <input type="hidden" name="csrf_token" value="<?php echo generate_csrf_token(); ?>">
+                <button type="submit" class="btn btn-primary btn-sm btn-ripple">
+                    <i class="fas fa-plus-circle"></i> Generate Kode Baru
+                </button>
+            </form>
+            <?php else: ?>
+            <p class="text-muted" style="font-size:0.85rem;"><i class="fas fa-info-circle"></i> Anda sudah memiliki 2 kode aktif (maksimal).</p>
+            <?php endif; ?>
+        </div>
+
         <!-- Quick Actions -->
-        <div class="card mb-4" data-aos="fade-up" data-aos-delay="400">
+        <div class="card mb-4" data-aos="fade-up" data-aos-delay="500">
             <h4 class="mb-2"><i class="fas fa-bolt"></i> Aksi Cepat</h4>
             <div class="d-flex flex-wrap gap-2">
                 <a href="prediksi.php" class="btn btn-primary btn-ripple"><i class="fas fa-brain"></i> Prediksi Baru</a>

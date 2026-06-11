@@ -16,7 +16,6 @@
 - **Anti Bentrok** - Validasi kombinasi pilihan prodi agar tidak saling memblokir
 - **Validator Dokumen** - Pemeriksaan kelengkapan berkas pendaftaran SNBP
 - **Dashboard Guru BK** - Monitoring dan pembimbingan siswa oleh Guru Bimbingan Konseling
-- **Admin Sekolah** - Pengelolaan data sekolah dan akreditasi
 - **Sistem Pembayaran** - Fitur premium dengan berbagai metode pembayaran
 - **Animasi Interaktif** - Particle background, scroll animations (AOS), dan gauge animasi
 
@@ -136,7 +135,7 @@ LangkahKampus/
 │       ├── validator.php       # Validator dokumen
 │       ├── pembayaran.php      # Halaman pembayaran
 │       ├── profil.php          # Profil pengguna
-│       ├── admin_sekolah.php   # Panel admin sekolah
+│       ├── dashboard_guru.php  # Dashboard guru
 │       └── tentang.php         # Halaman tentang
 └── README.md
 ```

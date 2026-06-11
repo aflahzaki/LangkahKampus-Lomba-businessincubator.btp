@@ -51,31 +51,66 @@ require_once $base_path . 'includes/functions.php';
             </a>
 
             <ul class="nav-menu" id="navMenu">
-                <li class="nav-item">
-                    <a href="<?php echo $base_path; ?>index.php" class="nav-link">Beranda</a>
-                </li>
-                <li class="nav-item">
-                    <a href="<?php echo $base_path; ?>index.php#fitur" class="nav-link">Fitur</a>
-                </li>
-                <li class="nav-item">
-                    <a href="<?php echo $base_path; ?>pages/prediksi.php" class="nav-link">Prediksi</a>
-                </li>
-                <li class="nav-item">
-                    <a href="<?php echo $base_path; ?>pages/peta_universitas.php" class="nav-link">Peta PTN</a>
-                </li>
-                <li class="nav-item">
-                    <a href="<?php echo $base_path; ?>index.php#harga" class="nav-link">Harga</a>
-                </li>
-                <li class="nav-item">
-                    <a href="<?php echo $base_path; ?>pages/tentang.php" class="nav-link">Tentang</a>
-                </li>
+                <?php if (is_logged_in()): ?>
+                    <?php $nav_user = get_user(); ?>
+                    <?php if ($nav_user['role'] === 'guru'): ?>
+                        <!-- Guru Navigation -->
+                        <li class="nav-item">
+                            <a href="<?php echo $base_path; ?>index.php" class="nav-link">Beranda</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?php echo $base_path; ?>pages/dashboard_guru.php" class="nav-link">Siswa Saya</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?php echo $base_path; ?>pages/profil.php" class="nav-link">Profil</a>
+                        </li>
+                    <?php else: ?>
+                        <!-- Student Navigation -->
+                        <li class="nav-item">
+                            <a href="<?php echo $base_path; ?>index.php" class="nav-link">Beranda</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?php echo $base_path; ?>pages/prediksi.php" class="nav-link">Prediksi</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?php echo $base_path; ?>pages/rekomendasi.php" class="nav-link">Rekomendasi</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?php echo $base_path; ?>pages/peta_universitas.php" class="nav-link">Peta Universitas</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?php echo $base_path; ?>pages/validator.php" class="nav-link">Validator</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?php echo $base_path; ?>pages/pembayaran.php" class="nav-link">Pembayaran</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?php echo $base_path; ?>pages/profil.php" class="nav-link">Profil</a>
+                        </li>
+                    <?php endif; ?>
+                <?php else: ?>
+                    <!-- Guest Navigation -->
+                    <li class="nav-item">
+                        <a href="<?php echo $base_path; ?>index.php" class="nav-link">Beranda</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="<?php echo $base_path; ?>pages/tentang.php" class="nav-link">Tentang</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="<?php echo $base_path; ?>pages/login.php" class="nav-link">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="<?php echo $base_path; ?>pages/register.php" class="nav-link">Daftar</a>
+                    </li>
+                <?php endif; ?>
             </ul>
 
             <div class="nav-actions">
                 <?php if (is_logged_in()): ?>
-                    <?php $user = get_user(); ?>
-                    <a href="<?php echo $base_path; ?>pages/dashboard_student.php" class="btn btn-outline btn-sm">
-                        <i class="fas fa-user-circle"></i> <?php echo htmlspecialchars($user['full_name']); ?>
+                    <?php $action_user = get_user(); ?>
+                    <?php $dashboard_link = ($action_user['role'] === 'guru') ? $base_path . 'pages/dashboard_guru.php' : $base_path . 'pages/dashboard_student.php'; ?>
+                    <a href="<?php echo $dashboard_link; ?>" class="btn btn-outline btn-sm">
+                        <i class="fas fa-user-circle"></i> <?php echo htmlspecialchars($action_user['full_name']); ?>
                     </a>
                     <a href="<?php echo $base_path; ?>api/auth.php?action=logout" class="btn btn-sm btn-ghost">Keluar</a>
                 <?php else: ?>
