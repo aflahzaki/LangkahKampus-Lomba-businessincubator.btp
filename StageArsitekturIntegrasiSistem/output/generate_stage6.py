@@ -157,26 +157,22 @@ def generate_stage6():
     add_table(doc,
         headers=["Kategori", "Standar Teknologi", "Versi/Spek", "Rasional", "Fase Adopsi"],
         rows=[
-            ["Cloud Platform", "Google Cloud Platform (GCP)", "Current", "Harga kompetitif untuk startup, ML tools (Vertex AI), regional presence Jakarta", "Fase 1"],
-            ["Container Runtime", "Docker", "24.x", "Industry standard containerization, portability, reproducibility", "Fase 1"],
-            ["Container Orchestration", "Kubernetes (GKE)", "1.28+", "Auto-scaling, self-healing, service discovery, rolling updates", "Fase 1"],
-            ["Service Mesh", "Istio", "1.20+", "mTLS, traffic management, observability, canary deployments", "Fase 2"],
-            ["CI/CD Pipeline", "GitHub Actions + ArgoCD", "Current", "GitOps workflow, automated testing, declarative deployments", "Fase 1"],
-            ["Database (Primary)", "PostgreSQL", "15+", "ACID compliance, JSON support, PostGIS, proven reliability", "Fase 1"],
-            ["Database (Cache)", "Redis", "7.x", "In-memory speed, pub/sub, feature store, session management", "Fase 1"],
-            ["Message Broker", "Redis Streams (Phase 1) / Kafka (Phase 3)", "7.x / 3.6+", "Event-driven architecture, async processing, decoupling", "Fase 1/3"],
-            ["CDN", "Cloudflare", "Enterprise", "Global edge, DDoS protection, SSL termination, caching", "Fase 1"],
-            ["Monitoring (Metrics)", "Prometheus + Grafana", "Latest stable", "Time-series metrics, alerting, custom dashboards", "Fase 1"],
-            ["Monitoring (Logging)", "Loki + Grafana", "Latest stable", "Log aggregation, correlation with metrics, cost-effective", "Fase 1"],
-            ["Monitoring (Tracing)", "Jaeger / OpenTelemetry", "Latest stable", "Distributed tracing, latency analysis, dependency mapping", "Fase 2"],
-            ["ML Training", "MLflow + Vertex AI", "Latest", "Experiment tracking, model versioning, managed training", "Fase 1"],
-            ["ML Serving", "FastAPI + ONNX Runtime", "Latest", "Low-latency inference, model optimization, GPU support", "Fase 1"],
-            ["Secrets Management", "Google Secret Manager + Vault", "Latest", "Centralized secrets, rotation, audit trail", "Fase 1"],
-            ["DNS Management", "Cloudflare DNS", "Enterprise", "Fast propagation, DDoS protection, geo-routing", "Fase 1"],
+            ["Web Server", "Nginx + PHP-FPM", "Latest stable", "High performance PHP serving, reverse proxy capability, SSL termination", "Fase 1"],
+            ["Backend Language", "PHP", "8.x", "Mature ecosystem, vanilla approach untuk simplicity, banyak hosting support", "Fase 1"],
+            ["ML Service", "Python + FastAPI", "3.11+ / 0.100+", "ML ecosystem terbaik di Python, FastAPI untuk high-performance API serving", "Fase 1"],
+            ["Database (Primary)", "MySQL / PostgreSQL", "8.x / 15+", "Reliable RDBMS, ACID compliance, JSON support untuk flexible data", "Fase 1"],
+            ["Database (Cache)", "Redis", "7.x", "In-memory speed untuk session management, caching, dan ML feature store", "Fase 1"],
+            ["CDN", "Cloudflare", "Free/Pro", "Global edge caching, DDoS protection, SSL, performance optimization", "Fase 1"],
+            ["Payment Gateway", "Midtrans / Xendit", "Latest SDK", "Indonesian payment support, multiple methods (bank transfer, e-wallet, QRIS)", "Fase 1"],
+            ["ML Training", "MLflow + XGBoost + LightGBM", "Latest", "Experiment tracking, model versioning, ensemble model management", "Fase 1"],
+            ["ML Serving", "FastAPI + ONNX Runtime", "Latest", "Low-latency inference, model optimization untuk production", "Fase 1"],
+            ["Hosting", "VPS / Cloud VM", "2-4 vCPU, 8GB RAM", "Cost-effective untuk startup, scalable on demand saat peak SNBP", "Fase 1"],
+            ["CI/CD Pipeline", "GitHub Actions", "Current", "Automated testing, deployment, free tier generous untuk open source", "Fase 1"],
+            ["Monitoring", "Uptime monitoring + error logging", "Latest", "Basic observability: uptime checks, PHP error logging, ML metrics", "Fase 1"],
             ["SSL/TLS", "Let's Encrypt (via Cloudflare)", "TLS 1.3", "Free certificates, auto-renewal, modern encryption", "Fase 1"],
-            ["Object Storage", "Google Cloud Storage (GCS)", "Current", "Scalable blob storage for ML models, backups, static assets", "Fase 1"],
-            ["Infrastructure as Code", "Terraform + Helm Charts", "Latest", "Reproducible infrastructure, version controlled, multi-env", "Fase 1"],
-            ["API Gateway", "Kong (Kubernetes Ingress)", "3.x", "Traffic management, auth plugin, rate limiting, analytics", "Fase 1"],
+            ["Version Control", "Git + GitHub", "Latest", "Source code management, code review, CI/CD integration", "Fase 1"],
+            ["Secrets Management", "Environment variables + .env", "N/A", "Simple secrets management yang cukup untuk skala startup awal", "Fase 1"],
+            ["Containerization", "Docker (opsional)", "24.x", "Reproducible environment untuk ML service, deployment consistency", "Fase 2"],
         ],
         title="Technology Standard Catalog (Target)",
         table_number=3
@@ -188,17 +184,16 @@ def generate_stage6():
     add_table(doc,
         headers=["Application", "Runtime", "Framework", "Database", "Deployment", "Scaling"],
         rows=[
-            ["Next.js Frontend", "Node.js 20 LTS", "Next.js 14, React 18", "- (API calls)", "Vercel / GKE Pod", "CDN + auto-scale"],
-            ["API Gateway", "Kong (Nginx-based)", "Kong 3.x", "PostgreSQL (Kong config)", "GKE Pod (DaemonSet)", "HPA based on connections"],
-            ["User Service", "Python 3.11", "FastAPI 0.100+", "PostgreSQL + Redis", "GKE Pod", "HPA based on CPU/requests"],
-            ["Prediction Service", "Python 3.11", "FastAPI + ONNX Runtime", "Redis (features) + PostgreSQL", "GKE Pod (GPU node pool)", "HPA + GPU auto-scaling"],
-            ["Recommendation Service", "Python 3.11", "FastAPI + DiCE", "PostgreSQL + Redis", "GKE Pod", "HPA based on queue depth"],
-            ["School Dashboard Service", "Python 3.11", "FastAPI + WebSocket", "PostgreSQL + Redis Pub/Sub", "GKE Pod", "HPA based on connections"],
-            ["Payment Service", "Python 3.11", "FastAPI + Midtrans SDK", "PostgreSQL", "GKE Pod", "HPA based on requests"],
-            ["Notification Service", "Python 3.11", "FastAPI + Celery", "Redis (queue) + PostgreSQL", "GKE Pod", "HPA based on queue depth"],
-            ["ML Training Pipeline", "Python 3.11", "MLflow + XGBoost + LightGBM", "GCS + BigQuery", "Vertex AI / GKE Job", "On-demand (scheduled)"],
-            ["Analytics Pipeline", "Python 3.11", "Apache Beam / Custom", "BigQuery + Redis Streams", "GKE Pod / Dataflow", "Auto-scaling"],
-            ["Background Workers", "Python 3.11", "Celery 5.x", "Redis (broker)", "GKE Pod", "HPA based on queue length"],
+            ["Landing Page + Frontend", "PHP 8.x", "Vanilla PHP + HTML/CSS/JS", "MySQL/PostgreSQL (read)", "VPS / Shared Hosting", "CDN + Opcache"],
+            ["Onboarding Wizard", "PHP 8.x", "Vanilla PHP + Vanilla JS", "MySQL/PostgreSQL", "Same as frontend", "Session-based"],
+            ["Prediksi All-in-One", "PHP 8.x + Python 3.11", "PHP (view) + FastAPI (ML)", "MySQL/PostgreSQL + Redis", "VPS + ML Server", "ML horizontal scaling"],
+            ["Dashboard Siswa", "PHP 8.x", "Vanilla PHP", "MySQL/PostgreSQL", "Same as frontend", "Server-side rendering"],
+            ["Dashboard Guru", "PHP 8.x", "Vanilla PHP", "MySQL/PostgreSQL", "Same as frontend", "Server-side rendering"],
+            ["API Referral", "PHP 8.x", "Vanilla PHP (REST)", "MySQL/PostgreSQL", "Same as frontend", "Stateless"],
+            ["Pembayaran", "PHP 8.x", "PHP + Midtrans SDK", "MySQL/PostgreSQL", "Same as frontend", "Webhook-based"],
+            ["Peta Universitas", "PHP 8.x", "PHP + Leaflet.js", "MySQL/PostgreSQL", "Same as frontend", "Static tiles CDN"],
+            ["ML Prediction Service", "Python 3.11", "FastAPI + ONNX Runtime", "Redis (features) + PostgreSQL", "Dedicated ML server", "Horizontal auto-scaling"],
+            ["ML Training Pipeline", "Python 3.11", "MLflow + XGBoost + LightGBM", "PostgreSQL + file storage", "Scheduled job server", "On-demand"],
         ],
         title="Application/Technology Matrix (Target)",
         table_number=4
@@ -444,10 +439,10 @@ def generate_stage6():
     )
 
     add_numbered_list(doc, [
-        "Business Architecture: Mendefinisikan 10 business capabilities baru, model bisnis dual-revenue (B2C freemium + B2B SaaS), dan roadmap transisi 3 fase",
-        "Data Architecture: Merancang 17 data entities dalam PostgreSQL, ML feature store, event streaming, dan data governance framework compliant UU PDP",
-        "Application Architecture: Mendesain 11 microservices dengan FastAPI + Next.js, API Gateway, event-driven communication, dan CQRS pattern",
-        "Technology Architecture: Memilih GCP sebagai cloud platform dengan GKE, comprehensive observability, dan cost-optimized scaling strategy",
+        "Business Architecture: Mendefinisikan proses bisnis baru: onboarding wizard, prediksi all-in-one, monetisasi freemium + referral, dan guru evaluatif pasif",
+        "Data Architecture: Merancang data entities termasuk referral_tracking, predictions dengan counter limit, invite_codes, dan guru_comments",
+        "Application Architecture: Mendesain arsitektur PHP monolith + FastAPI ML microservice dengan halaman prediksi all-in-one, API referral, dan dashboard guru",
+        "Technology Architecture: Memilih PHP 8.x + Nginx sebagai web stack, FastAPI untuk ML serving, MySQL/PostgreSQL untuk database, dan Cloudflare untuk CDN/security",
     ])
 
     add_heading(doc, "4.2 Ringkasan Keputusan Arsitektur", level=2)
@@ -455,18 +450,18 @@ def generate_stage6():
     add_table(doc,
         headers=["Domain", "Keputusan Utama", "Teknologi/Pendekatan"],
         rows=[
-            ["Business", "Dual revenue model", "B2C Freemium (Rp15K-25K) + B2B SaaS (Rp5-15M/tahun)"],
-            ["Business", "ML as core differentiator", "XGBoost + LightGBM ensemble prediction"],
-            ["Business", "Anti-Bentrok as B2B killer feature", "Real-time dashboard untuk Guru BK"],
-            ["Data", "PostgreSQL as primary database", "Relational + JSON + PostGIS in one database"],
-            ["Data", "Redis for caching & features", "Feature store + session + pub/sub"],
+            ["Business", "Freemium + referral viral loop", "3 prediksi gratis, lalu bayar (Rp15K-25K) atau referral (5 klik unik = 3 tambahan)"],
+            ["Business", "ML as core differentiator", "XGBoost + LightGBM ensemble prediction all-in-one"],
+            ["Business", "Guru sebagai evaluator pasif", "Invite via kode 6 karakter, maks 2 per siswa, lihat & komentar"],
+            ["Data", "MySQL/PostgreSQL as primary database", "Relational + JSON support, referral_tracking table, predictions counter"],
+            ["Data", "Redis for caching & ML features", "Feature store + session management"],
             ["Data", "UU PDP compliance by design", "Encryption, audit trails, data minimization"],
-            ["Application", "Microservices architecture", "11 services, independently deployable"],
-            ["Application", "FastAPI for all backend services", "Python ecosystem for ML, async performance"],
-            ["Application", "Next.js for frontend", "SSR + PWA for SEO and mobile performance"],
-            ["Technology", "GCP (asia-southeast2 Jakarta)", "Proximity to users, ML tools, startup credits"],
-            ["Technology", "Kubernetes (GKE) orchestration", "Auto-scaling for seasonal traffic pattern"],
-            ["Technology", "GitOps with ArgoCD", "Declarative deployments, audit trail, rollback"],
+            ["Application", "PHP monolith + ML microservice", "PHP 8.x untuk web app, FastAPI untuk ML serving"],
+            ["Application", "All-in-one prediction page", "Gauge + Choice-2 Trap + peer stats + recommendations dalam satu halaman"],
+            ["Application", "Referral tracking API", "IP-based unique click detection, automated unlock"],
+            ["Technology", "VPS + Cloudflare CDN", "Cost-effective hosting dengan edge caching dan DDoS protection"],
+            ["Technology", "PHP 8.x + Nginx", "Mature stack, banyak hosting support, OPcache untuk performa"],
+            ["Technology", "GitHub Actions CI/CD", "Automated testing dan deployment"],
             ["Technology", "Cloudflare for edge/CDN", "DDoS protection, global caching, SSL"],
         ],
         title="Ringkasan Keputusan Arsitektur (Semua Fase)",
@@ -478,9 +473,9 @@ def generate_stage6():
     add_table(doc,
         headers=["Fase", "Periode", "Tujuan Bisnis", "Milestone Teknis", "Metrik Keberhasilan"],
         rows=[
-            ["Fase 1: Foundation", "Bulan 1-4", "MVP launch, 1000 beta users", "Core platform live, ML prediction v1, basic infrastructure", "Platform operational, prediction >75%, <2s latency"],
-            ["Fase 2: Enhancement", "Bulan 5-8", "10K users, 50 pilot schools, first revenue", "Anti-Bentrok, DiCE XAI, payment, observability", "Prediction >82%, Anti-Bentrok reduces conflicts 60%"],
-            ["Fase 3: Scale", "Bulan 9-12", "100K users, 500 schools, break-even trajectory", "Full scale, performance optimized, DR tested", "500K concurrent capability, 99.9% uptime, prediction >85%"],
+            ["Fase 1: Foundation", "Bulan 1-4", "MVP launch, 1000 beta users", "Platform PHP live, ML prediction v1, referral system, payment gateway", "Platform operational, prediction >75%, <2s latency"],
+            ["Fase 2: Enhancement", "Bulan 5-8", "10K users, first revenue dari freemium", "DiCE XAI, Peta Universitas, observability, guru dashboard", "Prediction >82%, 10% conversion rate"],
+            ["Fase 3: Scale", "Bulan 9-12", "100K users, sustainable revenue", "Performance optimization, ML model v2, analytics, DR tested", "500K concurrent capability, 99.9% uptime, prediction >85%"],
         ],
         title="Ringkasan Roadmap Implementasi",
         table_number=10
@@ -507,25 +502,26 @@ def generate_stage6():
     add_paragraph(doc,
         "Arsitektur enterprise yang telah dirancang untuk LangkahKampus memberikan "
         "fondasi yang kuat untuk membangun platform EduTech yang scalable, secure, "
-        "dan sustainable. Dengan pendekatan cloud-native dan microservices, arsitektur "
+        "dan sustainable. Dengan pendekatan PHP monolith untuk web application "
+        "dikombinasikan dengan FastAPI microservice untuk ML prediction, arsitektur "
         "ini memungkinkan tim kecil (4 orang) untuk mengembangkan dan mengoperasikan "
         "platform yang melayani ratusan ribu siswa secara efisien."
     )
 
     add_paragraph(doc,
-        "Keputusan arsitektur kunci seperti penggunaan GCP dengan GKE, PostgreSQL "
-        "sebagai database utama, FastAPI untuk backend services, dan Next.js untuk "
-        "frontend telah dipilih berdasarkan pertimbangan teknis, ekonomis, dan "
-        "keselarasan dengan kebutuhan bisnis LangkahKampus. Arsitektur ini juga "
-        "memperhatikan aspek compliance (UU PDP), observability, dan disaster "
-        "recovery yang esensial untuk platform yang menangani data sensitif siswa."
+        "Keputusan arsitektur kunci seperti penggunaan PHP 8.x sebagai backend utama, "
+        "halaman prediksi all-in-one, sistem referral untuk pertumbuhan organik, "
+        "dan FastAPI untuk ML serving telah dipilih berdasarkan pertimbangan teknis, "
+        "ekonomis, dan keselarasan dengan kebutuhan bisnis LangkahKampus. Arsitektur "
+        "ini juga memperhatikan aspek compliance (UU PDP), validasi referral link, "
+        "dan pembatasan prediksi yang esensial untuk monetisasi platform."
     )
 
     add_paragraph(doc,
         "Dengan implementasi bertahap melalui 3 fase selama 12 bulan, LangkahKampus "
         "dapat memvalidasi asumsi bisnis secara iteratif sambil membangun infrastruktur "
         "yang mampu mendukung pertumbuhan jangka panjang. Arsitektur ini tidak hanya "
-        "mendukung kebutuhan saat ini, tetapi juga memberikan flexibilitas untuk "
+        "mendukung kebutuhan saat ini, tetapi juga memberikan fleksibilitas untuk "
         "evolusi di masa depan seiring pertumbuhan platform dan ekspansi ke layanan "
         "pendidikan lainnya."
     )

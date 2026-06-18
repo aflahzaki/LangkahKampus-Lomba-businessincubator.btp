@@ -153,19 +153,19 @@ def generate_stage5():
             ["users", "Relational (PostgreSQL)", "Primary Database", "Platform Engineering", "PII - Confidential"],
             ["student_profiles", "Relational + JSON", "Primary Database", "Data Engineering", "PII - Confidential"],
             ["academic_records (nilai rapor)", "Relational", "Primary Database", "Data Engineering", "PII - Restricted"],
-            ["schools", "Relational", "Primary Database", "Business Development", "Public"],
+            ["schools", "Relational", "Primary Database", "Data Engineering", "Public"],
             ["programs (program studi)", "Relational", "Primary Database", "Data Engineering", "Public"],
             ["universities", "Relational", "Primary Database", "Data Engineering", "Public"],
             ["predictions", "Relational + JSON", "Primary Database + Cache", "ML Engineering", "PII - Restricted"],
             ["recommendations", "JSON", "Cache (Redis) + DB", "ML Engineering", "PII - Restricted"],
+            ["referral_tracking", "Relational + JSON", "Primary Database", "Platform Engineering", "Internal"],
             ["admission_history", "Relational", "Data Warehouse", "Data Engineering", "Aggregated - Internal"],
-            ["ml_features", "Parquet/Feature Store", "Feature Store (Redis/BigQuery)", "ML Engineering", "Internal"],
+            ["ml_features", "Parquet/Feature Store", "Feature Store (Redis)", "ML Engineering", "Internal"],
             ["ml_models", "Binary (pickle/ONNX)", "Model Registry (MLflow)", "ML Engineering", "Internal - IP"],
             ["payments", "Relational", "Primary Database", "Finance", "PII - Confidential"],
-            ["notifications", "Relational + Queue", "Primary DB + Message Queue", "Platform Engineering", "Internal"],
-            ["analytics_events", "JSON (streaming)", "Data Warehouse (BigQuery)", "Data Engineering", "Internal"],
-            ["school_configs", "JSON + Relational", "Primary Database", "Business Development", "Restricted"],
-            ["geospatial_data", "PostGIS", "Primary Database", "Data Engineering", "Public"],
+            ["guru_comments", "Relational", "Primary Database", "Platform Engineering", "PII - Restricted"],
+            ["invite_codes", "Relational", "Primary Database", "Platform Engineering", "Internal"],
+            ["analytics_events", "JSON (streaming)", "Data Warehouse", "Data Engineering", "Internal"],
             ["audit_logs", "Append-only log", "Separate audit DB", "Security", "Internal - Compliance"],
         ],
         title="Data Entity/Component Catalog (Target)",
@@ -176,20 +176,20 @@ def generate_stage5():
     add_heading(doc, "1.2.2 Application/Data Matrix (Target)", level=3)
 
     add_table(doc,
-        headers=["Application", "users", "student_profiles", "predictions", "schools", "payments", "ml_features", "analytics"],
+        headers=["Application", "users", "student_profiles", "predictions", "referral_tracking", "payments", "guru_comments"],
         rows=[
-            ["Next.js Frontend", "R", "R", "R", "R", "R", "-", "-"],
-            ["User Service (FastAPI)", "CRUD", "CRUD", "-", "R", "-", "-", "W"],
-            ["Prediction Service", "R", "R", "CRW", "-", "-", "R", "W"],
-            ["Recommendation Service", "R", "R", "R", "-", "-", "R", "W"],
-            ["School Dashboard Service", "R", "R", "R", "CRUD", "-", "-", "W"],
-            ["Payment Service", "R", "-", "-", "-", "CRUD", "-", "W"],
-            ["Notification Service", "R", "-", "-", "-", "-", "-", "W"],
-            ["ML Training Pipeline", "-", "R", "-", "-", "-", "CRW", "-"],
-            ["Analytics Pipeline", "R", "R", "R", "R", "R", "-", "CRW"],
-            ["Admin Panel", "CRUD", "RU", "R", "CRUD", "R", "-", "R"],
+            ["Landing Page", "R (login)", "-", "-", "-", "-", "-"],
+            ["Onboarding Wizard", "R", "CRU", "-", "-", "-", "-"],
+            ["Dashboard Siswa", "R", "RU", "R", "R", "R", "R"],
+            ["Prediksi All-in-One", "RU (counter)", "R", "CRW", "-", "-", "-"],
+            ["Peta Universitas", "R", "-", "-", "-", "-", "-"],
+            ["Pembayaran/Referral", "RU", "-", "-", "CRU", "CRW", "-"],
+            ["API Referral", "R", "-", "-", "CRU", "-", "-"],
+            ["Dashboard Guru", "R", "R", "R", "-", "-", "CRW"],
+            ["ML Prediction Service", "-", "R", "W", "-", "-", "-"],
+            ["ML Training Pipeline", "-", "R", "-", "-", "-", "-"],
         ],
-        title="Application/Data Matrix (Target) - C=Create, R=Read, U=Update, W=Write, D=Delete",
+        title="Application/Data Matrix (Target) - C=Create, R=Read, U=Update, W=Write",
         table_number=4
     )
 
@@ -207,14 +207,15 @@ def generate_stage5():
         "users (1) --- (1) student_profiles: Setiap user siswa memiliki satu profil lengkap",
         "student_profiles (1) --- (N) academic_records: Setiap siswa memiliki banyak catatan nilai",
         "student_profiles (N) --- (1) schools: Banyak siswa terdaftar di satu sekolah",
-        "schools (1) --- (N) school_configs: Setiap sekolah memiliki konfigurasi multi-tenant",
         "programs (N) --- (1) universities: Banyak prodi di satu universitas",
         "student_profiles (1) --- (N) predictions: Setiap siswa dapat memiliki banyak prediksi",
         "predictions (N) --- (1) programs: Setiap prediksi ditujukan untuk satu prodi",
         "predictions (1) --- (N) recommendations: Setiap prediksi menghasilkan rekomendasi counterfactual",
         "users (1) --- (N) payments: Setiap user dapat memiliki banyak transaksi",
+        "users (1) --- (1) referral_tracking: Setiap siswa memiliki satu record referral",
+        "users (1) --- (N) invite_codes: Setiap siswa dapat membuat kode undangan untuk guru",
+        "users (N) --- (N) guru_comments: Guru memberikan komentar pada prediksi siswa",
         "admission_history (N) --- (1) programs: Data historis penerimaan per prodi",
-        "admission_history (N) --- (1) schools: Data historis penerimaan per sekolah asal",
     ])
 
     add_paragraph(doc, "Entitas ML dan Relasi:", bold=True)
@@ -226,22 +227,28 @@ def generate_stage5():
 
     add_paragraph(doc, "Key Attributes per Entity:", bold=True)
     add_paragraph(doc,
-        "users: id (PK), email, phone, password_hash, role (student/guru_bk/admin), "
-        "created_at, last_login, is_premium, subscription_expires_at"
+        "users: id (PK), email, phone, password_hash, role (siswa/guru), "
+        "predictions_used INT DEFAULT 0, predictions_limit INT DEFAULT 3, "
+        "created_at, last_login"
     )
     add_paragraph(doc,
-        "student_profiles: id (PK), user_id (FK), school_id (FK), nis, full_name, "
-        "birth_date, gender, address, latitude, longitude, grade_level, major_track "
-        "(IPA/IPS/Bahasa), preference_vector (JSON), cognitive_profile (JSON)"
+        "student_profiles: id (PK), user_id (FK), school_id (FK), full_name, "
+        "birth_date, gender, ranking_in_school, total_students, grade_level, "
+        "major_track (IPA/IPS/Bahasa)"
     )
     add_paragraph(doc,
         "academic_records: id (PK), student_id (FK), semester (1-5), subject, score, "
-        "ranking_in_school, total_students_in_school, verified_at"
+        "verified_at"
     )
     add_paragraph(doc,
         "predictions: id (PK), student_id (FK), program_id (FK), model_version, "
-        "probability_score, confidence_interval_lower, confidence_interval_upper, "
-        "feature_importances (JSON), created_at, scenario_type (base/what_if)"
+        "probability_score, choice2_trap_warning BOOLEAN, peer_count INT, "
+        "feature_importances (JSON), created_at"
+    )
+    add_paragraph(doc,
+        "referral_tracking: id (PK), user_id (FK) UNIQUE, referral_code VARCHAR(20) UNIQUE, "
+        "click_count INT DEFAULT 0, unique_ips JSON, unlocked_predictions INT DEFAULT 0, "
+        "created_at TIMESTAMP"
     )
 
     # --------------------------------------------------------------------------
@@ -465,18 +472,17 @@ def generate_stage5():
     add_table(doc,
         headers=["Aplikasi", "Tipe", "Teknologi", "Deskripsi", "Strategi Scaling"],
         rows=[
-            ["LangkahKampus Web App", "Frontend SPA/SSR", "Next.js 14, React, TailwindCSS", "User-facing web application (siswa, guru BK, admin)", "CDN + horizontal scaling"],
-            ["API Gateway", "Infrastructure", "Kong / Nginx", "Routing, authentication, rate limiting, load balancing", "Horizontal auto-scaling"],
-            ["User Service", "Microservice", "FastAPI (Python)", "Authentication, authorization, user profile management", "Horizontal scaling"],
-            ["Prediction Service", "Microservice", "FastAPI (Python)", "ML model inference, probability calculation, ensemble aggregation", "GPU-aware auto-scaling"],
-            ["Recommendation Service", "Microservice", "FastAPI (Python)", "DiCE counterfactual generation, XAI explanation, ranking", "CPU horizontal scaling"],
-            ["School Dashboard Service", "Microservice", "FastAPI (Python)", "Anti-Bentrok logic, school analytics, multi-tenant management", "Horizontal scaling"],
-            ["Payment Service", "Microservice", "FastAPI (Python)", "Payment processing, subscription management, invoicing", "Horizontal scaling"],
-            ["Notification Service", "Microservice", "FastAPI (Python)", "Push notifications, email, in-app alerts, scheduling", "Queue-based scaling"],
-            ["ML Training Pipeline", "Batch Application", "Python, MLflow, Airflow", "Model training, evaluation, versioning, A/B testing", "Batch (scheduled)"],
-            ["Analytics Service", "Stream Processing", "Python, Apache Kafka", "Event processing, aggregation, real-time metrics", "Partition-based scaling"],
-            ["Admin Panel", "Frontend", "Next.js (internal)", "Platform administration, monitoring, config management", "Single instance"],
-            ["Background Workers", "Worker Service", "Celery (Python)", "Async tasks: email sending, report generation, data processing", "Queue-based scaling"],
+            ["Landing Page", "Frontend", "PHP 8.x + HTML/CSS/JS", "Halaman depan public: beranda, informasi, CTA registrasi", "CDN caching"],
+            ["Registrasi + Onboarding Wizard", "Web Page", "PHP 8.x + Vanilla JS", "Multi-step onboarding: data sekolah, nilai rapor, pilihan prodi", "Session-based state"],
+            ["Dashboard Siswa", "Web Page", "PHP 8.x + Vanilla JS", "Profil terintegrasi, edit data akademik inline, status referral, quick actions", "Server-side rendering"],
+            ["Halaman Prediksi All-in-One", "Web Page", "PHP 8.x + JS (gauge, charts)", "Form input + hasil terpadu: gauge, Choice-2 Trap, peer stats, rekomendasi", "API call ke ML service"],
+            ["Peta Universitas", "Web Page", "PHP 8.x + Leaflet.js", "Exploration mode dengan detail prodi dan tombol Prediksi Langsung", "Static map tiles + CDN"],
+            ["Halaman Pembayaran/Referral", "Web Page", "PHP 8.x + Payment SDK", "Status kuota, opsi bayar atau bagikan referral link, progress tracker", "Server-side + webhook"],
+            ["API Referral", "API Endpoint", "PHP 8.x", "POST: generate referral code, GET: track klik unik (IP validation)", "Stateless PHP"],
+            ["API Prediksi", "API Endpoint", "PHP 8.x (proxy) + FastAPI ML", "Proxy request ke ML microservice, handle prediction limit checking", "ML service scaling"],
+            ["Dashboard Guru", "Web Page", "PHP 8.x", "Lihat profil siswa yang invite, lihat prediksi, beri komentar", "Server-side rendering"],
+            ["ML Prediction Service", "Microservice", "FastAPI + Python", "Model inference: XGBoost + LightGBM ensemble, feature computation", "Horizontal scaling"],
+            ["ML Training Pipeline", "Batch Application", "Python + MLflow", "Model training, evaluation, versioning", "On-demand (scheduled)"],
         ],
         title="Application Portfolio Catalog (Target)",
         table_number=13
@@ -486,17 +492,17 @@ def generate_stage5():
     add_heading(doc, "2.2.2 Application/Organization Matrix (Target)", level=3)
 
     add_table(doc,
-        headers=["Application", "Siswa", "Guru BK", "School Admin", "Platform Admin", "ML Team"],
+        headers=["Application", "Siswa", "Guru", "Platform Admin", "ML Team"],
         rows=[
-            ["Web App (Student View)", "Primary", "-", "-", "-", "-"],
-            ["Web App (BK Dashboard)", "-", "Primary", "-", "-", "-"],
-            ["Web App (School Admin)", "-", "View only", "Primary", "-", "-"],
-            ["Admin Panel", "-", "-", "-", "Primary", "View"],
-            ["API Gateway", "Indirect", "Indirect", "Indirect", "Config", "-"],
-            ["Prediction Service", "Consumer", "Consumer", "-", "Monitor", "Owner"],
-            ["Recommendation Service", "Consumer", "Consumer", "-", "Monitor", "Owner"],
-            ["Payment Service", "Consumer", "-", "Consumer", "Monitor", "-"],
-            ["ML Training Pipeline", "-", "-", "-", "Monitor", "Primary"],
+            ["Landing Page", "Visitor", "Visitor", "-", "-"],
+            ["Onboarding Wizard", "Primary", "-", "-", "-"],
+            ["Dashboard Siswa", "Primary", "-", "-", "-"],
+            ["Prediksi All-in-One", "Primary", "-", "Monitor", "Owner"],
+            ["Peta Universitas", "Primary", "-", "-", "-"],
+            ["Pembayaran/Referral", "Primary", "-", "Monitor", "-"],
+            ["Dashboard Guru", "-", "Primary", "-", "-"],
+            ["API Referral", "Indirect", "-", "Monitor", "-"],
+            ["ML Prediction Service", "Consumer", "Consumer (indirect)", "Monitor", "Owner"],
         ],
         title="Application/Organization Matrix (Target)",
         table_number=14
@@ -584,7 +590,7 @@ def generate_stage5():
             ["Real-time Dashboard", "Excel spreadsheet", "WebSocket-powered Anti-Bentrok dashboard", "Build: real-time service, conflict detection, WebSocket server", "Tinggi"],
             ["Payment Processing", "Non-existent", "Integrated payment gateway (freemium + B2B)", "Build: payment service, gateway integration, subscription management", "Sedang"],
             ["API Gateway", "Non-existent", "Kong/Nginx with auth, rate limiting, routing", "Deploy and configure: Kong, JWT plugin, rate limiting rules", "Sedang"],
-            ["Frontend Platform", "No platform", "Next.js SSR with mobile-first PWA", "Build complete: student app, BK dashboard, school admin, admin panel", "Tinggi"],
+            ["Frontend Platform", "No platform", "PHP 8.x responsive web app", "Build complete: student dashboard, prediksi all-in-one, guru dashboard", "Tinggi"],
             ["Notification System", "WhatsApp (informal)", "Multi-channel automated notifications", "Build: notification service, template engine, scheduling, delivery", "Sedang"],
             ["Analytics & Monitoring", "Non-existent", "Full observability + business analytics", "Build: event pipeline, metrics collection, dashboards", "Sedang"],
             ["Background Processing", "Non-existent", "Celery workers for async tasks", "Deploy: Celery, Redis broker, task definitions, monitoring", "Rendah"],

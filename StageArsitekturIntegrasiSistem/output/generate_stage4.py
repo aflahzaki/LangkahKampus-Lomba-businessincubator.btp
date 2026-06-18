@@ -244,16 +244,14 @@ def generate_stage4():
     add_table(doc,
         headers=["Actor", "Deskripsi", "Peran dalam Proses SNBP Terintegrasi"],
         rows=[
-            ["Siswa SMA/MA/SMK", "Pengguna utama platform LangkahKampus", "Menggunakan prediksi ML, menerima rekomendasi XAI, melakukan What-If analysis"],
-            ["Guru BK", "Power user dashboard Anti-Bentrok", "Menggunakan dashboard untuk monitoring pilihan siswa, mencegah bentrokan, memberikan konseling data-driven"],
-            ["Operator Sekolah", "Admin sekolah pada platform B2B", "Mengelola data siswa batch upload, konfigurasi sekolah, generate laporan"],
-            ["Admin Platform", "Tim operasional LangkahKampus", "Monitoring platform, manajemen pengguna, konfigurasi ML model, customer support"],
-            ["ML System", "Automated prediction engine", "Menghasilkan prediksi probabilitas, rekomendasi prodi, counterfactual explanations"],
-            ["Payment System", "Automated payment processing", "Memproses pembayaran premium, mengelola subscription sekolah"],
-            ["Notification System", "Automated communication", "Mengirim update, reminder deadline, hasil prediksi, dan alert bentrokan"],
-            ["Data Pipeline", "Automated data processing", "Mengumpulkan, membersihkan, dan mengolah data untuk ML model training"],
+            ["Siswa SMA/MA/SMK", "Pengguna utama platform LangkahKampus", "Menggunakan onboarding wizard, prediksi all-in-one, referral system, dan Peta Universitas"],
+            ["Guru", "Evaluator pasif yang di-invite oleh siswa", "Melihat profil akademik dan hasil prediksi siswa, memberikan komentar evaluatif"],
+            ["Admin Platform", "Tim operasional LangkahKampus", "Monitoring platform, manajemen pengguna, konfigurasi ML model"],
+            ["ML System", "Automated prediction engine", "Menghasilkan prediksi probabilitas, peringatan Choice-2 Trap, statistik peer, rekomendasi alternatif"],
+            ["Payment System", "Automated payment processing", "Memproses pembayaran per prediksi setelah kuota gratis habis"],
+            ["Referral System", "Automated referral tracking", "Menghasilkan referral link unik, melacak klik IP unik, membuka kuota prediksi tambahan"],
             ["LTMPT", "Regulator SNBP", "Menyediakan aturan dan menyelenggarakan seleksi (tidak berubah)"],
-            ["Orang Tua/Wali", "Supporting stakeholder", "Mengakses ringkasan prediksi anak, memahami rekomendasi melalui penjelasan XAI"],
+            ["Orang Tua/Wali", "Supporting stakeholder", "Mendampingi keputusan anak berdasarkan hasil prediksi"],
         ],
         title="Organization/Actor Catalog (Target)",
         table_number=5
@@ -265,16 +263,15 @@ def generate_stage4():
     add_table(doc,
         headers=["Service/Function", "Provider", "Deskripsi", "Mode Delivery"],
         rows=[
-            ["Prediksi Probabilitas SNBP", "ML Engine (XGBoost+LightGBM)", "Prediksi probabilitas diterima di setiap prodi berdasarkan profil siswa", "Otomatis, real-time, API"],
-            ["Rekomendasi Prodi (XAI)", "DiCE Engine", "Rekomendasi prodi optimal dengan penjelasan counterfactual yang transparan", "Otomatis, on-demand"],
-            ["Dashboard Anti-Bentrok", "Platform LangkahKampus", "Visualisasi real-time pilihan siswa se-sekolah untuk mencegah bentrokan", "Real-time dashboard, web"],
-            ["What-If Analysis", "ML Engine", "Simulasi perubahan parameter input dan dampaknya terhadap prediksi", "Interaktif, self-service"],
-            ["Geospatial Preference Engine", "Platform LangkahKampus", "Matching preferensi lokasi siswa dengan lokasi universitas", "Otomatis, personalized"],
-            ["Manajemen Data Rapor", "Platform LangkahKampus", "Upload dan validasi otomatis data rapor siswa (individual/batch)", "Digital, semi-otomatis"],
-            ["Analytics & Reporting", "Platform LangkahKampus", "Laporan penggunaan, statistik prediksi, dan insight untuk sekolah", "Otomatis, scheduled/on-demand"],
-            ["Payment Processing", "Payment Gateway (Midtrans)", "Pemrosesan pembayaran untuk layanan premium dan subscription B2B", "Otomatis, multi-channel"],
-            ["Notification & Alert", "Platform LangkahKampus", "Notifikasi deadline, hasil prediksi, alert bentrokan untuk Guru BK", "Push, email, in-app"],
-            ["Customer Support", "Tim Support LangkahKampus", "Bantuan teknis dan panduan penggunaan platform", "Chat, email, knowledge base"],
+            ["Prediksi All-in-One", "ML Engine (XGBoost+LightGBM)", "Halaman terpadu: probabilitas + Choice-2 Trap warning + Anti-Bentrok stats + rekomendasi alternatif", "Otomatis, on-demand, satu halaman"],
+            ["Onboarding Wizard", "Platform LangkahKampus", "Wizard bertahap 3 langkah (data sekolah, nilai rapor, pilihan prodi impian) setelah registrasi", "Interaktif, step-by-step"],
+            ["Peta Universitas", "Platform LangkahKampus", "Mode eksplorasi dengan visualisasi universitas dan tombol Prediksi Langsung per prodi", "Interaktif, self-service"],
+            ["What-If Analysis", "ML Engine + DiCE", "Simulasi perubahan parameter input dan dampaknya terhadap prediksi dengan penjelasan counterfactual", "Interaktif, self-service"],
+            ["Referral Tracking", "Platform LangkahKampus", "Generasi referral link unik, pelacakan klik IP unik, pembukaan kuota prediksi tambahan", "Otomatis, event-driven"],
+            ["Pembayaran Freemium", "Payment Gateway (Midtrans)", "Pemrosesan pembayaran per prediksi (Rp15.000-25.000) setelah kuota 3 gratis habis", "Otomatis, multi-channel"],
+            ["Dashboard Guru (Evaluatif)", "Platform LangkahKampus", "Akses pasif guru untuk melihat profil siswa, prediksi, dan memberikan komentar", "Web dashboard, read-mostly"],
+            ["Manajemen Profil", "Platform LangkahKampus", "Edit data akademik inline di dashboard siswa, profil terintegrasi", "Digital, self-service"],
+            ["Notifikasi", "Platform LangkahKampus", "Notifikasi status referral, batas prediksi, undangan guru", "In-app, email"],
         ],
         title="Business Service/Function Catalog (Target)",
         table_number=6
@@ -284,14 +281,14 @@ def generate_stage4():
     add_heading(doc, "1.2.3 Business Interaction Matrix (Target)", level=3)
 
     add_table(doc,
-        headers=["", "Siswa", "Guru BK", "Platform", "ML Engine", "Payment", "Sekolah Admin"],
+        headers=["", "Siswa", "Guru", "Platform", "ML Engine", "Payment", "Referral"],
         rows=[
-            ["Siswa", "-", "Via platform", "UI interaction", "Prediksi & rekom", "Pembayaran", "Tidak langsung"],
-            ["Guru BK", "Dashboard view", "-", "Dashboard", "Insight data", "Tidak ada", "Koordinasi"],
-            ["Platform", "Serve content", "Serve dashboard", "-", "Request prediction", "Process payment", "Serve admin panel"],
-            ["ML Engine", "Return prediction", "Return analytics", "API response", "-", "Tidak ada", "Batch analysis"],
-            ["Payment", "Confirm payment", "Tidak ada", "Status update", "Tidak ada", "-", "Invoice B2B"],
-            ["Sekolah Admin", "Manage students", "Support", "Admin panel", "Tidak langsung", "Subscription", "-"],
+            ["Siswa", "-", "Invite via kode", "UI interaction", "Prediksi all-in-one", "Pembayaran", "Generate & share link"],
+            ["Guru", "Lihat profil & komentar", "-", "Dashboard evaluatif", "Lihat hasil prediksi", "Tidak ada", "Tidak ada"],
+            ["Platform", "Serve all-in-one page", "Serve dashboard guru", "-", "Request prediction", "Process payment", "Track clicks"],
+            ["ML Engine", "Return prediction bundle", "Tidak langsung", "API response", "-", "Tidak ada", "Tidak ada"],
+            ["Payment", "Confirm & unlock", "Tidak ada", "Status update", "Tidak ada", "-", "Tidak ada"],
+            ["Referral", "Unlock predictions", "Tidak ada", "Status update", "Tidak ada", "Tidak ada", "-"],
         ],
         title="Business Interaction Matrix (Target)",
         table_number=7
@@ -332,58 +329,63 @@ def generate_stage4():
     # Business Model Diagram (Target)
     add_heading(doc, "1.2.6 Business Model Diagram (Target)", level=3)
     add_paragraph(doc,
-        "Model bisnis target LangkahKampus mengadopsi dual-revenue approach:"
+        "Model bisnis target LangkahKampus mengadopsi pendekatan freemium dengan "
+        "referral viral loop:"
     )
-    add_paragraph(doc, "Revenue Stream 1 - B2C Freemium:", bold=True)
+    add_paragraph(doc, "Revenue Stream - B2C Freemium + Referral:", bold=True)
     add_bullet_list(doc, [
-        "Free tier: Informasi umum prodi, 1x prediksi gratis per tahun",
-        "Premium tier: Unlimited prediksi (Rp15.000-25.000/prediksi), What-If analysis, rekomendasi XAI detail",
-        "Target: 100.000 siswa premium per tahun (dari 1.5 juta total SNBP registrants)",
+        "Free tier: 3 prediksi gratis per siswa (mendorong trial dan word-of-mouth)",
+        "Referral option: Bagikan link unik, 5 klik IP unik = 3 prediksi tambahan gratis",
+        "Premium tier: Rp15.000-25.000 per prediksi setelah kuota gratis habis",
+        "Target: konversi 10% pengguna ke pembayaran, 30% aktif referral untuk pertumbuhan organik",
     ])
-    add_paragraph(doc, "Revenue Stream 2 - B2B SaaS:", bold=True)
+    add_paragraph(doc, "Peran Guru (Evaluatif, Bukan Revenue):", bold=True)
     add_bullet_list(doc, [
-        "School subscription: Dashboard Anti-Bentrok + Analytics (Rp 5-15 juta/sekolah/tahun)",
-        "Enterprise tier: Custom integration, dedicated support, white-label option",
-        "Target: 5.000 sekolah dalam 3 tahun (12.5% dari 40.000 SMA/MA/SMK)",
+        "Guru di-invite siswa via kode 6 karakter (maks 2 guru per siswa)",
+        "Guru bersifat pasif/evaluatif: lihat profil, lihat prediksi, beri komentar",
+        "Tidak ada biaya untuk guru (bukan revenue stream, tetapi value-add untuk siswa)",
     ])
 
     # Functional Decomposition Diagram (Target)
     add_heading(doc, "1.2.7 Functional Decomposition Diagram (Target)", level=3)
     add_paragraph(doc, "Dekomposisi fungsi pada arsitektur bisnis target:")
-    add_paragraph(doc, "1. Fungsi Akuisisi & Onboarding:", bold=True)
+    add_paragraph(doc, "1. Fungsi Registrasi & Onboarding:", bold=True)
     add_bullet_list(doc, [
-        "1.1 Registrasi pengguna (siswa/sekolah) - OAuth + email/phone",
-        "1.2 Input data profil siswa dan nilai rapor (manual/batch upload)",
-        "1.3 Verifikasi data otomatis dan quality check",
-        "1.4 Onboarding flow dengan tutorial interaktif",
+        "1.1 Registrasi pengguna (siswa/guru) - email/telepon + pilih peran",
+        "1.2 Onboarding wizard siswa: data sekolah, nilai rapor, pilihan prodi impian",
+        "1.3 Guru registrasi via kode undangan dari siswa (6 karakter)",
+        "1.4 Verifikasi data dan penyimpanan profil",
     ])
-    add_paragraph(doc, "2. Fungsi Prediksi & Rekomendasi:", bold=True)
+    add_paragraph(doc, "2. Fungsi Prediksi All-in-One:", bold=True)
     add_bullet_list(doc, [
-        "2.1 ML Model Inference - prediksi probabilitas per prodi",
-        "2.2 DiCE Counterfactual Generation - what-if scenarios",
-        "2.3 Geospatial Preference Matching - lokasi preference",
-        "2.4 Ensemble Aggregation - combining multiple model outputs",
-        "2.5 Explainability Layer - SHAP/DiCE explanation generation",
+        "2.1 Input data dan pilih program studi target",
+        "2.2 ML Model Inference - prediksi probabilitas penerimaan",
+        "2.3 Deteksi Choice-2 Trap - analisis risiko kombinasi pilihan",
+        "2.4 Statistik Anti-Bentrok peer - hitung siswa sekolah yang sama",
+        "2.5 Rekomendasi alternatif - generate jika probabilitas < 70%",
+        "2.6 What-If simulator - slider interaktif dengan penjelasan counterfactual",
     ])
-    add_paragraph(doc, "3. Fungsi Dashboard & Monitoring:", bold=True)
+    add_paragraph(doc, "3. Fungsi Monetisasi & Referral:", bold=True)
     add_bullet_list(doc, [
-        "3.1 Anti-Bentrok real-time visualization",
-        "3.2 Student portfolio tracking",
-        "3.3 School-level analytics dan reporting",
-        "3.4 Admin monitoring dan platform health",
+        "3.1 Tracking penggunaan prediksi per siswa (counter)",
+        "3.2 Paywall setelah 3 prediksi gratis",
+        "3.3 Payment processing (Midtrans/Xendit integration)",
+        "3.4 Referral link generation (kode unik per siswa)",
+        "3.5 Tracking klik IP unik pada referral link",
+        "3.6 Unlock otomatis 3 prediksi tambahan saat 5 IP unik tercapai",
     ])
-    add_paragraph(doc, "4. Fungsi Transaksi & Pembayaran:", bold=True)
+    add_paragraph(doc, "4. Fungsi Guru (Evaluatif):", bold=True)
     add_bullet_list(doc, [
-        "4.1 Payment processing (Midtrans/Xendit integration)",
-        "4.2 Subscription management (B2B schools)",
-        "4.3 Invoice generation dan financial reporting",
+        "4.1 Registrasi guru dengan kode undangan",
+        "4.2 Akses profil akademik siswa yang mengundang",
+        "4.3 Akses hasil prediksi siswa",
+        "4.4 Pemberian komentar dan masukan evaluatif",
     ])
-    add_paragraph(doc, "5. Fungsi Support & Communication:", bold=True)
+    add_paragraph(doc, "5. Fungsi Eksplorasi:", bold=True)
     add_bullet_list(doc, [
-        "5.1 In-app notification system",
-        "5.2 Email dan push notification",
-        "5.3 Customer support ticketing",
-        "5.4 Knowledge base dan FAQ",
+        "5.1 Peta Universitas interaktif",
+        "5.2 Detail program studi dengan tombol Prediksi Langsung",
+        "5.3 Dashboard profil terintegrasi dengan edit inline",
     ])
 
     # Process Flow Diagram (Target)
@@ -392,17 +394,17 @@ def generate_stage4():
         "Alur proses SNBP dengan platform LangkahKampus terintegrasi:"
     )
     add_numbered_list(doc, [
-        "Siswa mendaftar di platform LangkahKampus (2 menit, mobile-friendly)",
-        "Siswa menginput data rapor (manual atau foto rapor dengan OCR)",
-        "Sistem memvalidasi dan memproses data secara otomatis",
-        "ML Engine menghasilkan prediksi probabilitas untuk semua prodi relevan (<2 detik)",
-        "DiCE Engine memberikan rekomendasi prodi optimal dengan penjelasan counterfactual",
-        "Siswa melakukan What-If analysis untuk mengeksplorasi skenario alternatif",
-        "Guru BK melihat dashboard Anti-Bentrok untuk mengidentifikasi potensi konflik",
-        "Sistem mengirim alert otomatis jika terdeteksi bentrokan pilihan",
-        "Guru BK dan siswa melakukan konseling berbasis data platform",
-        "Siswa memfinalisasi pilihan dan mendaftar SNBP melalui portal LTMPT dengan confidence tinggi",
-        "Platform memberikan notifikasi pengumuman hasil dan analisis post-result",
+        "Siswa mendaftar di platform LangkahKampus (registrasi email/nomor telepon, pilih peran Siswa)",
+        "Siswa melewati Onboarding Wizard: Langkah 1 (data sekolah, peringkat, total siswa), Langkah 2 (nilai rapor semester 1-5), Langkah 3 (pilih 1-2 prodi impian)",
+        "Dashboard siswa aktif dengan profil terintegrasi dan data akademik yang dapat diedit inline",
+        "Siswa mengakses halaman Prediksi All-in-One: input program studi target, sistem menampilkan hasil terpadu",
+        "Hasil prediksi menampilkan: gauge probabilitas, peringatan Choice-2 Trap (jika berlaku), statistik Anti-Bentrok peer sekolah, dan rekomendasi alternatif (jika peluang < 70%)",
+        "Siswa dapat melakukan What-If analysis untuk mengeksplorasi skenario alternatif",
+        "Setelah 3 prediksi gratis habis, siswa dihadapkan pada 2 opsi: bayar (Rp15.000-25.000) atau bagikan referral link",
+        "Jika memilih referral: sistem menghasilkan link unik, siswa membagikan ke teman, 5 klik IP unik membuka 3 prediksi tambahan",
+        "Siswa dapat mengeksplorasi Peta Universitas dan klik 'Prediksi Langsung' untuk langsung memprediksi prodi tertentu",
+        "Guru yang di-invite via kode 6 karakter (maks 2 per siswa) dapat melihat profil dan prediksi, lalu memberikan komentar evaluatif",
+        "Siswa memfinalisasi keputusan berdasarkan data dan mendaftar SNBP dengan confidence tinggi",
     ])
 
     # --------------------------------------------------------------------------
@@ -469,9 +471,9 @@ def generate_stage4():
     add_table(doc,
         headers=["Fase", "Periode", "Fokus Utama", "Deliverables", "Success Criteria"],
         rows=[
-            ["Fase 1: Foundation", "Bulan 1-4", "Core platform, ML model v1, basic prediction", "MVP platform, basic prediction, user auth, data pipeline", "1.000 beta users, prediction accuracy >75%"],
-            ["Fase 2: Enhancement", "Bulan 5-8", "Anti-Bentrok, XAI, payment integration", "Anti-Bentrok dashboard, DiCE integration, freemium launch", "10.000 users, 50 pilot schools, first revenue"],
-            ["Fase 3: Scale", "Bulan 9-12", "B2B SaaS, analytics, full scale-up", "School admin panel, analytics dashboard, marketing scale", "100.000 users, 500 schools, break-even trajectory"],
+            ["Fase 1: Foundation", "Bulan 1-4", "Core platform, ML model v1, basic prediction", "MVP platform, onboarding wizard, prediksi all-in-one, user auth", "1.000 beta users, prediction accuracy >75%"],
+            ["Fase 2: Enhancement", "Bulan 5-8", "Referral system, XAI, payment integration", "Referral tracking, DiCE integration, freemium + payment launch", "10.000 users, first revenue"],
+            ["Fase 3: Scale", "Bulan 9-12", "Growth via referral, analytics, optimization", "Peta Universitas, guru dashboard, analytics, performance tuning", "100.000 users, break-even trajectory"],
         ],
         title="Transition Timeline - Business Architecture",
         table_number=11
@@ -497,9 +499,9 @@ def generate_stage4():
             ["FR-B03", "Dashboard Anti-Bentrok harus menampilkan data pilihan siswa secara real-time (<5 detik delay)", "GAP-B03", "P1"],
             ["FR-B04", "Platform harus mendukung batch upload data siswa (CSV/Excel) minimal 500 records per upload", "GAP-B04", "P1"],
             ["FR-B05", "What-If simulator harus memberikan hasil dalam <3 detik untuk setiap skenario perubahan", "GAP-B01, GAP-B02", "P2"],
-            ["FR-B06", "Sistem notifikasi harus mendukung minimal 3 channel (in-app, email, push)", "GAP-B08", "P2"],
-            ["FR-B07", "School admin panel harus mendukung multi-tenant dengan data isolation per sekolah", "GAP-B10", "P2"],
-            ["FR-B08", "Platform harus menyediakan reporting dengan export ke PDF dan Excel", "GAP-B07", "P2"],
+            ["FR-B06", "Sistem notifikasi harus mendukung in-app notification untuk status referral dan kuota prediksi", "GAP-B08", "P2"],
+            ["FR-B07", "Dashboard guru harus menampilkan profil dan prediksi siswa yang mengundang mereka", "GAP-B10", "P2"],
+            ["FR-B08", "Platform harus menyediakan referral tracking dengan validasi IP unik yang akurat", "GAP-B07", "P2"],
         ],
         title="Updated Functional Requirements dari Business Architecture",
         table_number=12

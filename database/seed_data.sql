@@ -3,7 +3,7 @@
 -- Data realistis untuk demonstrasi dan pengembangan
 -- ============================================================
 -- DEFAULT PASSWORD: 'password123'
--- BCrypt hash: $2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi
+-- BCrypt hash: $2y$12$Jw6aPnGiY.AF7p8SealmaufrC7dQXpV.wwTeNh.bIVyMlrgZGS.2.
 -- ============================================================
 
 USE langkahkampus;
@@ -86,20 +86,18 @@ INSERT INTO programs (id, university_id, name, code, faculty, degree, accreditat
 (30, 9, 'Teknik Informatika', 'TI-UB', 'Fakultas Ilmu Komputer', 'S1', 'Unggul', 110, 14.00, 82.00, FALSE);
 
 -- ============================================================
--- Users (10 pengguna demo dengan berbagai role)
+-- Users (8 pengguna demo dengan berbagai role)
 -- Password: password123 (BCrypt hash)
 -- ============================================================
 INSERT INTO users (id, email, phone, password_hash, full_name, role, is_premium, subscription_expires_at, last_login, is_active) VALUES
-(1, 'ahmad.faiz@student.sman3jkt.sch.id', '081234567890', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Ahmad Faiz Pratama', 'student', TRUE, '2025-12-31 23:59:59', '2024-11-15 08:30:00', TRUE),
-(2, 'siti.nurhaliza@student.sman3bdg.sch.id', '081345678901', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Siti Nurhaliza Putri', 'student', FALSE, NULL, '2024-11-14 14:20:00', TRUE),
-(3, 'bu.ratna@sman3jkt.sch.id', '081456789012', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Dr. Ratna Sari Dewi', 'guru_bk', FALSE, NULL, '2024-11-15 07:45:00', TRUE),
-(4, 'pak.bambang@sman3bdg.sch.id', '081567890123', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Bambang Supriyanto, M.Pd.', 'guru_bk', FALSE, NULL, '2024-11-13 16:00:00', TRUE),
-(5, 'admin.sman3jkt@sman3jkt.sch.id', '081678901234', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Hendra Wijaya', 'school_admin', FALSE, NULL, '2024-11-15 06:30:00', TRUE),
-(6, 'admin.sman3bdg@sman3bdg.sch.id', '081789012345', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Rina Marlina', 'school_admin', FALSE, NULL, '2024-11-14 09:00:00', TRUE),
-(7, 'superadmin@langkahkampus.id', '081890123456', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Muhammad Rizki Fauzan', 'platform_admin', TRUE, NULL, '2024-11-15 09:00:00', TRUE),
-(8, 'dewi.anggraeni@student.sman5sby.sch.id', '081901234567', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Dewi Anggraeni', 'student', TRUE, '2025-06-30 23:59:59', '2024-11-14 19:15:00', TRUE),
-(9, 'budi.santoso@student.sman1yk.sch.id', '082012345678', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Budi Santoso', 'student', FALSE, NULL, '2024-11-12 11:45:00', TRUE),
-(10, 'rina.wulandari@student.sman1smg.sch.id', '082123456789', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Rina Wulandari', 'student', FALSE, NULL, '2024-11-10 15:30:00', TRUE);
+(1, 'ahmad.faiz@student.sman3jkt.sch.id', '081234567890', '$2y$12$Jw6aPnGiY.AF7p8SealmaufrC7dQXpV.wwTeNh.bIVyMlrgZGS.2.', 'Ahmad Faiz Pratama', 'student', TRUE, '2025-12-31 23:59:59', '2024-11-15 08:30:00', TRUE),
+(2, 'siti.nurhaliza@student.sman3bdg.sch.id', '081345678901', '$2y$12$Jw6aPnGiY.AF7p8SealmaufrC7dQXpV.wwTeNh.bIVyMlrgZGS.2.', 'Siti Nurhaliza Putri', 'student', FALSE, NULL, '2024-11-14 14:20:00', TRUE),
+(3, 'bu.ratna@sman3jkt.sch.id', '081456789012', '$2y$12$Jw6aPnGiY.AF7p8SealmaufrC7dQXpV.wwTeNh.bIVyMlrgZGS.2.', 'Dr. Ratna Sari Dewi', 'guru', FALSE, NULL, '2024-11-15 07:45:00', TRUE),
+(4, 'pak.bambang@sman3bdg.sch.id', '081567890123', '$2y$12$Jw6aPnGiY.AF7p8SealmaufrC7dQXpV.wwTeNh.bIVyMlrgZGS.2.', 'Bambang Supriyanto, M.Pd.', 'guru', FALSE, NULL, '2024-11-13 16:00:00', TRUE),
+(7, 'superadmin@langkahkampus.id', '081890123456', '$2y$12$Jw6aPnGiY.AF7p8SealmaufrC7dQXpV.wwTeNh.bIVyMlrgZGS.2.', 'Muhammad Rizki Fauzan', 'platform_admin', TRUE, NULL, '2024-11-15 09:00:00', TRUE),
+(8, 'dewi.anggraeni@student.sman5sby.sch.id', '081901234567', '$2y$12$Jw6aPnGiY.AF7p8SealmaufrC7dQXpV.wwTeNh.bIVyMlrgZGS.2.', 'Dewi Anggraeni', 'student', TRUE, '2025-06-30 23:59:59', '2024-11-14 19:15:00', TRUE),
+(9, 'budi.santoso@student.sman1yk.sch.id', '082012345678', '$2y$12$Jw6aPnGiY.AF7p8SealmaufrC7dQXpV.wwTeNh.bIVyMlrgZGS.2.', 'Budi Santoso', 'student', FALSE, NULL, '2024-11-12 11:45:00', TRUE),
+(10, 'rina.wulandari@student.sman1smg.sch.id', '082123456789', '$2y$12$Jw6aPnGiY.AF7p8SealmaufrC7dQXpV.wwTeNh.bIVyMlrgZGS.2.', 'Rina Wulandari', 'student', FALSE, NULL, '2024-11-10 15:30:00', TRUE);
 
 -- ============================================================
 -- Student Profiles (5 siswa dengan profil lengkap)
@@ -233,14 +231,20 @@ INSERT INTO payments (id, user_id, amount, currency, payment_method, status, pac
 (7, 2, 149000.00, 'IDR', 'gopay', 'expired', 'monthly_premium', 'TXN-2024-007-GOPAY', NULL);
 
 -- ============================================================
--- School Configs
+-- Invite Codes (kode undangan siswa untuk guru)
 -- ============================================================
-INSERT INTO school_configs (id, school_id, max_students_per_program, notification_email, subscription_plan, subscription_expires_at) VALUES
-(1, 1, 3, 'admin.sman3jkt@sman3jkt.sch.id', 'pro', '2025-07-31 23:59:59'),
-(2, 2, 3, 'admin.sman3bdg@sman3bdg.sch.id', 'basic', '2025-03-31 23:59:59'),
-(3, 3, 5, 'admin.sman5sby@sman5sby.sch.id', 'enterprise', '2025-12-31 23:59:59'),
-(4, 4, 3, 'admin.sman1yk@sman1yk.sch.id', 'free', NULL),
-(5, 5, 3, 'admin.sman1smg@sman1smg.sch.id', 'free', NULL);
+INSERT INTO invite_codes (id, student_id, code, used_by_guru_id, created_at, used_at, is_active) VALUES
+(1, 1, 'ABC123', 3, '2024-09-01 10:00:00', '2024-09-01 14:30:00', FALSE),
+(2, 2, 'XYZ789', 4, '2024-09-02 08:00:00', '2024-09-02 11:15:00', FALSE),
+(3, 8, 'DEF456', NULL, '2024-11-10 09:00:00', NULL, TRUE);
+
+-- ============================================================
+-- Guru Comments (komentar guru tentang siswa)
+-- ============================================================
+INSERT INTO guru_comments (id, guru_id, student_id, comment_text, created_at) VALUES
+(1, 3, 1, 'Ahmad memiliki potensi besar di bidang STEM. Sangat direkomendasikan untuk Teknik Informatika UI/ITB.', '2024-10-15 10:30:00'),
+(2, 4, 2, 'Siti menunjukkan minat yang kuat di bidang kesehatan. Perlu pertimbangkan alternatif selain FK UI.', '2024-10-16 14:00:00'),
+(3, 3, 8, 'Dewi memiliki kemampuan yang seimbang dan cocok untuk program teknik di ITS.', '2024-11-01 09:00:00');
 
 -- ============================================================
 -- Notifications (sample notifications)
@@ -252,7 +256,7 @@ INSERT INTO notifications (id, user_id, type, title, message, is_read) VALUES
 (4, 2, 'prediction_ready', 'Hasil Prediksi Siap!', 'Prediksi peluang masuk Kedokteran UI, Kedokteran UGM, dan Farmasi UGM sudah tersedia.', TRUE),
 (5, 2, 'system', 'Selamat Datang di LangkahKampus!', 'Lengkapi profil akademik Anda untuk mendapatkan prediksi yang lebih akurat.', TRUE),
 (6, 3, 'system', 'Laporan Siswa Tersedia', '3 siswa bimbingan Anda telah menerima hasil prediksi. Klik untuk review.', FALSE),
-(7, 5, 'system', 'Update Langganan Sekolah', 'Paket Pro sekolah Anda akan berakhir pada 31 Juli 2025. Perpanjang sekarang untuk harga spesial.', FALSE),
+(7, 7, 'system', 'Platform Update', 'Sistem telah diperbarui ke versi terbaru. Fitur baru: guru comments dan invite codes.', FALSE),
 (8, 8, 'prediction_ready', 'Hasil Prediksi Siap!', 'Prediksi peluang masuk Teknik Informatika ITS sudah tersedia dengan confidence level tinggi.', TRUE),
 (9, 9, 'warning', 'Pembayaran Pending', 'Pembayaran Anda sebesar Rp49.000 belum dikonfirmasi. Silakan selesaikan pembayaran.', FALSE),
 (10, 10, 'system', 'Tingkatkan Akurasi', 'Masukkan nilai rapor semester 5 untuk mendapatkan prediksi terbaru.', FALSE);
@@ -269,7 +273,7 @@ INSERT INTO audit_logs (user_id, action, entity_type, entity_id, details, ip_add
 (3, 'login', 'user', 3, '{"method": "email_password", "device": "Chrome/MacOS"}', '36.68.102.15'),
 (3, 'view_student_report', 'student_profile', 1, '{"viewed_student": "Ahmad Faiz Pratama"}', '36.68.102.15'),
 (7, 'login', 'user', 7, '{"method": "email_password", "device": "Firefox/Linux"}', '10.0.0.1'),
-(7, 'system_config_update', 'school_configs', 3, '{"changed": "subscription_plan", "from": "pro", "to": "enterprise"}', '10.0.0.1'),
+(7, 'platform_config_update', 'system', NULL, '{"action": "enable_guru_comments_feature"}', '10.0.0.1'),
 (NULL, 'system_backup', 'system', NULL, '{"type": "automated_daily", "size_mb": 125}', '127.0.0.1');
 
 -- ============================================================

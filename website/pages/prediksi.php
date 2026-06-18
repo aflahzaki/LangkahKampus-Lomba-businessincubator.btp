@@ -2,18 +2,21 @@
 $page_title = 'Prediksi SNBP';
 $page_scripts = ['predictions.js'];
 include '../includes/header.php';
+
+// Check if program_id is pre-filled from peta_universitas
+$prefill_program_id = isset($_GET['program_id']) ? htmlspecialchars($_GET['program_id']) : '';
 ?>
 
 <div class="dashboard-page">
     <div class="dashboard-header">
         <div class="container">
             <h1><i class="fas fa-brain"></i> Prediksi SNBP</h1>
-            <p>Masukkan data akademik Anda dan pilih program studi target untuk mendapatkan prediksi probabilitas penerimaan</p>
+            <p>Masukkan data akademik dan pilih program studi target. Hasil prediksi mencakup probabilitas, peringatan Choice-2, statistik anti-bentrok, dan rekomendasi alternatif.</p>
         </div>
     </div>
 
     <div class="container">
-        <div style="display:grid;grid-template-columns:1fr 400px;gap:2rem;align-items:start;">
+        <div style="display:grid;grid-template-columns:1fr 420px;gap:2rem;align-items:start;">
             <!-- Prediction Form -->
             <div class="card" data-aos="fade-up">
                 <h3 class="mb-3"><i class="fas fa-edit"></i> Data Akademik</h3>
@@ -76,7 +79,7 @@ include '../includes/header.php';
                         <label class="form-label">Cari Program Studi & Universitas</label>
                         <input type="text" id="programSearch" class="form-control" 
                                placeholder="Ketik nama program studi atau universitas...">
-                        <input type="hidden" name="target_program" value="">
+                        <input type="hidden" name="target_program" value="<?php echo $prefill_program_id; ?>">
                         <div id="programResults" class="hidden" style="position:absolute;top:100%;left:0;right:0;background:white;border:1px solid var(--color-border);border-radius:var(--radius-sm);max-height:200px;overflow-y:auto;z-index:100;box-shadow:var(--shadow-md);"></div>
                     </div>
 
@@ -86,7 +89,7 @@ include '../includes/header.php';
                 </form>
             </div>
 
-            <!-- Prediction Result -->
+            <!-- Combined Prediction Results -->
             <div>
                 <div class="card hidden" id="predictionResult" data-aos="zoom-in">
                     <div class="prediction-result">
@@ -121,11 +124,62 @@ include '../includes/header.php';
                         <!-- Feature Importance -->
                         <h5 class="mt-3 mb-2">Faktor Penting</h5>
                         <div id="featureImportance"></div>
+                    </div>
+                </div>
 
-                        <div class="mt-3 d-flex gap-1">
-                            <a href="rekomendasi.php" class="btn btn-sm btn-primary"><i class="fas fa-lightbulb"></i> Lihat Rekomendasi</a>
-                            <button class="btn btn-sm btn-outline" style="border-color:var(--color-border);color:var(--color-text);" onclick="window.print()"><i class="fas fa-download"></i> Simpan</button>
+                <!-- Choice-2 Trap Warning -->
+                <div class="card hidden mt-2" id="choice2TrapWarning" style="border-left:4px solid #C0392B;">
+                    <div class="d-flex align-center gap-1 mb-1">
+                        <i class="fas fa-exclamation-triangle" style="color:#C0392B;font-size:1.3rem;"></i>
+                        <h4 style="color:#C0392B;">Peringatan Choice-2 Trap!</h4>
+                    </div>
+                    <p style="font-size:0.9rem;color:var(--color-text-light);">
+                        Program studi ini <strong>memblokir pilihan kedua (Choice-2)</strong>. 
+                        Jika Anda memilih prodi ini sebagai pilihan 1 dan tidak diterima, pilihan 2 Anda tidak akan diproses.
+                    </p>
+                    <div style="background:rgba(192,57,43,0.05);border-radius:var(--radius-sm);padding:0.75rem;margin-top:0.5rem;">
+                        <small><i class="fas fa-info-circle"></i> Pertimbangkan dengan matang sebelum menjadikan ini pilihan utama Anda.</small>
+                    </div>
+                </div>
+
+                <!-- Anti-Bentrok Statistics -->
+                <div class="card hidden mt-2" id="antiBentrokStats" style="border-left:4px solid #F39C12;">
+                    <div class="d-flex align-center gap-1 mb-1">
+                        <i class="fas fa-users" style="color:#F39C12;font-size:1.2rem;"></i>
+                        <h4 style="color:#F39C12;">Statistik Anti-Bentrok</h4>
+                    </div>
+                    <p id="peerStatText" style="font-size:0.9rem;"></p>
+                    <div style="background:rgba(243,156,18,0.05);border-radius:var(--radius-sm);padding:0.75rem;margin-top:0.5rem;">
+                        <div class="d-flex align-center justify-between">
+                            <span style="font-size:0.85rem;"><i class="fas fa-user-friends"></i> Siswa dari sekolahmu:</span>
+                            <strong id="peerCountValue" style="font-size:1.2rem;color:#F39C12;">0</strong>
                         </div>
+                        <div class="progress-bar mt-1" style="height:6px;">
+                            <div class="progress-fill" id="peerProgressBar" style="width:0%;background:#F39C12;"></div>
+                        </div>
+                        <small class="text-muted" id="peerRiskText">Semakin banyak pesaing, semakin kecil peluang lolos dari sekolah yang sama.</small>
+                    </div>
+                </div>
+
+                <!-- Recommendations (if probability < 70%) -->
+                <div class="card hidden mt-2" id="recommendationsSection">
+                    <h4 class="mb-2"><i class="fas fa-lightbulb text-blue"></i> Rekomendasi Alternatif</h4>
+                    <p class="text-muted mb-2" style="font-size:0.85rem;">Program studi dengan peluang lebih tinggi berdasarkan profil Anda:</p>
+                    <div id="recommendationCards"></div>
+                </div>
+
+                <!-- What-If Simulator -->
+                <div class="card hidden mt-2" id="whatIfSimulator">
+                    <h4 class="mb-2"><i class="fas fa-sliders-h text-blue"></i> Simulator What-If</h4>
+                    <p class="text-muted mb-2" style="font-size:0.85rem;">Geser slider untuk melihat dampak perubahan nilai</p>
+                    <div class="form-group">
+                        <label class="form-label">Jika rata-rata naik: <strong id="whatIfValue">+0</strong> poin</label>
+                        <input type="range" min="0" max="15" value="0" class="form-control" style="padding:0;" id="whatIfSlider"
+                               oninput="updateWhatIf(this.value)">
+                    </div>
+                    <div class="d-flex align-center justify-between" style="background:var(--color-bg);padding:0.75rem;border-radius:var(--radius-sm);">
+                        <span>Prediksi baru:</span>
+                        <strong id="whatIfResult" style="font-size:1.2rem;color:var(--color-accent-blue);">-</strong>
                     </div>
                 </div>
 
@@ -136,7 +190,7 @@ include '../includes/header.php';
                         <li><i class="fas fa-check text-green"></i> Masukkan nilai sesuai rapor resmi</li>
                         <li><i class="fas fa-check text-green"></i> Peringkat dihitung dari kelas 10-12</li>
                         <li><i class="fas fa-check text-green"></i> Akreditasi mempengaruhi bobot prediksi</li>
-                        <li><i class="fas fa-check text-green"></i> Coba beberapa program untuk perbandingan</li>
+                        <li><i class="fas fa-check text-green"></i> Hasil mencakup analisis Choice-2 otomatis</li>
                     </ul>
                 </div>
             </div>

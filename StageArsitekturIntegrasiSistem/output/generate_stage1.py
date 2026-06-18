@@ -152,9 +152,9 @@ def generate_stage1():
     )
     add_paragraph(doc,
         "Saat ini, LangkahKampus berada dalam fase validasi pasar dan pengembangan fitur "
-        "lanjutan, termasuk dashboard Anti-Bentrok untuk Guru BK dan mesin preferensi "
-        "geospasial-kognitif yang mempertimbangkan lokasi domisili dan profil psikologis "
-        "siswa dalam memberikan rekomendasi."
+        "lanjutan, termasuk Peta Universitas sebagai exploration mode, sistem referral "
+        "untuk pertumbuhan organik, serta dashboard evaluatif bagi Guru yang di-invite "
+        "oleh siswa untuk memberikan masukan dan komentar terhadap hasil prediksi."
     )
 
     # 2.3 Produk dan Layanan Utama
@@ -165,56 +165,74 @@ def generate_stage1():
         "produk dan layanan utama yang ditawarkan:"
     )
 
-    add_paragraph(doc, "a) Prediksi Probabilitas Penerimaan (ML-Based Admission Scoring)", bold=True)
+    add_paragraph(doc, "a) Halaman Prediksi All-in-One", bold=True)
     add_paragraph(doc,
-        "Layanan inti LangkahKampus adalah sistem prediksi probabilitas penerimaan yang "
-        "menggunakan model ensemble machine learning. Sistem ini mengombinasikan algoritma "
-        "XGBoost dan LightGBM yang dilatih menggunakan data historis SNBP dari ribuan "
-        "sekolah di seluruh Indonesia. Model ini mempertimbangkan berbagai fitur termasuk "
-        "nilai rapor per semester, akreditasi sekolah, lokasi geografis, rasio pendaftar "
-        "terhadap daya tampung, dan tren historis penerimaan program studi target.",
+        "Layanan inti LangkahKampus adalah halaman prediksi all-in-one yang menampilkan "
+        "seluruh informasi penting dalam satu tampilan terpadu. Halaman ini menyajikan: "
+        "(1) probabilitas penerimaan berdasarkan model ensemble Machine Learning "
+        "(XGBoost + LightGBM), (2) peringatan Choice-2 Trap jika kombinasi pilihan "
+        "berisiko tinggi, (3) statistik Anti-Bentrok yang menunjukkan berapa siswa dari "
+        "sekolah yang sama memilih program studi serupa, serta (4) rekomendasi alternatif "
+        "berdasarkan analisis counterfactual DiCE XAI. Pendekatan all-in-one ini "
+        "menghilangkan kebutuhan siswa berpindah antar halaman untuk mendapatkan gambaran "
+        "lengkap tentang peluang dan risiko pilihan mereka.",
         indent=0.5
     )
 
-    add_paragraph(doc, "b) Choice-2 Trap Rescue System", bold=True)
+    add_paragraph(doc, "b) Onboarding Wizard Bertahap", bold=True)
     add_paragraph(doc,
-        "Fitur unik yang secara khusus mengatasi fenomena Jebakan Pilihan Kedua. Sistem "
-        "ini menganalisis kombinasi pilihan 1 dan pilihan 2 yang dipilih siswa, kemudian "
-        "memberikan peringatan jika kombinasi tersebut memiliki risiko tinggi kegagalan di "
-        "kedua pilihan. Sistem juga menyarankan alternatif kombinasi yang lebih optimal "
-        "berdasarkan profil akademik siswa.",
+        "Proses registrasi yang dirancang dalam format wizard bertahap (step-by-step) "
+        "agar siswa tidak kewalahan saat pertama kali menggunakan platform. Setelah "
+        "registrasi awal, siswa dipandu melalui langkah-langkah: input data sekolah "
+        "(peringkat dan total siswa), input nilai rapor semester 1-5, serta pemilihan "
+        "1-2 program studi impian. Format wizard ini meningkatkan completion rate "
+        "pendaftaran dan memastikan data yang dibutuhkan untuk prediksi tersedia "
+        "secara lengkap.",
         indent=0.5
     )
 
-    add_paragraph(doc, "c) Geospatial dan Cognitive Preference Engine", bold=True)
+    add_paragraph(doc, "c) Peta Universitas (Exploration Mode)", bold=True)
     add_paragraph(doc,
-        "Mesin rekomendasi yang mempertimbangkan tidak hanya kemampuan akademik, tetapi "
-        "juga preferensi lokasi geografis (jarak dari rumah, biaya hidup di kota tujuan) "
-        "dan profil kognitif siswa (minat, bakat, dan kecenderungan karir). Pendekatan "
-        "holistik ini memastikan rekomendasi yang diberikan tidak hanya optimal secara "
-        "statistik, tetapi juga sesuai dengan kebutuhan dan preferensi personal siswa.",
+        "Fitur eksplorasi interaktif yang memungkinkan siswa menelusuri universitas "
+        "dan program studi melalui visualisasi berbasis peta. Setiap detail universitas "
+        "dilengkapi tombol 'Prediksi Langsung' yang mengarahkan siswa ke halaman "
+        "prediksi all-in-one dengan program studi terkait sudah terisi otomatis. "
+        "Pendekatan ini mendorong discovery dan membantu siswa menemukan program studi "
+        "yang mungkin tidak terpikirkan sebelumnya.",
         indent=0.5
     )
 
-    add_paragraph(doc, "d) Dashboard Anti-Bentrok untuk Guru BK (B2B)", bold=True)
+    add_paragraph(doc, "d) Model Freemium dengan Referral System", bold=True)
     add_paragraph(doc,
-        "Dashboard khusus yang dirancang untuk Guru Bimbingan Konseling (BK) di sekolah. "
-        "Fitur ini memungkinkan Guru BK melihat secara real-time seluruh pilihan yang "
-        "diajukan siswa di sekolahnya, mengidentifikasi potensi \"bentrokan\" (collision) "
-        "di mana terlalu banyak siswa dari sekolah yang sama memilih program studi yang "
-        "sama, serta memberikan rekomendasi redistribusi yang optimal. Fitur ini krusial "
-        "karena kuota SNBP per sekolah bersifat terbatas.",
+        "LangkahKampus mengadopsi model monetisasi freemium di mana setiap siswa "
+        "mendapatkan 3 prediksi gratis. Setelah kuota habis, siswa dapat memilih "
+        "untuk membayar (Rp15.000-25.000) atau membagikan referral link unik kepada "
+        "teman. Jika referral link diklik oleh 5 pengunjung unik (berdasarkan alamat "
+        "IP), siswa mendapatkan 3 prediksi tambahan secara gratis. Mekanisme ini "
+        "mendorong pertumbuhan organik melalui viral loop sekaligus menjaga "
+        "aksesibilitas bagi siswa yang terkendala biaya.",
         indent=0.5
     )
 
-    add_paragraph(doc, "e) DiCE Counterfactual XAI (What-If Recommendations)", bold=True)
+    add_paragraph(doc, "e) Dashboard Guru (Evaluatif dan Pasif)", bold=True)
+    add_paragraph(doc,
+        "Guru dapat di-invite oleh siswa menggunakan kode undangan 6 karakter, dengan "
+        "maksimal 2 guru per siswa. Setelah terhubung, guru memiliki akses evaluatif "
+        "dan pasif: dapat melihat profil akademik siswa, melihat hasil prediksi, serta "
+        "memberikan komentar dan masukan. Pendekatan ini menjaga peran guru sebagai "
+        "advisor tanpa membebani mereka dengan tugas administratif tambahan.",
+        indent=0.5
+    )
+
+    add_paragraph(doc, "f) DiCE Counterfactual XAI (What-If Recommendations)", bold=True)
     add_paragraph(doc,
         "Implementasi Explainable Artificial Intelligence (XAI) menggunakan framework "
         "DiCE (Diverse Counterfactual Explanations) yang memberikan rekomendasi dalam "
-        "format \"What-If\". Misalnya, sistem dapat menjelaskan: \"Jika nilai rata-rata "
-        "rapor Anda naik 0.3 poin, probabilitas diterima di Program Studi X akan "
-        "meningkat dari 45% menjadi 72%\". Pendekatan ini meningkatkan transparansi dan "
-        "kepercayaan pengguna terhadap hasil prediksi.",
+        "format 'What-If' yang terintegrasi langsung pada halaman prediksi all-in-one. "
+        "Misalnya, sistem dapat menjelaskan: 'Jika nilai rata-rata rapor Anda naik 0.3 "
+        "poin, probabilitas diterima di Program Studi X akan meningkat dari 45% menjadi "
+        "72%'. Pendekatan ini meningkatkan transparansi dan kepercayaan pengguna terhadap "
+        "hasil prediksi.",
         indent=0.5
     )
 
@@ -272,12 +290,13 @@ def generate_stage1():
         "seluruh fase dalam TOGAF ADM (Architecture Development Method)."
     )
     add_paragraph(doc,
-        "Kedua, LangkahKampus memiliki model bisnis ganda (B2C dan B2B) yang membutuhkan "
-        "arsitektur enterprise yang mampu melayani dua segmen pasar dengan kebutuhan yang "
-        "berbeda secara bersamaan. Segmen B2C melayani siswa individual dengan layanan "
-        "prediksi dan rekomendasi, sementara segmen B2B melayani institusi sekolah dengan "
-        "dashboard manajemen dan analitik. Dualitas ini menciptakan tantangan arsitektur "
-        "yang menarik untuk dianalisis menggunakan framework TOGAF."
+        "Kedua, LangkahKampus memiliki model bisnis freemium yang dilengkapi mekanisme "
+        "referral untuk pertumbuhan organik. Model ini membutuhkan arsitektur yang mampu "
+        "mengelola pembatasan prediksi per pengguna, pelacakan klik unik pada referral "
+        "link, serta integrasi payment gateway. Selain itu, fitur undangan guru dengan "
+        "kode unik memerlukan sistem relasi antar pengguna yang terdefinisi dengan baik. "
+        "Kompleksitas ini menciptakan tantangan arsitektur yang menarik untuk dianalisis "
+        "menggunakan framework TOGAF."
     )
     add_paragraph(doc,
         "Ketiga, domain pendidikan di Indonesia memiliki karakteristik unik yang "
@@ -298,14 +317,14 @@ def generate_stage1():
 
     isit_headers = ["Komponen IS/IT", "Teknologi", "Fungsi Bisnis"]
     isit_rows = [
-        ("Frontend Application", "Next.js (React)", "User interface untuk siswa dan Guru BK"),
-        ("ML Microservice", "FastAPI + Python", "Prediksi probabilitas dan rekomendasi"),
-        ("Database", "PostgreSQL", "Penyimpanan data historis, profil, dan transaksi"),
-        ("ML Models", "XGBoost + LightGBM", "Model ensemble untuk scoring penerimaan"),
-        ("XAI Engine", "DiCE Framework", "Counterfactual explanations untuk transparansi"),
-        ("Geospatial Engine", "PostGIS + Custom", "Analisis lokasi dan preferensi spasial"),
-        ("Real-time Processing", "WebSocket + Redis", "Dashboard real-time Anti-Bentrok"),
-        ("Cloud Infrastructure", "Docker + Cloud", "Deployment, scaling, dan monitoring"),
+        ("Frontend Application", "PHP 8.x + Vanilla JS", "User interface untuk siswa dan guru (responsive web app)"),
+        ("ML Microservice", "FastAPI + Python", "Prediksi probabilitas dan rekomendasi counterfactual"),
+        ("Database", "PostgreSQL / MySQL", "Penyimpanan data profil, prediksi, referral, dan transaksi"),
+        ("ML Models", "XGBoost + LightGBM", "Model ensemble untuk scoring penerimaan SNBP"),
+        ("XAI Engine", "DiCE Framework", "Counterfactual explanations untuk transparansi prediksi"),
+        ("Referral Tracking", "PHP + IP Validation", "Pelacakan klik unik pada referral link pengguna"),
+        ("Payment Gateway", "Midtrans / Xendit", "Pemrosesan pembayaran freemium per prediksi"),
+        ("Cloud Infrastructure", "Shared / VPS Hosting", "Deployment dan monitoring platform"),
     ]
     add_table(doc, isit_headers, isit_rows,
               title="Pemetaan Penggunaan IS/IT LangkahKampus", table_number=3)
@@ -335,12 +354,14 @@ def generate_stage1():
         indent=0.5
     )
 
-    add_paragraph(doc, "Kompleksitas Multi-Tenant dan Multi-Stakeholder:", bold=True)
+    add_paragraph(doc, "Kompleksitas Multi-Stakeholder:", bold=True)
     add_paragraph(doc,
-        "Platform harus melayani berbagai jenis pengguna (siswa, orang tua, Guru BK, "
-        "admin sekolah) dengan kebutuhan akses, fitur, dan tingkat keamanan data yang "
-        "berbeda-beda. Arsitektur multi-tenant ini memerlukan desain yang cermat untuk "
-        "memastikan isolasi data, customization per tenant, dan performance yang konsisten.",
+        "Platform harus melayani dua jenis pengguna utama (siswa dan guru) dengan "
+        "kebutuhan akses dan fitur yang berbeda. Siswa memerlukan prediksi, onboarding "
+        "wizard, dan sistem referral, sedangkan guru memiliki akses evaluatif pasif "
+        "untuk melihat profil dan memberikan komentar. Arsitektur role-based ini "
+        "memerlukan desain yang cermat untuk memastikan isolasi data dan pengalaman "
+        "pengguna yang sesuai konteks masing-masing.",
         indent=0.5
     )
 
@@ -369,14 +390,14 @@ def generate_stage1():
 
     challenges_headers = ["No.", "Tantangan", "Kategori", "Tingkat Kritis"]
     challenges_rows = [
-        ("1", "Scalability pada musim SNBP (peak load 10-50x)", "Teknologi", "Tinggi"),
+        ("1", "Scalability pada musim SNBP (peak load signifikan)", "Teknologi", "Tinggi"),
         ("2", "Integrasi data dari 40.000+ sekolah di Indonesia", "Data", "Tinggi"),
         ("3", "Akurasi model ML dengan data yang tidak seimbang", "Data/Teknologi", "Tinggi"),
         ("4", "Kepatuhan regulasi perlindungan data pribadi (UU PDP)", "Bisnis/Legal", "Tinggi"),
-        ("5", "Latensi real-time dashboard Anti-Bentrok", "Teknologi", "Sedang"),
+        ("5", "Validasi klik unik pada referral system (anti-abuse)", "Teknologi", "Sedang"),
         ("6", "Ketersediaan dan kualitas data historis SNBP", "Data", "Tinggi"),
         ("7", "User adoption di daerah dengan literasi digital rendah", "Bisnis", "Sedang"),
-        ("8", "Interoperabilitas dengan sistem SNPMB/LTMPT", "Teknologi/Bisnis", "Sedang"),
+        ("8", "Konversi dari freemium ke pembayaran atau referral", "Bisnis", "Sedang"),
     ]
     add_table(doc, challenges_headers, challenges_rows,
               title="Identifikasi Awal Tantangan LangkahKampus", table_number=4)

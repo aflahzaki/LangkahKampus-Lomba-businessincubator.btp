@@ -10,7 +10,11 @@ if (session_status() === PHP_SESSION_NONE) {
 
 // Redirect if already logged in
 if (is_logged_in()) {
-    redirect('dashboard_student.php');
+    if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'guru') {
+        redirect('dashboard_guru.php');
+    } else {
+        redirect('dashboard_student.php');
+    }
 }
 ?>
 <!DOCTYPE html>

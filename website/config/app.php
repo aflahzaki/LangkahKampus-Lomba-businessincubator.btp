@@ -21,12 +21,15 @@ define('COLOR_DARK', '#1A1A2E');
 // Pricing (in IDR)
 define('PRICE_BASIC_PREDICTION', 15000);
 define('PRICE_DEEP_RECOMMENDATION', 25000);
-define('PRICE_MONTHLY_PREMIUM', 49000);
+
+// Freemium Model
+define('FREE_PREDICTIONS_LIMIT', 3);
+define('REFERRAL_CLICKS_REQUIRED', 5);
+define('REFERRAL_UNLOCK_PREDICTIONS', 3);
 
 // Feature Flags
 define('FEATURE_MAP_ENABLED', true);
 define('FEATURE_PAYMENT_ENABLED', true);
-define('FEATURE_ANTI_BENTROK', true);
 
 // Session Configuration
 define('SESSION_LIFETIME', 3600); // 1 hour
