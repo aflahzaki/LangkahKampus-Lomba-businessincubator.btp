@@ -298,8 +298,8 @@ def generate_stage2():
     add_paragraph(doc, "Adaptasi 4: Fokus pada Domain Inti", bold=True)
     add_paragraph(doc,
         "Mengingat skala startup dan keterbatasan waktu, lingkup arsitektur difokuskan "
-        "pada domain inti LangkahKampus yaitu layanan prediksi ML, "
-        "aplikasi yang berhadapan langsung dengan siswa, dan dashboard sekolah. Domain pendukung seperti HR, keuangan, "
+        "pada domain inti LangkahKampus yaitu layanan prediksi all-in-one, "
+        "onboarding wizard, sistem referral, dan dashboard evaluatif guru. Domain pendukung seperti HR, keuangan, "
         "dan pengadaan tidak termasuk dalam lingkup arsitektur ini.",
         indent=0.5
     )
@@ -345,38 +345,38 @@ def generate_stage2():
 
     add_paragraph(doc, "Business Architecture (Dalam Lingkup):", bold=True)
     add_bullet_list(doc, [
-        "Proses bisnis inti: prediksi penerimaan, rekomendasi pilihan, anti-bentrok",
-        "Model operasional B2C (siswa individual) dan B2B (sekolah/Guru BK)",
-        "Rantai nilai dari akuisisi data hingga penyampaian insight",
-        "Kapabilitas organisasi dan pemetaan peran",
-        "Katalog layanan bisnis dan perjanjian tingkat layanan",
+        "Proses bisnis inti: prediksi all-in-one, onboarding wizard, referral tracking",
+        "Model operasional B2C freemium (siswa individual) dengan referral viral loop",
+        "Peran guru sebagai evaluator pasif yang di-invite oleh siswa",
+        "Rantai nilai dari registrasi, prediksi, hingga monetisasi",
+        "Katalog layanan bisnis dan alur konversi pengguna",
     ])
 
     add_paragraph(doc, "Data Architecture (Dalam Lingkup):", bold=True)
     add_bullet_list(doc, [
-        "Model data logis untuk entitas utama (siswa, sekolah, prodi, prediksi)",
-        "Diagram aliran data untuk pipeline ML dan pemrosesan real-time",
+        "Model data logis untuk entitas utama (siswa, guru, prediksi, referral_tracking)",
+        "Diagram aliran data untuk pipeline prediksi dan pelacakan referral",
         "Kerangka kerja tata kelola data dan standar kualitas data",
-        "Manajemen data master untuk data referensi (PTN, prodi, kuota)",
+        "Manajemen data master untuk data referensi (PTN, program studi, kuota)",
         "Manajemen siklus hidup data dan kebijakan retensi",
     ])
 
     add_paragraph(doc, "Application Architecture (Dalam Lingkup):", bold=True)
     add_bullet_list(doc, [
-        "Arsitektur microservices untuk backend (FastAPI)",
-        "Arsitektur aplikasi frontend (Next.js SPA/SSR)",
-        "Arsitektur penyajian model ML dan pipeline MLOps",
-        "Pola integrasi antar layanan (sinkron/asinkron)",
-        "Desain API dan strategi versioning",
+        "Arsitektur halaman prediksi all-in-one (PHP backend + Vanilla JS frontend)",
+        "Arsitektur onboarding wizard bertahap",
+        "Sistem referral link generation dan unique IP tracking",
+        "Integrasi API prediksi dengan ML microservice",
+        "Desain API endpoint dan strategi pembatasan akses (paywall logic)",
     ])
 
     add_paragraph(doc, "Technology Architecture (Dalam Lingkup):", bold=True)
     add_bullet_list(doc, [
-        "Arsitektur infrastruktur cloud (komputasi, penyimpanan, jaringan)",
-        "Orkestrasi kontainer dan strategi deployment",
-        "Infrastruktur database (PostgreSQL, Redis, caching)",
-        "Arsitektur keamanan (autentikasi, otorisasi, enkripsi)",
-        "Monitoring, logging, dan observability stack",
+        "Arsitektur infrastruktur hosting (PHP 8.x, web server, database)",
+        "Integrasi ML microservice (FastAPI) dengan backend PHP",
+        "Infrastruktur database (MySQL/PostgreSQL, caching)",
+        "Arsitektur keamanan (autentikasi, otorisasi, validasi referral)",
+        "Monitoring, logging, dan observability dasar",
     ])
 
     add_paragraph(doc, "Di Luar Lingkup:", bold=True)

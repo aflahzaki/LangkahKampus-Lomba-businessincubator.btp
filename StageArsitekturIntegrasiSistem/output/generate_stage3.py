@@ -111,18 +111,16 @@ def generate_stage3():
 
     add_paragraph(doc, "C. Extended (Diperluas):", bold=True)
     add_bullet_list(doc, [
-        "Mitra Sekolah (SMA/MA/SMK) - Sekolah yang menggunakan dashboard Anti-Bentrok dan layanan B2B",
         "Penyedia Data Pendidikan - LTMPT, Kemendikbudristek, dan BPS sebagai sumber data SNBP",
         "Payment Gateway Partners - Mitra pembayaran (Midtrans, Xendit) untuk transaksi freemium",
-        "Cloud Service Providers - AWS/GCP sebagai penyedia infrastruktur cloud",
+        "Cloud Service Providers - Penyedia infrastruktur hosting dan ML serving",
     ])
 
     add_paragraph(doc, "D. Communities (Komunitas):", bold=True)
     add_bullet_list(doc, [
         "Siswa SMA/MA/SMK - Pengguna utama layanan prediksi dan rekomendasi SNBP",
-        "Guru Bimbingan Konseling (Guru BK) - Pengguna dashboard Anti-Bentrok di sekolah",
+        "Guru - Evaluator pasif yang di-invite siswa untuk melihat profil dan memberikan komentar",
         "Orang Tua/Wali - Pemangku kepentingan yang berkepentingan terhadap keberhasilan pendidikan anak",
-        "Komunitas Developer - Kontributor dan pengguna API terbuka (jika ada)",
     ])
 
     # Description of Impacts Table
@@ -136,17 +134,15 @@ def generate_stage3():
     add_table(doc,
         headers=["Unit Organisasi", "Kategori", "Dampak", "Tingkat Dampak"],
         rows=[
-            ["Product Development", "Core", "Restrukturisasi proses pengembangan sesuai arsitektur target, adopsi microservices pattern", "Tinggi"],
-            ["ML Engineering", "Core", "Standarisasi pipeline ML, implementasi MLOps, integrasi model serving dengan platform", "Tinggi"],
-            ["Data Engineering", "Core", "Migrasi ke arsitektur data terpusat, implementasi data governance, real-time streaming", "Tinggi"],
-            ["Platform Engineering", "Core", "Adopsi cloud-native architecture, Kubernetes, CI/CD pipeline, observability stack", "Tinggi"],
-            ["Marketing & Growth", "Soft", "Integrasi dengan analytics platform, personalisasi kampanye berdasarkan data arsitektur", "Sedang"],
-            ["Customer Success", "Soft", "Akses ke dashboard monitoring pengguna, integrasi CRM dengan platform", "Sedang"],
-            ["Business Development", "Soft", "Standardisasi onboarding sekolah mitra, API integration guidelines", "Sedang"],
-            ["Mitra Sekolah", "Extended", "Adopsi dashboard Anti-Bentrok, integrasi data siswa via API", "Sedang"],
+            ["Product Development", "Core", "Restrukturisasi proses pengembangan sesuai arsitektur target, adopsi halaman prediksi all-in-one", "Tinggi"],
+            ["ML Engineering", "Core", "Standarisasi pipeline ML, implementasi MLOps, integrasi model serving dengan platform PHP", "Tinggi"],
+            ["Data Engineering", "Core", "Migrasi ke arsitektur data terpusat, implementasi data governance, referral tracking", "Tinggi"],
+            ["Platform Engineering", "Core", "Pengelolaan infrastruktur PHP hosting, CI/CD pipeline, observability stack", "Tinggi"],
+            ["Marketing & Growth", "Soft", "Integrasi dengan referral system untuk pertumbuhan organik, kampanye viral loop", "Sedang"],
+            ["Customer Success", "Soft", "Akses ke monitoring pengguna, dukungan onboarding wizard, panduan referral", "Sedang"],
             ["Penyedia Data", "Extended", "Standardisasi format data exchange, compliance terhadap data governance", "Rendah"],
-            ["Siswa", "Communities", "Pengalaman pengguna yang lebih baik, akses ke fitur prediksi yang lebih akurat", "Rendah"],
-            ["Guru BK", "Communities", "Perubahan workflow dari manual ke digital, training penggunaan dashboard", "Sedang"],
+            ["Siswa", "Communities", "Pengalaman pengguna yang lebih baik melalui all-in-one prediction dan onboarding yang intuitif", "Rendah"],
+            ["Guru", "Communities", "Akses evaluatif ke profil dan prediksi siswa yang mengundang mereka", "Sedang"],
         ],
         title="Deskripsi Dampak per Unit Organisasi",
         table_number=1
@@ -175,8 +171,7 @@ def generate_stage3():
             ["Product Manager", "Mendefinisikan roadmap produk, memprioritaskan fitur berdasarkan kebutuhan pengguna"],
             ["Quality Assurance Lead", "Memastikan kualitas produk melalui testing strategy dan automation"],
             ["Security Officer", "Memastikan kepatuhan terhadap standar keamanan dan regulasi PDPA"],
-            ["Guru BK Liaison", "Menjembatani kebutuhan Guru BK dengan tim pengembangan"],
-            ["School Partnership Manager", "Mengelola hubungan dengan sekolah mitra dan onboarding"],
+            ["Guru BK Liaison", "Menjembatani kebutuhan guru evaluator dengan tim pengembangan"],
         ],
         title="Daftar Peran dalam Enterprise Architecture",
         table_number=2
@@ -305,18 +300,18 @@ def generate_stage3():
     add_table(doc,
         headers=["ID", "Kategori", "Kebutuhan Fungsional", "Prioritas", "Stakeholder"],
         rows=[
-            ["FR-001", "Autentikasi", "Sistem harus menyediakan registrasi dan login menggunakan email, nomor telepon, atau OAuth (Google)", "Tinggi", "Siswa, Guru BK"],
-            ["FR-002", "Prediksi SNBP", "Sistem harus mampu memprediksi probabilitas diterima di program studi tertentu menggunakan model ML ensemble (XGBoost + LightGBM)", "Tinggi", "Siswa"],
-            ["FR-003", "Rekomendasi", "Sistem harus memberikan rekomendasi program studi berdasarkan preferensi kognitif, geospasial, dan probabilitas kelulusan menggunakan DiCE XAI", "Tinggi", "Siswa"],
-            ["FR-004", "Anti-Bentrok Dashboard", "Sistem harus menyediakan dashboard yang menampilkan potensi bentrokan pilihan prodi dalam satu sekolah secara real-time", "Tinggi", "Guru BK"],
-            ["FR-005", "What-If Analysis", "Sistem harus memungkinkan siswa melakukan simulasi skenario dengan mengubah parameter input dan melihat dampaknya terhadap prediksi", "Sedang", "Siswa"],
-            ["FR-006", "Manajemen Data Siswa", "Sistem harus memungkinkan import dan manajemen data nilai rapor siswa secara batch maupun individual", "Tinggi", "Guru BK, Siswa"],
-            ["FR-007", "Payment Gateway", "Sistem harus mengintegrasikan pembayaran untuk layanan premium (Rp15.000-25.000 per prediksi)", "Tinggi", "Siswa, Finance"],
-            ["FR-008", "Admin Panel", "Sistem harus menyediakan panel admin untuk monitoring platform, manajemen pengguna, dan konfigurasi sistem", "Sedang", "Admin"],
-            ["FR-009", "Reporting & Analytics", "Sistem harus menyediakan laporan analitik penggunaan platform untuk sekolah mitra", "Sedang", "Guru BK, Sekolah"],
-            ["FR-010", "Notification System", "Sistem harus mampu mengirimkan notifikasi (email, push) terkait hasil prediksi, deadline SNBP, dan update platform", "Sedang", "Siswa, Guru BK"],
-            ["FR-011", "Data Visualization", "Sistem harus menampilkan visualisasi data statistik penerimaan, tren, dan perbandingan antar prodi/universitas", "Sedang", "Siswa"],
-            ["FR-012", "Multi-tenant School Dashboard", "Sistem harus mendukung multi-tenancy untuk dashboard sekolah sehingga setiap sekolah hanya melihat data siswanya", "Tinggi", "Sekolah"],
+            ["FR-001", "Autentikasi", "Sistem harus menyediakan registrasi dan login menggunakan email atau nomor telepon dengan pilihan peran Siswa atau Guru", "Tinggi", "Siswa, Guru"],
+            ["FR-002", "Onboarding", "Sistem harus menyediakan onboarding wizard bertahap (3 langkah: data sekolah, nilai rapor, pilihan prodi impian) setelah registrasi siswa", "Tinggi", "Siswa"],
+            ["FR-003", "Prediksi All-in-One", "Sistem harus menampilkan hasil prediksi terintegrasi: probabilitas (gauge), peringatan Choice-2 Trap, statistik Anti-Bentrok peer, dan rekomendasi alternatif dalam satu halaman", "Tinggi", "Siswa"],
+            ["FR-004", "Model Freemium", "Sistem harus membatasi prediksi gratis sebanyak 3 kali per siswa, lalu menampilkan opsi pembayaran atau referral", "Tinggi", "Siswa"],
+            ["FR-005", "Referral System", "Sistem harus mampu menghasilkan referral link unik per siswa dan melacak 5 klik IP unik untuk membuka 3 prediksi tambahan", "Tinggi", "Siswa"],
+            ["FR-006", "Guru (Invite Code)", "Sistem harus memungkinkan siswa mengundang guru via kode 6 karakter (maks 2 guru per siswa), dan guru dapat melihat profil + prediksi siswa serta memberikan komentar", "Tinggi", "Siswa, Guru"],
+            ["FR-007", "Payment Gateway", "Sistem harus mengintegrasikan pembayaran untuk pembelian paket prediksi (Rp15.000-25.000 per prediksi)", "Tinggi", "Siswa"],
+            ["FR-008", "Peta Universitas", "Sistem harus menyediakan mode eksplorasi Peta Universitas dengan tombol 'Prediksi Langsung' di setiap detail program studi", "Sedang", "Siswa"],
+            ["FR-009", "What-If Analysis", "Sistem harus memungkinkan siswa melakukan simulasi skenario dengan mengubah parameter input dan melihat dampaknya terhadap prediksi", "Sedang", "Siswa"],
+            ["FR-010", "Dashboard Profil", "Sistem harus menyediakan profil terintegrasi di dashboard siswa dengan kemampuan edit data akademik inline", "Sedang", "Siswa"],
+            ["FR-011", "Visualisasi Data", "Sistem harus menampilkan visualisasi statistik penerimaan dan perbandingan antar program studi/universitas", "Sedang", "Siswa"],
+            ["FR-012", "Notifikasi", "Sistem harus mampu mengirimkan notifikasi terkait status referral, batas prediksi, dan update platform", "Rendah", "Siswa, Guru"],
         ],
         title="Daftar Kebutuhan Fungsional",
         table_number=5
@@ -410,34 +405,34 @@ def generate_stage3():
 
     add_paragraph(doc, "A. Tujuan Bisnis:", bold=True)
     add_numbered_list(doc, [
-        "Menyediakan platform prediksi SNBP yang akurat (>85%) dan terpercaya untuk siswa SMA/MA/SMK di seluruh Indonesia",
-        "Menghilangkan asimetri informasi dalam pemilihan program studi melalui rekomendasi berbasis data",
-        "Membangun ekosistem B2B yang memungkinkan sekolah mengelola proses SNBP secara digital dan efisien",
-        "Mencapai 100.000 pengguna aktif pada tahun pertama dan 500.000 pada tahun ketiga",
-        "Menghasilkan revenue Rp 2 miliar pada tahun kedua melalui model freemium dan B2B SaaS",
+        "Menyediakan platform prediksi SNBP all-in-one yang akurat (>85%) dan terpercaya untuk siswa SMA/MA/SMK di seluruh Indonesia",
+        "Menghilangkan asimetri informasi dalam pemilihan program studi melalui rekomendasi berbasis data dan XAI",
+        "Membangun pertumbuhan organik melalui viral referral loop yang memberikan insentif prediksi gratis",
+        "Mencapai 100.000 pengguna aktif pada tahun pertama melalui model freemium dengan 3 prediksi gratis",
+        "Menghasilkan revenue yang sustainable melalui konversi freemium ke pembayaran dan referral engagement",
     ])
 
     add_paragraph(doc, "B. Kebutuhan Arsitektur:", bold=True)
     add_numbered_list(doc, [
-        "Arsitektur microservices yang memisahkan concerns antara frontend, ML service, dan data layer",
-        "Skalabilitas horizontal untuk menghadapi traffic spike saat peak season SNBP",
-        "Real-time data processing capability untuk dashboard Anti-Bentrok",
-        "ML model serving infrastructure yang mendukung A/B testing dan model versioning",
+        "Arsitektur PHP monolith yang bersih dengan pemisahan concerns antara halaman, API, dan ML service",
+        "Skalabilitas untuk menghadapi traffic spike saat peak season SNBP",
+        "Sistem referral tracking dengan validasi IP unik yang tahan terhadap penyalahgunaan",
+        "ML model serving infrastructure yang mendukung prediksi all-in-one dalam satu request",
         "Data architecture yang mendukung compliance terhadap UU PDP Indonesia",
-        "Integration architecture yang memungkinkan koneksi dengan sistem sekolah yang beragam",
+        "Onboarding wizard yang intuitif dengan state management yang persisten",
     ])
 
     add_paragraph(doc, "C. Diagram Konsep Solusi:", bold=True)
     add_paragraph(doc,
         "Solution Concept Diagram LangkahKampus menggambarkan arsitektur tingkat "
         "tinggi yang terdiri dari beberapa layer utama: (1) Presentation Layer - "
-        "Next.js web application yang responsive untuk siswa dan Guru BK; (2) API "
-        "Gateway Layer - Kong/Nginx sebagai entry point untuk semua request; (3) "
-        "Application Services Layer - FastAPI microservices untuk business logic; "
-        "(4) ML Services Layer - dedicated service untuk model inference dan training; "
-        "(5) Data Layer - PostgreSQL untuk transactional data, Redis untuk caching, "
-        "dan data warehouse untuk analytics; (6) Infrastructure Layer - Kubernetes "
-        "cluster pada cloud provider dengan auto-scaling capabilities."
+        "PHP 8.x web application yang responsive untuk siswa dan guru; (2) API "
+        "Layer - endpoint PHP untuk autentikasi, referral tracking, dan business "
+        "logic; (3) ML Integration Layer - FastAPI microservice untuk model inference "
+        "yang dipanggil oleh backend PHP; (4) Data Layer - MySQL/PostgreSQL untuk "
+        "transactional data termasuk referral_tracking, predictions, dan user "
+        "profiles; (5) Payment Layer - integrasi dengan Midtrans/Xendit untuk "
+        "pemrosesan pembayaran freemium."
     )
 
     # Stakeholders Table
@@ -457,11 +452,10 @@ def generate_stage3():
             ["ML Lead", "Daffa Rizky Herdiawan", "Model development, MLOps, prediction accuracy", "Model accuracy, training data quality, inference speed", "Key Player", "ML pipeline docs, model performance reports"],
             ["Product Manager", "Muhammad Arifin Ilham", "Product roadmap, user research, feature prioritization", "User satisfaction, feature adoption, market fit", "Key Player", "Product requirements, user stories"],
             ["Siswa SMA", "1.5 juta+ siswa SNBP per tahun", "Menggunakan platform untuk prediksi dan rekomendasi", "Akurasi prediksi, kemudahan penggunaan, harga terjangkau", "Subject", "User guides, prediction results"],
-            ["Guru BK", "Guru BK di 40.000+ sekolah", "Menggunakan dashboard Anti-Bentrok, membimbing siswa", "Kemudahan integrasi, keakuratan data, efisiensi waktu", "Subject", "Dashboard training, school reports"],
+            ["Guru", "Guru yang di-invite siswa via kode unik", "Melihat profil dan prediksi siswa, memberikan komentar evaluatif", "Kemudahan akses, informasi yang relevan, tidak membebani waktu", "Subject", "Notifikasi invite, panduan penggunaan"],
             ["Orang Tua", "Orang tua/wali siswa", "Mendampingi dan membiayai proses SNBP anak", "Transparansi, keamanan data anak, value for money", "Interested", "Information reports"],
             ["Kemendikbudristek", "Regulator pendidikan", "Regulasi dan kebijakan SNBP", "Compliance, fairness, data privacy", "Context Setter", "Compliance reports"],
             ["Investor", "Angel investor / VC", "Pendanaan dan mentoring", "Growth metrics, unit economics, scalability", "Interested", "Financial reports, growth dashboards"],
-            ["School Admin", "Admin TI sekolah mitra", "Mengelola integrasi teknis di sisi sekolah", "Kemudahan setup, API documentation, support", "Participant", "API docs, integration guides"],
         ],
         title="Tabel Stakeholder",
         table_number=7
@@ -478,7 +472,7 @@ def generate_stage3():
             ["ML Lead", "Daffa Rizky Herdiawan", "Technical Lead ML", "Sprint review, Slack", "Mingguan"],
             ["Product Manager", "Muhammad Arifin Ilham", "Requirements Owner", "Sprint planning, email", "Mingguan"],
             ["Perwakilan Siswa", "Focus Group (10 siswa)", "User Representative", "User interview, survey", "Bulanan"],
-            ["Perwakilan Guru BK", "3 Guru BK pilot school", "School User Rep", "Workshop, video call", "Dua mingguan"],
+            ["Perwakilan Guru", "Guru pilot (evaluator)", "School User Rep", "Workshop, video call", "Dua mingguan"],
             ["Investor", "TBD", "Financial Stakeholder", "Board meeting, report", "Triwulanan"],
         ],
         title="Tabel Kontak Stakeholder",
@@ -522,7 +516,7 @@ def generate_stage3():
 
     add_bullet_list(doc, [
         "Key Players (CEO, CTO, ML Lead, PM) - Membutuhkan update detail tentang progress arsitektur, keputusan teknis, dan blockers secara real-time",
-        "Subjects (Siswa, Guru BK) - Membutuhkan informasi tentang fitur baru, perubahan platform, dan panduan penggunaan",
+        "Subjects (Siswa, Guru) - Membutuhkan informasi tentang fitur baru, perubahan platform, dan panduan penggunaan",
         "Interested Parties (Orang Tua, Investor) - Membutuhkan laporan periodik tentang progress dan milestone achievements",
         "Context Setters (Regulator) - Membutuhkan compliance reports dan dokumentasi kebijakan data",
     ])
@@ -536,9 +530,8 @@ def generate_stage3():
             ["Architecture Board", "Architecture decisions, progress report, risk updates", "Meeting tatap muka / video call", "Mingguan", "Enterprise Architect"],
             ["Development Team", "Sprint backlog, technical decisions, architecture guidelines", "Daily standup, Slack, Confluence", "Harian", "CTO"],
             ["Siswa (End User)", "Feature updates, maintenance schedule, tips penggunaan", "In-app notification, email, social media", "Per release / bulanan", "Product Manager"],
-            ["Guru BK", "Dashboard updates, training materials, best practices", "Email, WhatsApp group, workshop", "Dua mingguan", "School Partnership Manager"],
+            ["Guru", "Panduan penggunaan, notifikasi undangan siswa", "Email, in-app notification", "Per release", "Product Manager"],
             ["Investor", "KPI dashboard, financial report, milestone progress", "Board meeting, investor deck", "Triwulanan", "CEO"],
-            ["Sekolah Mitra", "Integration updates, API changes, onboarding guide", "Email, documentation portal", "Per release", "Business Development"],
             ["Regulator", "Compliance status, data protection measures", "Formal report", "Tahunan / on-demand", "Security Officer"],
         ],
         title="Matriks Komunikasi",
@@ -743,8 +736,8 @@ def generate_stage3():
     add_numbered_list(doc, [
         "Menjadi platform prediksi SNBP nomor satu di Indonesia dengan akurasi prediksi tertinggi (>85%)",
         "Menjangkau 500.000 siswa aktif dalam 3 tahun pertama operasional",
-        "Bermitra dengan 5.000 sekolah (12.5% penetrasi) dalam 3 tahun untuk layanan B2B Anti-Bentrok dashboard",
-        "Mencapai Net Promoter Score (NPS) minimal 60 dari pengguna siswa dan Guru BK",
+        "Mencapai konversi 10% dari pengguna gratis ke pengguna berbayar atau aktif referral",
+        "Mencapai Net Promoter Score (NPS) minimal 60 dari pengguna siswa",
         "Membangun sustainable business model dengan break-even pada tahun ketiga",
         "Berkontribusi pada pemerataan akses pendidikan tinggi di Indonesia, terutama untuk siswa di daerah 3T",
     ])
