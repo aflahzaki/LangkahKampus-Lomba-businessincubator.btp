@@ -73,19 +73,10 @@ require_once $base_path . 'includes/functions.php';
                             <a href="<?php echo $base_path; ?>pages/prediksi.php" class="nav-link">Prediksi</a>
                         </li>
                         <li class="nav-item">
-                            <a href="<?php echo $base_path; ?>pages/rekomendasi.php" class="nav-link">Rekomendasi</a>
-                        </li>
-                        <li class="nav-item">
                             <a href="<?php echo $base_path; ?>pages/peta_universitas.php" class="nav-link">Peta Universitas</a>
                         </li>
                         <li class="nav-item">
-                            <a href="<?php echo $base_path; ?>pages/validator.php" class="nav-link">Validator</a>
-                        </li>
-                        <li class="nav-item">
                             <a href="<?php echo $base_path; ?>pages/pembayaran.php" class="nav-link">Pembayaran</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="<?php echo $base_path; ?>pages/profil.php" class="nav-link">Profil</a>
                         </li>
                     <?php endif; ?>
                 <?php else: ?>

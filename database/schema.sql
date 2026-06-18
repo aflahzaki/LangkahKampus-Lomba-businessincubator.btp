@@ -25,7 +25,9 @@ CREATE TABLE users (
     subscription_expires_at DATETIME NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     last_login TIMESTAMP NULL,
-    is_active BOOLEAN NOT NULL DEFAULT TRUE
+    is_active BOOLEAN NOT NULL DEFAULT TRUE,
+    predictions_used INT NOT NULL DEFAULT 0,
+    predictions_limit INT NOT NULL DEFAULT 3
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ============================================================
@@ -265,6 +267,22 @@ CREATE TABLE admission_history (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ============================================================
+-- Table: referral_tracking
+-- Stores referral codes and tracks unique clicks for freemium unlocks
+-- ============================================================
+CREATE TABLE referral_tracking (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    referral_code VARCHAR(20) NOT NULL UNIQUE,
+    click_count INT NOT NULL DEFAULT 0,
+    unique_ips JSON,
+    unlocked_predictions INT NOT NULL DEFAULT 0,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_referral_user FOREIGN KEY (user_id)
+        REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ============================================================
 -- INDEXES
 -- ============================================================
 
@@ -302,3 +320,7 @@ CREATE INDEX idx_invite_codes_code ON invite_codes(code);
 -- Guru comments: lookup by guru and student
 CREATE INDEX idx_guru_comments_guru ON guru_comments(guru_id);
 CREATE INDEX idx_guru_comments_student ON guru_comments(student_id);
+
+-- Referral tracking: lookup by user and code
+CREATE INDEX idx_referral_user ON referral_tracking(user_id);
+CREATE INDEX idx_referral_code ON referral_tracking(referral_code);
