@@ -110,15 +110,28 @@ function calculatePrediction($input, $pdo)
 
     if (!empty($programName)) {
         try {
-            // Search sidata_prodi by matching program name
+            // Try exact match first to prevent "KIMIA" from matching "TEKNIK KIMIA INDUSTRI"
             $stmt = $pdo->prepare('
                 SELECT * FROM sidata_prodi
-                WHERE nama_prodi LIKE ?
+                WHERE nama_prodi = ?
                 ORDER BY peminat_2022 DESC
                 LIMIT 1
             ');
-            $stmt->execute(['%' . $programName . '%']);
+            $stmt->execute([$programName]);
             $sidataProdi = $stmt->fetch();
+
+            // Fall back to LIKE search only if exact match returns nothing
+            if (!$sidataProdi) {
+                $escapedName = str_replace(['%', '_'], ['\\%', '\\_'], $programName);
+                $stmt = $pdo->prepare('
+                    SELECT * FROM sidata_prodi
+                    WHERE nama_prodi LIKE ?
+                    ORDER BY peminat_2022 DESC
+                    LIMIT 1
+                ');
+                $stmt->execute(['%' . $escapedName . '%']);
+                $sidataProdi = $stmt->fetch();
+            }
         } catch (PDOException $e) {
             error_log('predict.php - sidata lookup error: ' . $e->getMessage());
         }
@@ -276,6 +289,7 @@ function calculatePrediction($input, $pdo)
             }
 
             if (!empty($mainKeyword)) {
+                $escapedKeyword = str_replace(['%', '_'], ['\\%', '\\_'], $mainKeyword);
                 $stmt = $pdo->prepare('
                     SELECT sp.nama_prodi, sp.peminat_2022, sp.daya_tampung_2022, sp.daya_tampung_2023,
                            su.nama_univ
@@ -288,7 +302,7 @@ function calculatePrediction($input, $pdo)
                     LIMIT 3
                 ');
                 $stmt->execute([
-                    '%' . $mainKeyword . '%',
+                    '%' . $escapedKeyword . '%',
                     $sidataProdi['kode_prodi']
                 ]);
                 $altPrograms = $stmt->fetchAll();

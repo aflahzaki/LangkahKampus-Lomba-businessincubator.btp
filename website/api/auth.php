@@ -301,6 +301,21 @@ function handleRegister()
                 $major_track = 'IPA';
             }
 
+            // Validate major_track against allowed values
+            $allowed_major_tracks = [
+                'IPA', 'IPS', 'Bahasa',
+                'TKJ', 'RPL', 'Multimedia', 'AKL', 'TBSM', 'OTKP', 'BDP',
+                'Farmasi', 'Keperawatan', 'DKV',
+                'Teknik Kendaraan Ringan', 'Teknik Instalasi Tenaga Listrik',
+                'Tata Busana', 'Tata Boga', 'Animasi'
+            ];
+
+            if (!in_array($major_track, $allowed_major_tracks)) {
+                flash_message('danger', 'Jurusan/peminatan yang dipilih tidak valid.');
+                redirect('../pages/register.php');
+                return;
+            }
+
             $profileStmt = $pdo->prepare(
                 'INSERT INTO student_profiles (user_id, school_id, major_track, grade_level, school_name_manual, school_type_manual, school_province_manual, school_city_manual) 
                  VALUES (:user_id, :school_id, :major_track, 12, :school_name_manual, :school_type_manual, :school_province_manual, :school_city_manual)'

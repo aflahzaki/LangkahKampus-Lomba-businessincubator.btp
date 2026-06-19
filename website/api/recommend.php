@@ -68,6 +68,8 @@ try {
     }
 
     if (!$target && !empty($targetProgramName)) {
+        // Escape LIKE wildcard characters in user input
+        $escapedProgramName = str_replace(['%', '_'], ['\\%', '\\_'], $targetProgramName);
         $stmt = $pdo->prepare(
             'SELECT sp.kode_prodi, sp.kode_univ, sp.nama_prodi, sp.jenjang,
                     sp.daya_tampung_2023, sp.peminat_2022, sp.daya_tampung_2022,
@@ -77,7 +79,7 @@ try {
              WHERE sp.nama_prodi LIKE :nama_prodi
              LIMIT 1'
         );
-        $stmt->execute([':nama_prodi' => '%' . $targetProgramName . '%']);
+        $stmt->execute([':nama_prodi' => '%' . $escapedProgramName . '%']);
         $target = $stmt->fetch();
     }
 
@@ -99,7 +101,9 @@ try {
     $recommendations = [];
 
     foreach ($keywords as $keyword) {
-        $searchTerm = '%' . $keyword . '%';
+        // Escape LIKE wildcard characters in keyword
+        $escapedKeyword = str_replace(['%', '_'], ['\\%', '\\_'], $keyword);
+        $searchTerm = '%' . $escapedKeyword . '%';
 
         $stmt = $pdo->prepare(
             'SELECT sp.kode_prodi, sp.kode_univ, sp.nama_prodi, sp.jenjang,
@@ -193,39 +197,66 @@ try {
 
 /**
  * Extract search keywords from a program name.
- * Strategy: use full name first, then try shorter keywords (key subject words),
- * then first 2 words as fallback.
+ * Strategy: use full name first, then try specific compound terms,
+ * then specific single keywords. Generic words like TEKNIK, PENDIDIKAN, ILMU, PROGRAM
+ * are only used as part of compound terms, never standalone.
  */
 function extractKeywords($namaProdi)
 {
     $keywords = [];
 
-    // Full name as first search
+    // Full name as first search (highest priority)
     $keywords[] = $namaProdi;
 
-    // Common key subject words to extract
-    $subjectKeywords = [
-        'INFORMATIKA', 'KEDOKTERAN', 'MANAJEMEN', 'HUKUM', 'FARMASI',
-        'AKUNTANSI', 'EKONOMI', 'TEKNIK', 'PENDIDIKAN', 'ARSITEKTUR',
-        'PSIKOLOGI', 'BIOLOGI', 'KIMIA', 'FISIKA', 'MATEMATIKA',
-        'KOMUNIKASI', 'ADMINISTRASI', 'KEPERAWATAN', 'GIZI', 'KESEHATAN',
-        'SASTRA', 'ILMU KOMPUTER', 'SISTEM INFORMASI', 'TEKNIK SIPIL',
+    // Generic words that should NOT be used as standalone keywords
+    $genericWords = ['TEKNIK', 'PENDIDIKAN', 'ILMU', 'PROGRAM', 'STUDI', 'JURUSAN', 'FAKULTAS', 'SAINS', 'TERAPAN'];
+
+    // Compound terms (multi-word) to try first - these are specific enough
+    $compoundKeywords = [
+        'ILMU KOMPUTER', 'SISTEM INFORMASI', 'TEKNIK SIPIL',
         'TEKNIK MESIN', 'TEKNIK ELEKTRO', 'TEKNIK KIMIA', 'TEKNIK INDUSTRI',
-        'AGROTEKNOLOGI', 'AGRIBISNIS', 'PETERNAKAN', 'KEHUTANAN',
+        'TEKNIK INFORMATIKA', 'TEKNIK LINGKUNGAN', 'TEKNIK GEOLOGI',
+        'PENDIDIKAN DOKTER', 'PENDIDIKAN GURU', 'PENDIDIKAN MATEMATIKA',
+        'PENDIDIKAN BAHASA', 'KESEHATAN MASYARAKAT', 'ILMU KOMUNIKASI',
+        'ILMU HUKUM', 'ILMU POLITIK', 'ADMINISTRASI PUBLIK',
+        'ADMINISTRASI BISNIS', 'ADMINISTRASI NEGARA',
     ];
 
     $upperName = strtoupper($namaProdi);
 
-    foreach ($subjectKeywords as $keyword) {
+    // Add matching compound terms
+    foreach ($compoundKeywords as $compound) {
+        if (strpos($upperName, $compound) !== false) {
+            $keywords[] = $compound;
+        }
+    }
+
+    // Specific single-word subject keywords (NOT generic)
+    $specificKeywords = [
+        'INFORMATIKA', 'KEDOKTERAN', 'MANAJEMEN', 'HUKUM', 'FARMASI',
+        'AKUNTANSI', 'EKONOMI', 'ARSITEKTUR', 'PSIKOLOGI', 'BIOLOGI',
+        'KIMIA', 'FISIKA', 'MATEMATIKA', 'KOMUNIKASI', 'KEPERAWATAN',
+        'GIZI', 'KESEHATAN', 'SASTRA', 'AGROTEKNOLOGI', 'AGRIBISNIS',
+        'PETERNAKAN', 'KEHUTANAN', 'GEOGRAFI', 'SOSIOLOGI', 'ANTROPOLOGI',
+        'STATISTIKA', 'GEOFISIKA', 'METALURGI', 'PERKAPALAN',
+    ];
+
+    foreach ($specificKeywords as $keyword) {
         if (strpos($upperName, $keyword) !== false) {
             $keywords[] = $keyword;
         }
     }
 
-    // First 2 words as fallback
+    // First 2 words as fallback, but only if neither word is generic
     $words = explode(' ', trim($namaProdi));
     if (count($words) >= 2) {
-        $keywords[] = $words[0] . ' ' . $words[1];
+        $word1Upper = strtoupper($words[0]);
+        $word2Upper = strtoupper($words[1]);
+        $bothNonGeneric = !in_array($word1Upper, $genericWords) || !in_array($word2Upper, $genericWords);
+        // Only add if at least one word is non-generic (compound with generic is okay)
+        if ($bothNonGeneric) {
+            $keywords[] = $words[0] . ' ' . $words[1];
+        }
     }
 
     // Remove duplicates while preserving order

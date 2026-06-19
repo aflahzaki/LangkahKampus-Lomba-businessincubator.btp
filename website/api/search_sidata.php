@@ -38,7 +38,9 @@ if (!$pdo) {
 }
 
 try {
-    $searchTerm = '%' . $query . '%';
+    // Escape LIKE wildcard characters in user input to prevent wildcard injection
+    $escapedQuery = str_replace(['%', '_'], ['\\%', '\\_'], $query);
+    $searchTerm = '%' . $escapedQuery . '%';
 
     $stmt = $pdo->prepare(
         'SELECT sp.kode_prodi, sp.nama_prodi, sp.jenjang, 
