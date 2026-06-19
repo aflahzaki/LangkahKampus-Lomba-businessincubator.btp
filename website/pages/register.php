@@ -124,19 +124,64 @@ $type = isset($_GET['type']) ? $_GET['type'] : '';
 
                     <!-- Step 2: School Details -->
                     <div class="register-step" id="step2" style="display:none;">
-                        <div class="form-group">
-                            <label class="form-label" for="school_name">Nama Sekolah</label>
-                            <select id="school_name" name="school_name" class="form-control">
-                                <option value="">Pilih Sekolah</option>
-                                <option value="SMAN 3 Jakarta">SMAN 3 Jakarta</option>
-                                <option value="SMAN 3 Bandung">SMAN 3 Bandung</option>
-                                <option value="SMAN 5 Surabaya">SMAN 5 Surabaya</option>
-                                <option value="SMAN 1 Yogyakarta">SMAN 1 Yogyakarta</option>
-                                <option value="SMA Labschool Jakarta">SMA Labschool Jakarta</option>
-                            </select>
+                        <!-- School Search Autocomplete -->
+                        <div class="form-group" id="schoolSearchGroup" style="position:relative;">
+                            <label class="form-label" for="school_search">Nama Sekolah</label>
+                            <input type="text" id="school_search" class="form-control" 
+                                   placeholder="Ketik nama sekolah..." autocomplete="off">
+                            <input type="hidden" name="school_id" id="school_id" value="">
+                            <input type="hidden" id="selected_school_type" value="">
+                            <div id="schoolResults" style="display:none;position:absolute;top:100%;left:0;right:0;background:white;border:1px solid var(--color-border);border-radius:var(--radius-sm);max-height:200px;overflow-y:auto;z-index:100;box-shadow:var(--shadow-md);"></div>
+                            <div id="schoolSelected" style="display:none;margin-top:0.5rem;padding:0.5rem 0.75rem;background:var(--color-bg);border-radius:var(--radius-sm);font-size:0.85rem;">
+                                <span id="schoolSelectedText"></span>
+                                <a href="#" id="schoolClearBtn" style="margin-left:0.5rem;color:var(--color-danger);font-size:0.8rem;">
+                                    <i class="fas fa-times"></i> Hapus
+                                </a>
+                            </div>
                         </div>
 
-                        <div class="form-group">
+                        <!-- Manual Entry Toggle -->
+                        <div class="form-group" id="manualToggleGroup">
+                            <a href="#" id="manualToggleLink" style="font-size:0.85rem;color:var(--color-primary);">
+                                <i class="fas fa-edit"></i> Sekolah tidak ditemukan? Input manual
+                            </a>
+                        </div>
+
+                        <!-- Manual School Entry Fields (hidden by default) -->
+                        <div id="manualSchoolFields" style="display:none;">
+                            <div class="form-group">
+                                <label class="form-label" for="school_name_manual">Nama Sekolah</label>
+                                <input type="text" id="school_name_manual" name="school_name_manual" class="form-control" 
+                                       placeholder="Masukkan nama sekolah">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="school_type_manual">Jenis Sekolah</label>
+                                <select id="school_type_manual" name="school_type_manual" class="form-control">
+                                    <option value="">Pilih Jenis</option>
+                                    <option value="SMA">SMA</option>
+                                    <option value="SMK">SMK</option>
+                                    <option value="MA">MA</option>
+                                </select>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label" for="school_province_manual">Provinsi</label>
+                                    <input type="text" id="school_province_manual" name="school_province_manual" class="form-control" 
+                                           placeholder="Provinsi">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="school_city_manual">Kota/Kabupaten</label>
+                                    <input type="text" id="school_city_manual" name="school_city_manual" class="form-control" 
+                                           placeholder="Kota/Kabupaten">
+                                </div>
+                            </div>
+                            <a href="#" id="backToSearchLink" style="font-size:0.85rem;color:var(--color-primary);">
+                                <i class="fas fa-search"></i> Kembali ke pencarian sekolah
+                            </a>
+                        </div>
+
+                        <!-- Jurusan / Major Track (dynamic based on school type) -->
+                        <div class="form-group" id="majorTrackGroup" style="margin-top:1rem;">
                             <label class="form-label" for="major_track">Jurusan</label>
                             <select id="major_track" name="major_track" class="form-control">
                                 <option value="">Pilih Jurusan</option>
@@ -236,6 +281,9 @@ $type = isset($_GET['type']) ? $_GET['type'] : '';
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         initParticleBackground();
+        initSchoolSearch();
+        initManualToggle();
+        initDynamicJurusan();
     });
 
     function nextStep(step) {
@@ -250,6 +298,182 @@ $type = isset($_GET['type']) ? $_GET['type'] : '';
         document.getElementById('step' + step).style.display = 'block';
         document.getElementById('currentStep').textContent = step;
         document.getElementById('registerProgress').style.width = (step * 50) + '%';
+    }
+
+    /* === School Search Autocomplete === */
+    function initSchoolSearch() {
+        var searchInput = document.getElementById('school_search');
+        var resultsContainer = document.getElementById('schoolResults');
+        var hiddenSchoolId = document.getElementById('school_id');
+        var hiddenSchoolType = document.getElementById('selected_school_type');
+        var selectedDiv = document.getElementById('schoolSelected');
+        var selectedText = document.getElementById('schoolSelectedText');
+        var clearBtn = document.getElementById('schoolClearBtn');
+
+        if (!searchInput || !resultsContainer) return;
+
+        var debounceTimer;
+
+        searchInput.addEventListener('input', function() {
+            var query = this.value.trim();
+            clearTimeout(debounceTimer);
+
+            if (query.length < 2) {
+                resultsContainer.innerHTML = '';
+                resultsContainer.style.display = 'none';
+                return;
+            }
+
+            debounceTimer = setTimeout(function() {
+                ajaxRequest('../api/search_schools.php?q=' + encodeURIComponent(query), 'GET', null, function(error, response) {
+                    if (error) return;
+
+                    resultsContainer.innerHTML = '';
+                    resultsContainer.style.display = 'block';
+
+                    if (response.schools && response.schools.length) {
+                        response.schools.forEach(function(school) {
+                            var item = document.createElement('div');
+                            item.style.cssText = 'padding:0.6rem 0.75rem;cursor:pointer;border-bottom:1px solid var(--color-border);font-size:0.9rem;';
+                            item.innerHTML = '<strong>' + school.name + '</strong><br><small style="color:var(--color-text-light);">' + (school.school_type || '') + ' - ' + (school.city || '') + ', ' + (school.province || '') + '</small>';
+
+                            item.addEventListener('mouseenter', function() {
+                                this.style.background = 'var(--color-bg)';
+                            });
+                            item.addEventListener('mouseleave', function() {
+                                this.style.background = 'white';
+                            });
+
+                            item.addEventListener('click', function() {
+                                hiddenSchoolId.value = school.id;
+                                hiddenSchoolType.value = school.school_type || '';
+                                searchInput.style.display = 'none';
+                                resultsContainer.style.display = 'none';
+                                selectedDiv.style.display = 'block';
+                                selectedText.innerHTML = '<strong>' + school.name + '</strong> <small>(' + (school.school_type || '') + ' - ' + (school.city || '') + ')</small>';
+                                updateJurusanOptions(school.school_type || 'SMA');
+                            });
+
+                            resultsContainer.appendChild(item);
+                        });
+                    } else {
+                        resultsContainer.innerHTML = '<div style="padding:0.6rem 0.75rem;font-size:0.85rem;color:var(--color-text-light);">Tidak ditemukan. Gunakan input manual.</div>';
+                    }
+                });
+            }, 300);
+        });
+
+        // Close results on outside click
+        document.addEventListener('click', function(e) {
+            if (!searchInput.contains(e.target) && !resultsContainer.contains(e.target)) {
+                resultsContainer.style.display = 'none';
+            }
+        });
+
+        // Clear selection
+        if (clearBtn) {
+            clearBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                hiddenSchoolId.value = '';
+                hiddenSchoolType.value = '';
+                searchInput.value = '';
+                searchInput.style.display = 'block';
+                selectedDiv.style.display = 'none';
+                updateJurusanOptions('SMA');
+            });
+        }
+    }
+
+    /* === Manual Entry Toggle === */
+    function initManualToggle() {
+        var manualToggleLink = document.getElementById('manualToggleLink');
+        var backToSearchLink = document.getElementById('backToSearchLink');
+        var manualFields = document.getElementById('manualSchoolFields');
+        var searchGroup = document.getElementById('schoolSearchGroup');
+        var manualToggleGroup = document.getElementById('manualToggleGroup');
+        var schoolTypeManual = document.getElementById('school_type_manual');
+
+        if (!manualToggleLink || !manualFields) return;
+
+        manualToggleLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            searchGroup.style.display = 'none';
+            manualToggleGroup.style.display = 'none';
+            manualFields.style.display = 'block';
+            // Clear autocomplete selection
+            document.getElementById('school_id').value = '';
+            document.getElementById('selected_school_type').value = '';
+        });
+
+        if (backToSearchLink) {
+            backToSearchLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                manualFields.style.display = 'none';
+                searchGroup.style.display = 'block';
+                manualToggleGroup.style.display = 'block';
+                // Clear manual fields
+                document.getElementById('school_name_manual').value = '';
+                document.getElementById('school_type_manual').value = '';
+                document.getElementById('school_province_manual').value = '';
+                document.getElementById('school_city_manual').value = '';
+                updateJurusanOptions('SMA');
+            });
+        }
+
+        // Listen for manual school type change
+        if (schoolTypeManual) {
+            schoolTypeManual.addEventListener('change', function() {
+                var selectedType = this.value || 'SMA';
+                updateJurusanOptions(selectedType);
+            });
+        }
+    }
+
+    /* === Dynamic Jurusan Options === */
+    function initDynamicJurusan() {
+        // Default to SMA/MA options on load
+        updateJurusanOptions('SMA');
+    }
+
+    function updateJurusanOptions(schoolType) {
+        var majorSelect = document.getElementById('major_track');
+        if (!majorSelect) return;
+
+        var smaOptions = [
+            { value: '', label: 'Pilih Jurusan' },
+            { value: 'IPA', label: 'IPA' },
+            { value: 'IPS', label: 'IPS' },
+            { value: 'Bahasa', label: 'Bahasa' }
+        ];
+
+        var smkOptions = [
+            { value: '', label: 'Pilih Jurusan' },
+            { value: 'TKJ', label: 'TKJ' },
+            { value: 'RPL', label: 'RPL' },
+            { value: 'Multimedia', label: 'Multimedia' },
+            { value: 'AKL', label: 'AKL' },
+            { value: 'TBSM', label: 'TBSM' },
+            { value: 'OTKP', label: 'OTKP' },
+            { value: 'BDP', label: 'BDP' },
+            { value: 'Farmasi', label: 'Farmasi' },
+            { value: 'Keperawatan', label: 'Keperawatan' },
+            { value: 'DKV', label: 'DKV' },
+            { value: 'Teknik Kendaraan Ringan', label: 'Teknik Kendaraan Ringan' },
+            { value: 'Teknik Instalasi Tenaga Listrik', label: 'Teknik Instalasi Tenaga Listrik' },
+            { value: 'Tata Busana', label: 'Tata Busana' },
+            { value: 'Tata Boga', label: 'Tata Boga' },
+            { value: 'Animasi', label: 'Animasi' }
+        ];
+
+        var options = (schoolType === 'SMK') ? smkOptions : smaOptions;
+
+        majorSelect.innerHTML = '';
+        options.forEach(function(opt) {
+            var option = document.createElement('option');
+            option.value = opt.value;
+            option.textContent = opt.label;
+            majorSelect.appendChild(option);
+        });
     }
     </script>
 </body>

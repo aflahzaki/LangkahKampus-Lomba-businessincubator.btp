@@ -278,32 +278,41 @@ function handleRegister()
 
         // Create student_profiles row for siswa registration
         if ($role === 'student') {
-            $school_name = isset($_POST['school_name']) ? trim($_POST['school_name']) : '';
-            $major_track = isset($_POST['major_track']) ? trim($_POST['major_track']) : 'IPA';
+            $school_id = isset($_POST['school_id']) ? trim($_POST['school_id']) : '';
+            $school_name_manual = isset($_POST['school_name_manual']) ? trim($_POST['school_name_manual']) : '';
+            $school_type_manual = isset($_POST['school_type_manual']) ? trim($_POST['school_type_manual']) : '';
+            $school_province_manual = isset($_POST['school_province_manual']) ? trim($_POST['school_province_manual']) : '';
+            $school_city_manual = isset($_POST['school_city_manual']) ? trim($_POST['school_city_manual']) : '';
+            $major_track = isset($_POST['major_track']) ? trim($_POST['major_track']) : '';
 
-            // Map school name to school_id (demo schools)
-            $school_map = [
-                'SMAN 3 Jakarta' => 1,
-                'SMAN 3 Bandung' => 2,
-                'SMAN 5 Surabaya' => 3,
-                'SMAN 1 Yogyakarta' => 4,
-                'SMA Labschool Jakarta' => 5,
-            ];
-            $school_id = isset($school_map[$school_name]) ? $school_map[$school_name] : 1;
+            // Determine school_id: use autocomplete selection if provided, otherwise NULL for manual entry
+            $final_school_id = null;
+            if (!empty($school_id) && is_numeric($school_id)) {
+                // Validate that school_id exists in the database
+                $schoolCheck = $pdo->prepare('SELECT id FROM schools WHERE id = :id LIMIT 1');
+                $schoolCheck->execute([':id' => (int) $school_id]);
+                if ($schoolCheck->fetch()) {
+                    $final_school_id = (int) $school_id;
+                }
+            }
 
-            // Validate major_track
-            $allowed_tracks = ['IPA', 'IPS', 'Bahasa'];
-            if (!in_array($major_track, $allowed_tracks)) {
+            // Default major_track if empty
+            if (empty($major_track)) {
                 $major_track = 'IPA';
             }
 
             $profileStmt = $pdo->prepare(
-                'INSERT INTO student_profiles (user_id, school_id, major_track, grade_level) VALUES (:user_id, :school_id, :major_track, 12)'
+                'INSERT INTO student_profiles (user_id, school_id, major_track, grade_level, school_name_manual, school_type_manual, school_province_manual, school_city_manual) 
+                 VALUES (:user_id, :school_id, :major_track, 12, :school_name_manual, :school_type_manual, :school_province_manual, :school_city_manual)'
             );
             $profileStmt->execute([
                 ':user_id' => $userId,
-                ':school_id' => $school_id,
+                ':school_id' => $final_school_id,
                 ':major_track' => $major_track,
+                ':school_name_manual' => $school_name_manual ?: null,
+                ':school_type_manual' => $school_type_manual ?: null,
+                ':school_province_manual' => $school_province_manual ?: null,
+                ':school_city_manual' => $school_city_manual ?: null,
             ]);
         }
 
