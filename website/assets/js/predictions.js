@@ -1,13 +1,113 @@
 /**
  * LangkahKampus - Predictions JavaScript
- * Handles prediction form, result visualization, probability gauge,
+ * Handles dynamic subjects, prediction form, result visualization,
+ * variable breakdown, admission history, probability gauge,
  * Choice-2 trap warning, anti-bentrok stats, and recommendations
  */
 
 document.addEventListener('DOMContentLoaded', function() {
+    initDynamicSubjects();
     initPredictionForm();
     initProgramSearch();
 });
+
+/* === Dynamic Subject Inputs Based on Jurusan === */
+function initDynamicSubjects() {
+    var selector = document.getElementById('jurusanSelector');
+    if (!selector) return;
+
+    selector.addEventListener('change', function() {
+        var jurusan = this.value;
+        var container = document.getElementById('subjectsContainer');
+        var addBtn = document.getElementById('addCustomSubjectBtn');
+
+        if (!jurusan) {
+            container.innerHTML = '<p class="text-muted" style="font-style:italic;">Pilih jurusan terlebih dahulu untuk menampilkan mata pelajaran.</p>';
+            if (addBtn) addBtn.style.display = 'none';
+            return;
+        }
+
+        // Show loading
+        container.innerHTML = '<p class="text-muted"><i class="fas fa-spinner fa-spin"></i> Memuat mata pelajaran...</p>';
+
+        // Fetch subjects from API
+        ajaxRequest('../api/get_subjects.php?jurusan=' + encodeURIComponent(jurusan), 'GET', null, function(error, response) {
+            if (error) {
+                container.innerHTML = '<p class="text-muted" style="color:#C0392B;">Gagal memuat mata pelajaran. Silakan tambahkan secara manual.</p>';
+                if (addBtn) addBtn.style.display = 'inline-block';
+                return;
+            }
+
+            var subjects = response.subjects || [];
+            container.innerHTML = '';
+
+            if (subjects.length === 0) {
+                container.innerHTML = '<p class="text-muted" style="font-style:italic;">Tidak ada data mata pelajaran untuk jurusan ini. Gunakan tombol di bawah untuk menambahkan secara manual.</p>';
+            } else {
+                subjects.forEach(function(subject) {
+                    container.appendChild(createSubjectRow(subject));
+                });
+            }
+
+            // Show add custom button
+            if (addBtn) addBtn.style.display = 'inline-block';
+        });
+    });
+}
+
+/* === Create a Subject Input Row === */
+function createSubjectRow(subjectName, isCustom) {
+    var safeKey = subjectName.toLowerCase().replace(/[^a-z0-9]/g, '_');
+    var row = document.createElement('div');
+    row.className = 'mb-2 subject-row';
+    row.setAttribute('data-subject', subjectName);
+
+    var labelHtml = '';
+    if (isCustom) {
+        labelHtml = '<div class="d-flex align-center gap-1 mb-1">' +
+            '<input type="text" class="form-control custom-subject-name" placeholder="Nama Mata Pelajaran" value="' + subjectName + '" style="flex:1;font-size:0.85rem;">' +
+            '<button type="button" class="btn btn-outline" style="font-size:0.75rem;padding:0.25rem 0.5rem;color:#C0392B;border-color:#C0392B;" onclick="removeSubjectRow(this)">' +
+            '<i class="fas fa-times"></i></button></div>';
+    } else {
+        labelHtml = '<label class="form-label">' + subjectName + '</label>';
+    }
+
+    var inputsHtml = '<div class="form-row" style="grid-template-columns:repeat(5,1fr);">';
+    for (var sem = 1; sem <= 5; sem++) {
+        inputsHtml += '<div class="form-group" style="margin-bottom:0.5rem;">' +
+            '<input type="number" name="subject_' + safeKey + '_sem' + sem + '" ' +
+            'class="form-control subject-score" placeholder="S' + sem + '" ' +
+            'min="0" max="100" step="0.01" data-subject="' + subjectName + '" data-sem="' + sem + '" required>' +
+            '</div>';
+    }
+    inputsHtml += '</div>';
+
+    row.innerHTML = labelHtml + inputsHtml;
+    return row;
+}
+
+/* === Add Custom Subject === */
+function addCustomSubject() {
+    var container = document.getElementById('subjectsContainer');
+    if (!container) return;
+
+    var customName = 'Mata Pelajaran Tambahan';
+    var row = createSubjectRow(customName, true);
+    container.appendChild(row);
+
+    // Focus the name input
+    var nameInput = row.querySelector('.custom-subject-name');
+    if (nameInput) {
+        nameInput.focus();
+        nameInput.select();
+    }
+}
+
+/* === Remove a Subject Row === */
+function removeSubjectRow(btn) {
+    var row = btn.closest('.subject-row');
+    if (row) row.remove();
+}
 
 /* === Prediction Form Handler === */
 function initPredictionForm() {
@@ -40,6 +140,8 @@ function initPredictionForm() {
             }
 
             displayPredictionResult(response);
+            displayVariableBreakdown(response.variables || []);
+            displayAdmissionHistory(response.admission_history || []);
             displayChoice2Trap(response);
             displayAntiBentrokStats(response);
             displayRecommendations(response);
@@ -48,26 +150,38 @@ function initPredictionForm() {
     });
 }
 
-/* === Collect Form Data === */
+/* === Collect Form Data (Dynamic Subjects) === */
 function collectPredictionData(form) {
     var data = {
         scores: {},
         school_ranking: parseInt(form.querySelector('[name="school_ranking"]').value) || 0,
         total_students: parseInt(form.querySelector('[name="total_students"]').value) || 0,
         school_accreditation: form.querySelector('[name="school_accreditation"]').value,
-        target_program_id: form.querySelector('[name="target_program"]').value
+        target_program_id: form.querySelector('[name="target_program"]').value,
+        jurusan: form.querySelector('[name="jurusan"]').value
     };
 
-    // Collect semester scores
-    var subjects = ['matematika', 'b_indonesia', 'b_inggris', 'fisika', 'kimia', 'biologi'];
-    subjects.forEach(function(subject) {
-        data.scores[subject] = {};
-        for (var sem = 1; sem <= 5; sem++) {
-            var input = form.querySelector('[name="' + subject + '_sem' + sem + '"]');
-            if (input) {
-                data.scores[subject]['sem' + sem] = parseFloat(input.value) || 0;
-            }
+    // Collect semester scores dynamically from all subject rows
+    var subjectRows = document.querySelectorAll('#subjectsContainer .subject-row');
+    subjectRows.forEach(function(row) {
+        // Determine subject name
+        var subjectName = '';
+        var customNameInput = row.querySelector('.custom-subject-name');
+        if (customNameInput) {
+            subjectName = customNameInput.value.trim() || 'Custom';
+        } else {
+            subjectName = row.getAttribute('data-subject') || 'Unknown';
         }
+
+        // Collect scores for this subject
+        var scoreInputs = row.querySelectorAll('.subject-score');
+        var semesterScores = {};
+        scoreInputs.forEach(function(input) {
+            var sem = input.getAttribute('data-sem');
+            semesterScores['sem' + sem] = parseFloat(input.value) || 0;
+        });
+
+        data.scores[subjectName] = semesterScores;
     });
 
     return data;
@@ -84,16 +198,12 @@ function displayPredictionResult(response) {
     var probability = response.probability || 0;
     var confidence_lower = response.confidence_lower || 0;
     var confidence_upper = response.confidence_upper || 0;
-    var features = response.feature_importances || {};
 
     // Animate gauge
     animateGauge(probability);
 
     // Update confidence interval
     updateConfidenceBar(probability, confidence_lower, confidence_upper);
-
-    // Update feature importance chart
-    displayFeatureImportance(features);
 
     // Update text
     var statusEl = document.getElementById('predictionStatus');
@@ -103,6 +213,93 @@ function displayPredictionResult(response) {
         statusEl.textContent = status;
         statusEl.style.color = color === 'green' ? '#27AE60' : (color === 'orange' ? '#F39C12' : '#C0392B');
     }
+}
+
+/* === Display Variable Breakdown (6 progress bars) === */
+function displayVariableBreakdown(variables) {
+    var container = document.getElementById('variableBreakdown');
+    if (!container) return;
+
+    container.innerHTML = '';
+
+    if (!variables || variables.length === 0) return;
+
+    variables.forEach(function(variable, index) {
+        var score = variable.normalized_score || 0;
+        var weightPercent = Math.round(variable.weight * 100);
+        var scorePercent = Math.round(score * 100);
+
+        // Color coding: green if > 0.6, orange if 0.3-0.6, red if < 0.3
+        var barColor;
+        if (score > 0.6) {
+            barColor = '#27AE60';
+        } else if (score >= 0.3) {
+            barColor = '#F39C12';
+        } else {
+            barColor = '#C0392B';
+        }
+
+        var item = document.createElement('div');
+        item.className = 'variable-breakdown-item';
+        item.style.cssText = 'margin-bottom:0.75rem;animation:fadeIn 0.3s ease;animation-delay:' + (index * 0.1) + 's;animation-fill-mode:both;';
+        item.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.25rem;">' +
+            '<span style="font-size:0.85rem;font-weight:600;">' + variable.name + ' (' + weightPercent + '%)</span>' +
+            '<span style="font-size:0.8rem;font-weight:700;color:' + barColor + ';">' + scorePercent + '%</span>' +
+            '</div>' +
+            '<div class="progress-bar" style="height:8px;margin-bottom:0.2rem;">' +
+            '<div class="progress-fill" style="width:0%;background:' + barColor + ';transition:width 0.8s ease ' + (index * 0.1 + 0.3) + 's;"></div>' +
+            '</div>' +
+            '<small style="color:var(--color-text-light);font-size:0.75rem;">' + (variable.description || '') + '</small>';
+
+        container.appendChild(item);
+
+        // Animate width
+        setTimeout(function() {
+            var fill = item.querySelector('.progress-fill');
+            if (fill) fill.style.width = scorePercent + '%';
+        }, 100);
+    });
+}
+
+/* === Display Admission History === */
+function displayAdmissionHistory(history) {
+    var section = document.getElementById('admissionHistorySection');
+    var content = document.getElementById('admissionHistoryContent');
+    if (!section || !content) return;
+
+    section.classList.remove('hidden');
+    section.style.animation = 'fadeIn 0.5s ease';
+
+    if (!history || history.length === 0) {
+        content.innerHTML = '<div style="background:var(--color-bg);border-radius:var(--radius-sm);padding:1rem;text-align:center;">' +
+            '<i class="fas fa-info-circle" style="color:var(--color-accent-blue);font-size:1.2rem;"></i>' +
+            '<p style="font-size:0.85rem;color:var(--color-text-light);margin-top:0.5rem;">' +
+            'Data historis penerimaan dari sekolah Anda ke program ini belum tersedia.' +
+            '</p></div>';
+        return;
+    }
+
+    var tableHtml = '<table style="width:100%;border-collapse:collapse;font-size:0.85rem;">' +
+        '<thead><tr style="border-bottom:2px solid var(--color-border);">' +
+        '<th style="padding:0.5rem;text-align:left;">Tahun</th>' +
+        '<th style="padding:0.5rem;text-align:center;">Pendaftar</th>' +
+        '<th style="padding:0.5rem;text-align:center;">Diterima</th>' +
+        '<th style="padding:0.5rem;text-align:center;">Rasio</th>' +
+        '</tr></thead><tbody>';
+
+    history.forEach(function(row) {
+        var ratio = row.applicants > 0 ? Math.round((row.accepted / row.applicants) * 100) : 0;
+        var ratioColor = ratio >= 50 ? '#27AE60' : (ratio >= 25 ? '#F39C12' : '#C0392B');
+        tableHtml += '<tr style="border-bottom:1px solid var(--color-border);">' +
+            '<td style="padding:0.5rem;">' + row.year + '</td>' +
+            '<td style="padding:0.5rem;text-align:center;">' + row.applicants + '</td>' +
+            '<td style="padding:0.5rem;text-align:center;">' + row.accepted + '</td>' +
+            '<td style="padding:0.5rem;text-align:center;color:' + ratioColor + ';font-weight:600;">' + ratio + '%</td>' +
+            '</tr>';
+    });
+
+    tableHtml += '</tbody></table>';
+    content.innerHTML = tableHtml;
 }
 
 /* === Display Choice-2 Trap Warning === */
@@ -160,21 +357,20 @@ function displayAntiBentrokStats(response) {
     }
 }
 
-/* === Display Recommendations (if probability < 70%) === */
+/* === Display Recommendations (ALWAYS shown) === */
 function displayRecommendations(response) {
     var recSection = document.getElementById('recommendationsSection');
     var recCards = document.getElementById('recommendationCards');
     if (!recSection || !recCards) return;
 
-    var probability = response.probability || 0;
     var recommendations = response.recommendations || [];
 
-    if (probability < 70 && recommendations.length > 0) {
+    if (recommendations.length > 0) {
         recSection.classList.remove('hidden');
         recSection.style.animation = 'fadeIn 0.5s ease';
         recCards.innerHTML = '';
 
-        recommendations.forEach(function(rec, index) {
+        recommendations.forEach(function(rec) {
             var card = document.createElement('div');
             card.style.cssText = 'background:var(--color-bg);border-radius:var(--radius-sm);padding:0.75rem;margin-bottom:0.5rem;';
             card.innerHTML = '<div style="display:flex;align-items:center;justify-content:space-between;">' +
@@ -182,9 +378,9 @@ function displayRecommendations(response) {
                 '<strong style="font-size:0.9rem;">' + rec.name + '</strong><br>' +
                 '<small style="color:var(--color-text-light);">' + rec.university + '</small>' +
                 '</div>' +
-                '<span style="font-size:1.1rem;font-weight:700;color:#27AE60;">' + rec.probability + '%</span>' +
+                '<span style="font-size:0.85rem;font-weight:700;color:#27AE60;">Rasio ' + rec.ratio + ':1</span>' +
                 '</div>' +
-                (rec.change_needed ? '<small style="color:var(--color-accent-blue);"><i class="fas fa-info-circle"></i> ' + rec.change_needed + '</small>' : '');
+                '<small style="color:var(--color-accent-blue);"><i class="fas fa-chart-bar"></i> ' + rec.comparison + '</small>';
             recCards.appendChild(card);
         });
     } else {
@@ -282,46 +478,6 @@ function updateConfidenceBar(probability, lower, upper) {
 
     if (lowerText) lowerText.textContent = Math.round(lower * 100) + '%';
     if (upperText) upperText.textContent = Math.round(upper * 100) + '%';
-}
-
-/* === Feature Importance Chart === */
-function displayFeatureImportance(features) {
-    var container = document.getElementById('featureImportance');
-    if (!container) return;
-
-    container.innerHTML = '';
-
-    var sorted = Object.entries(features).sort(function(a, b) { return b[1] - a[1]; });
-
-    sorted.forEach(function(entry, index) {
-        var name = entry[0];
-        var value = entry[1];
-        var bar = document.createElement('div');
-        bar.className = 'feature-bar-item';
-        bar.style.animationDelay = (index * 0.1) + 's';
-        bar.innerHTML = '<div class="feature-bar-label">' +
-            '<span>' + formatFeatureName(name) + '</span>' +
-            '<span>' + Math.round(value * 100) + '%</span></div>' +
-            '<div class="progress-bar"><div class="progress-fill" style="width: 0%; transition-delay: ' + (index * 0.1 + 0.5) + 's;"></div></div>';
-        container.appendChild(bar);
-
-        // Animate width
-        setTimeout(function() {
-            bar.querySelector('.progress-fill').style.width = (value * 100) + '%';
-        }, 100);
-    });
-}
-
-function formatFeatureName(name) {
-    var map = {
-        'gpa_average': 'Rata-rata Nilai',
-        'school_ranking': 'Peringkat Sekolah',
-        'school_accreditation': 'Akreditasi Sekolah',
-        'competition_ratio': 'Rasio Kompetisi',
-        'historical_acceptance': 'Riwayat Penerimaan',
-        'subject_relevance': 'Relevansi Mata Pelajaran'
-    };
-    return map[name] || name.replace(/_/g, ' ');
 }
 
 /* === Program Search Autocomplete === */

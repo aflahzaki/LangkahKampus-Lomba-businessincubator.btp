@@ -11,7 +11,7 @@ $prefill_program_id = isset($_GET['program_id']) ? htmlspecialchars($_GET['progr
     <div class="dashboard-header">
         <div class="container">
             <h1><i class="fas fa-brain"></i> Prediksi SNBP</h1>
-            <p>Masukkan data akademik dan pilih program studi target. Hasil prediksi mencakup probabilitas, peringatan Choice-2, statistik anti-bentrok, dan rekomendasi alternatif.</p>
+            <p>Masukkan data akademik dan pilih program studi target. Hasil prediksi mencakup probabilitas, breakdown variabel, peringatan Choice-2, statistik anti-bentrok, dan rekomendasi alternatif.</p>
         </div>
     </div>
 
@@ -43,35 +43,50 @@ $prefill_program_id = isset($_GET['program_id']) ? htmlspecialchars($_GET['progr
                         </div>
                     </div>
 
-                    <!-- Semester Scores -->
+                    <!-- Jurusan Selector -->
+                    <h4 class="mb-2">Jurusan / Program Keahlian</h4>
+                    <div class="form-group mb-3">
+                        <label class="form-label">Pilih Jurusan</label>
+                        <select name="jurusan" id="jurusanSelector" class="form-control" required>
+                            <option value="">-- Pilih Jurusan --</option>
+                            <optgroup label="SMA / MA">
+                                <option value="IPA">IPA (Ilmu Pengetahuan Alam)</option>
+                                <option value="IPS">IPS (Ilmu Pengetahuan Sosial)</option>
+                                <option value="Bahasa">Bahasa</option>
+                            </optgroup>
+                            <optgroup label="SMK">
+                                <option value="TKJ">TKJ (Teknik Komputer & Jaringan)</option>
+                                <option value="RPL">RPL (Rekayasa Perangkat Lunak)</option>
+                                <option value="Multimedia">Multimedia</option>
+                                <option value="AKL">AKL (Akuntansi & Keuangan Lembaga)</option>
+                                <option value="TBSM">TBSM (Teknik Bisnis Sepeda Motor)</option>
+                                <option value="OTKP">OTKP (Otomatisasi Tata Kelola Perkantoran)</option>
+                                <option value="BDP">BDP (Bisnis Daring & Pemasaran)</option>
+                                <option value="Farmasi">Farmasi</option>
+                                <option value="Keperawatan">Keperawatan</option>
+                                <option value="DKV">DKV (Desain Komunikasi Visual)</option>
+                                <option value="Teknik Kendaraan Ringan">Teknik Kendaraan Ringan</option>
+                                <option value="Teknik Instalasi Tenaga Listrik">Teknik Instalasi Tenaga Listrik</option>
+                                <option value="Tata Busana">Tata Busana</option>
+                                <option value="Tata Boga">Tata Boga</option>
+                                <option value="Animasi">Animasi</option>
+                            </optgroup>
+                        </select>
+                    </div>
+
+                    <!-- Dynamic Subject Scores -->
                     <h4 class="mb-2">Nilai Rapor (Semester 1-5)</h4>
                     <p class="text-muted mb-2" style="font-size:0.85rem;">Masukkan nilai rata-rata per mata pelajaran untuk setiap semester</p>
 
-                    <?php
-                    $subjects = [
-                        'matematika' => 'Matematika',
-                        'b_indonesia' => 'B. Indonesia',
-                        'b_inggris' => 'B. Inggris',
-                        'fisika' => 'Fisika/Ekonomi',
-                        'kimia' => 'Kimia/Sosiologi',
-                        'biologi' => 'Biologi/Geografi'
-                    ];
-
-                    foreach ($subjects as $key => $label):
-                    ?>
-                    <div class="mb-2">
-                        <label class="form-label"><?php echo $label; ?></label>
-                        <div class="form-row" style="grid-template-columns:repeat(5,1fr);">
-                            <?php for ($sem = 1; $sem <= 5; $sem++): ?>
-                            <div class="form-group" style="margin-bottom:0.5rem;">
-                                <input type="number" name="<?php echo $key; ?>_sem<?php echo $sem; ?>" 
-                                       class="form-control" placeholder="S<?php echo $sem; ?>" 
-                                       min="0" max="100" step="0.01" required>
-                            </div>
-                            <?php endfor; ?>
-                        </div>
+                    <div id="subjectsContainer">
+                        <!-- Dynamically populated by JavaScript based on jurusan selection -->
+                        <p class="text-muted" style="font-style:italic;">Pilih jurusan terlebih dahulu untuk menampilkan mata pelajaran.</p>
                     </div>
-                    <?php endforeach; ?>
+
+                    <!-- Add Custom Subject Button -->
+                    <button type="button" id="addCustomSubjectBtn" class="btn btn-outline mt-2 mb-3" style="font-size:0.85rem;display:none;" onclick="addCustomSubject()">
+                        <i class="fas fa-plus"></i> Tambah Mata Pelajaran Lain
+                    </button>
 
                     <!-- Target Program -->
                     <h4 class="mb-2 mt-3">Target Program Studi</h4>
@@ -121,10 +136,17 @@ $prefill_program_id = isset($_GET['program_id']) ? htmlspecialchars($_GET['progr
                             <span id="confidenceUpper">100%</span>
                         </div>
 
-                        <!-- Feature Importance -->
-                        <h5 class="mt-3 mb-2">Faktor Penting</h5>
-                        <div id="featureImportance"></div>
+                        <!-- Variable Breakdown -->
+                        <h5 class="mt-3 mb-2">Breakdown Detail Variabel</h5>
+                        <div id="variableBreakdown"></div>
                     </div>
+                </div>
+
+                <!-- Admission History -->
+                <div class="card hidden mt-2" id="admissionHistorySection">
+                    <h4 class="mb-2"><i class="fas fa-history text-blue"></i> Info Historis Penerimaan</h4>
+                    <p class="text-muted mb-2" style="font-size:0.85rem;">Data historis penerimaan dari sekolah Anda ke program studi target:</p>
+                    <div id="admissionHistoryContent"></div>
                 </div>
 
                 <!-- Choice-2 Trap Warning -->
@@ -161,10 +183,10 @@ $prefill_program_id = isset($_GET['program_id']) ? htmlspecialchars($_GET['progr
                     </div>
                 </div>
 
-                <!-- Recommendations (if probability < 70%) -->
+                <!-- Recommendations -->
                 <div class="card hidden mt-2" id="recommendationsSection">
                     <h4 class="mb-2"><i class="fas fa-lightbulb text-blue"></i> Rekomendasi Alternatif</h4>
-                    <p class="text-muted mb-2" style="font-size:0.85rem;">Program studi dengan peluang lebih tinggi berdasarkan profil Anda:</p>
+                    <p class="text-muted mb-2" style="font-size:0.85rem;">Program studi serupa dengan tingkat kompetisi lebih rendah:</p>
                     <div id="recommendationCards"></div>
                 </div>
 
@@ -191,6 +213,7 @@ $prefill_program_id = isset($_GET['program_id']) ? htmlspecialchars($_GET['progr
                         <li><i class="fas fa-check text-green"></i> Peringkat dihitung dari kelas 10-12</li>
                         <li><i class="fas fa-check text-green"></i> Akreditasi mempengaruhi bobot prediksi</li>
                         <li><i class="fas fa-check text-green"></i> Hasil mencakup analisis Choice-2 otomatis</li>
+                        <li><i class="fas fa-check text-green"></i> Formula menggunakan data SIDATA PTN resmi</li>
                     </ul>
                 </div>
             </div>
