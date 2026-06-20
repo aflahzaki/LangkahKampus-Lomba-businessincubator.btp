@@ -1,7 +1,7 @@
 <?php
 /**
- * LangkahKampus - Program Search API
- * GET: Search programs by name or university name (autocomplete)
+ * LangkahKampus - SIDATA Program Search API
+ * GET: Search sidata_prodi by nama_prodi keyword, returns top 10 with university info
  */
 
 header('Content-Type: application/json');
@@ -43,11 +43,13 @@ try {
     $searchTerm = '%' . $escapedQuery . '%';
 
     $stmt = $pdo->prepare(
-        'SELECT p.id, p.name, u.name AS university, p.degree 
-         FROM programs p 
-         INNER JOIN universities u ON p.university_id = u.id 
-         WHERE p.name LIKE :query1 OR u.name LIKE :query2 
-         ORDER BY p.name ASC 
+        'SELECT sp.kode_prodi, sp.nama_prodi, sp.jenjang, 
+                sp.daya_tampung_2023, sp.peminat_2022,
+                su.nama_univ
+         FROM sidata_prodi sp
+         INNER JOIN sidata_universitas su ON sp.kode_univ = su.kode_univ
+         WHERE sp.nama_prodi LIKE :query1 OR su.nama_univ LIKE :query2
+         ORDER BY sp.nama_prodi ASC
          LIMIT 10'
     );
 
@@ -63,7 +65,7 @@ try {
     ]);
 
 } catch (PDOException $e) {
-    error_log('Search programs error: ' . $e->getMessage());
+    error_log('Search SIDATA error: ' . $e->getMessage());
     http_response_code(500);
     echo json_encode(['error' => 'Internal server error']);
 }

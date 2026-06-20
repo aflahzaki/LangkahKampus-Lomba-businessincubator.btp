@@ -93,18 +93,22 @@ CREATE TABLE programs (
 CREATE TABLE student_profiles (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
-    school_id INT NOT NULL,
+    school_id INT NULL,
     nis VARCHAR(30) NULL,
     grade_level INT NOT NULL DEFAULT 12,
-    major_track ENUM('IPA', 'IPS', 'Bahasa') NOT NULL DEFAULT 'IPA',
+    major_track VARCHAR(50) NOT NULL DEFAULT 'IPA',
     ranking_in_school INT NULL,
     total_students INT NULL,
     preference_vector JSON NULL,
     cognitive_profile JSON NULL,
+    school_name_manual VARCHAR(200) NULL,
+    school_type_manual ENUM('SMA', 'SMK', 'MA') NULL,
+    school_province_manual VARCHAR(100) NULL,
+    school_city_manual VARCHAR(100) NULL,
     CONSTRAINT fk_student_user FOREIGN KEY (user_id)
         REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT fk_student_school FOREIGN KEY (school_id)
-        REFERENCES schools(id) ON DELETE CASCADE ON UPDATE CASCADE
+        REFERENCES schools(id) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ============================================================
@@ -283,6 +287,53 @@ CREATE TABLE referral_tracking (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ============================================================
+-- Table: sidata_universitas
+-- SIDATA PTN university data from official Kemendikbud dataset
+-- ============================================================
+CREATE TABLE sidata_universitas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    kode_univ VARCHAR(10) NOT NULL UNIQUE,
+    nama_univ VARCHAR(200) NOT NULL,
+    portal_univ VARCHAR(255) NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ============================================================
+-- Table: sidata_prodi
+-- SIDATA PTN study program data with historical capacity and applicant data
+-- ============================================================
+CREATE TABLE sidata_prodi (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    kode_univ VARCHAR(10) NOT NULL,
+    kode_prodi VARCHAR(20) NOT NULL UNIQUE,
+    nama_prodi VARCHAR(200) NOT NULL,
+    jenjang VARCHAR(50) NULL,
+    daya_tampung_2023 INT NULL,
+    peminat_2018 INT NULL,
+    peminat_2019 INT NULL,
+    peminat_2020 INT NULL,
+    peminat_2021 INT NULL,
+    peminat_2022 INT NULL,
+    daya_tampung_2018 INT NULL,
+    daya_tampung_2019 INT NULL,
+    daya_tampung_2020 INT NULL,
+    daya_tampung_2021 INT NULL,
+    daya_tampung_2022 INT NULL,
+    CONSTRAINT fk_sidata_prodi_univ FOREIGN KEY (kode_univ)
+        REFERENCES sidata_universitas(kode_univ) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ============================================================
+-- Table: smk_subjects
+-- SMK curriculum subjects per jurusan (Kurikulum Merdeka)
+-- ============================================================
+CREATE TABLE smk_subjects (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    jurusan VARCHAR(50) NOT NULL,
+    subject_name VARCHAR(100) NOT NULL,
+    is_core BOOLEAN NOT NULL DEFAULT TRUE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ============================================================
 -- INDEXES
 -- ============================================================
 
@@ -324,3 +375,14 @@ CREATE INDEX idx_guru_comments_student ON guru_comments(student_id);
 -- Referral tracking: lookup by user and code
 CREATE INDEX idx_referral_user ON referral_tracking(user_id);
 CREATE INDEX idx_referral_code ON referral_tracking(referral_code);
+
+-- SIDATA: search by prodi name and university code
+CREATE INDEX idx_sidata_prodi_nama ON sidata_prodi(nama_prodi);
+CREATE INDEX idx_sidata_prodi_univ ON sidata_prodi(kode_univ);
+CREATE INDEX idx_sidata_universitas_kode ON sidata_universitas(kode_univ);
+
+-- Schools: search by name for autocomplete
+CREATE INDEX idx_schools_name ON schools(name);
+
+-- SMK subjects: lookup by jurusan
+CREATE INDEX idx_smk_subjects_jurusan ON smk_subjects(jurusan);

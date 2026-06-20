@@ -1,7 +1,8 @@
 <?php
 /**
- * LangkahKampus - Program Search API
- * GET: Search programs by name or university name (autocomplete)
+ * LangkahKampus - School Search API
+ * GET: Search schools by name (autocomplete)
+ * Returns up to 10 matching schools from the schools table
  */
 
 header('Content-Type: application/json');
@@ -26,7 +27,7 @@ require_once __DIR__ . '/../config/database.php';
 $query = isset($_GET['q']) ? trim($_GET['q']) : '';
 
 if (strlen($query) < 2) {
-    echo json_encode(['programs' => []]);
+    echo json_encode(['schools' => []]);
     exit;
 }
 
@@ -43,27 +44,25 @@ try {
     $searchTerm = '%' . $escapedQuery . '%';
 
     $stmt = $pdo->prepare(
-        'SELECT p.id, p.name, u.name AS university, p.degree 
-         FROM programs p 
-         INNER JOIN universities u ON p.university_id = u.id 
-         WHERE p.name LIKE :query1 OR u.name LIKE :query2 
-         ORDER BY p.name ASC 
+        'SELECT id, npsn, name, province, city, accreditation, school_type 
+         FROM schools 
+         WHERE name LIKE :query 
+         ORDER BY name ASC 
          LIMIT 10'
     );
 
     $stmt->execute([
-        ':query1' => $searchTerm,
-        ':query2' => $searchTerm,
+        ':query' => $searchTerm,
     ]);
 
-    $programs = $stmt->fetchAll();
+    $schools = $stmt->fetchAll();
 
     echo json_encode([
-        'programs' => $programs
+        'schools' => $schools
     ]);
 
 } catch (PDOException $e) {
-    error_log('Search programs error: ' . $e->getMessage());
+    error_log('Search schools error: ' . $e->getMessage());
     http_response_code(500);
     echo json_encode(['error' => 'Internal server error']);
 }

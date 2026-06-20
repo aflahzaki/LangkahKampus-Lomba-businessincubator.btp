@@ -45,7 +45,7 @@
                         <h4>Fitur</h4>
                         <ul>
                             <li><a href="<?php echo $base_path; ?>pages/prediksi.php">Prediksi ML</a></li>
-                            <li><a href="<?php echo $base_path; ?>pages/rekomendasi.php">Rekomendasi What-If</a></li>
+                            <li><a href="<?php echo $base_path; ?>pages/rekomendasi.php">Rekomendasi Prodi</a></li>
                             <li><a href="<?php echo $base_path; ?>pages/anti_bentrok.php">Statistik Anti-Bentrok</a></li>
                             <li><a href="<?php echo $base_path; ?>pages/validator.php">Validasi Pilihan</a></li>
                             <li><a href="<?php echo $base_path; ?>pages/peta_universitas.php">Peta PTN</a></li>
